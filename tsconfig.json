@@ -8,9 +8,15 @@
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": "./src",
+    "esModuleInterop": true,
     "types": ["node"],
     "paths": {
+      "@/*": ["*"],
+      "@apis/*": ["apis/*"],
       "@assets/*": ["assets/*"],
+      "@hooks/*": ["hooks/*"],
+      "@mocks/*": ["mocks/*"],
+      "@pages/*": ["pages/*"],
       "@react-three/fiber": ["./node_modules/@react-three/fiber"],
       "@react-three/drei": ["./node_modules/@react-three/drei"]
     }
