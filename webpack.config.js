@@ -1,12 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dotenv = require('dotenv');
 
-module.exports = (argv) => {
-  const prod = argv.mode === 'production';
+dotenv.config();
+
+module.exports = () => {
+  const mode = process.env.NODE_ENV ?? 'production';
 
   return {
-    mode: prod ? 'production' : 'development',
+    mode,
     entry: './src/index.tsx',
     output: {
       publicPath: '/',
@@ -57,6 +60,14 @@ module.exports = (argv) => {
       }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
+      }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.API_URL': JSON.stringify(
+          mode === 'production'
+            ? process.env.API_PROD_URL
+            : process.env.API_DEV_URL
+        ),
       }),
     ],
   };
