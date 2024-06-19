@@ -11,14 +11,15 @@
     "esModuleInterop": true,
     "types": ["node"],
     "paths": {
-      "@/*": ["*"],
       "@apis/*": ["apis/*"],
       "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@mocks/*": ["mocks/*"],
       "@pages/*": ["pages/*"],
       "@react-three/fiber": ["./node_modules/@react-three/fiber"],
-      "@react-three/drei": ["./node_modules/@react-three/drei"]
+      "@react-three/drei": ["./node_modules/@react-three/drei"],
+      "@/*": ["*"]
     }
   },
   "include": ["src/**/*"]

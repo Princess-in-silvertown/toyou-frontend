@@ -23,12 +23,13 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src/'),
         '@apis': path.resolve(__dirname, 'src/apis/'),
         '@assets': path.resolve(__dirname, 'src/assets/'),
+        '@components': path.resolve(__dirname, 'src/components/'),
         '@hooks': path.resolve(__dirname, 'src/hooks/'),
         '@mocks': path.resolve(__dirname, 'src/mocks/'),
         '@pages': path.resolve(__dirname, 'src/pages/'),
+        '@': path.resolve(__dirname, 'src/'),
       },
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
