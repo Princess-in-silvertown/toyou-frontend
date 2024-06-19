@@ -1,8 +1,7 @@
-import { fetcher } from './fetcher';
-
 export const makeAuthorizedRequest = async <T>(
   path: string,
   method: string,
+  fetcher: (path: string, options: RequestInit | undefined) => Promise<T>,
   body?: BodyInit
 ) => {
   const token = getAccessToken();
@@ -13,7 +12,7 @@ export const makeAuthorizedRequest = async <T>(
     ...(token && { Authorization: `Bearer ${token}` }),
   };
 
-  return fetcher<T>(path, { headers, body, method });
+  return fetcher(path, { headers, body, method });
 };
 
 export const getAccessToken = () => {
