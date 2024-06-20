@@ -8,7 +8,6 @@ interface Props {
 }
 
 const NavBarItem = ({ isSelected, name, svgSrc, handleClick }: Props) => {
-  console.log(handleClick);
   return (
     <Container onClick={handleClick}>
       <Icon src={svgSrc} />
