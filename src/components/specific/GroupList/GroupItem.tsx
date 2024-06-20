@@ -2,19 +2,27 @@ import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { Group } from '@/types/group';
 import { useContext } from 'react';
 import styled from 'styled-components';
+import GroupSelectModalContents from './GroupSelectModalContents';
 
 interface Props extends Group {}
 
 const GroupItem = ({ name, value, userCount }: Props) => {
-  const { handleOpen, setupHandler } = useContext(modalDispatchContext);
+  const { handleOpen, handleClose } = useContext(modalDispatchContext);
+
+  const handleModalSubmit = async () => {
+    handleClose();
+  };
 
   const handleClickGroupItem = () => {
     const modalContents = (
-      <ModalMessage>{value} 그룹에 들어가시겠습니까?</ModalMessage>
+      <GroupSelectModalContents
+        groupValue={value}
+        handleSubmit={handleModalSubmit}
+        handleClose={handleClose}
+      />
     );
 
     handleOpen(modalContents);
-    setupHandler(() => {});
   };
 
   return (
@@ -51,9 +59,4 @@ const Name = styled.div`
 
 const UserCount = styled.div`
   font-size: 12px;
-`;
-
-const ModalMessage = styled.div`
-  font-size: 14px;
-  color: gray;
 `;

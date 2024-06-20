@@ -1,41 +1,25 @@
 import { PropsWithChildren, useMemo } from 'react';
-import { modalContext, modalDispatchContext } from '../states/modalContext';
-import { ConfirmationModal, Modal } from '@components/common/Modal';
-import { useActionModal } from '@hooks/useActionModal';
+import { modalDispatchContext } from '../states/modalContext';
+import { Modal } from '@components/common/Modal';
+import { useModal } from '@hooks/useModal';
 
 interface Props extends PropsWithChildren {}
 
 const ModalProvider = ({ children }: Props) => {
-  const {
-    isOpen,
-    isClosing,
-    contents,
-    handleOpen,
-    handleClose,
-    setupHandler,
-    handleAction,
-  } = useActionModal();
+  const { isOpen, isClosing, contents, handleOpen, handleClose } = useModal();
 
-  const modalInfo = useMemo(() => ({ isOpen, contents }), [isOpen, contents]);
-  const modalDispatch = useMemo(
-    () => ({ handleOpen, handleClose, setupHandler }),
-    []
-  );
+  const modalDispatch = useMemo(() => ({ handleOpen, handleClose }), []);
 
   return (
-    <modalContext.Provider value={modalInfo}>
-      <modalDispatchContext.Provider value={modalDispatch}>
-        <Modal
-          type={'Confirmation'}
-          isOpen={isOpen}
-          isClosing={isClosing}
-          handleClose={handleClose}
-          handleAction={handleAction}
-          children={contents}
-        />
-        {children}
-      </modalDispatchContext.Provider>
-    </modalContext.Provider>
+    <modalDispatchContext.Provider value={modalDispatch}>
+      <Modal
+        isOpen={isOpen}
+        isClosing={isClosing}
+        handleClose={handleClose}
+        children={contents}
+      />
+      {children}
+    </modalDispatchContext.Provider>
   );
 };
 
