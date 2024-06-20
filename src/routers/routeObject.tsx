@@ -4,7 +4,7 @@ import { RouteObject } from 'react-router-dom';
 
 export const routeObject: RouteObject[] = [
   {
-    path: 'home',
+    path: '',
     element: <HomePage />,
   },
   {

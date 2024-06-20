@@ -1,5 +1,11 @@
+import { GroupList } from '@components/specific/GroupList';
+
 const HomePage = () => {
-  return <></>;
+  return (
+    <>
+      <GroupList />
+    </>
+  );
 };
 
 export default HomePage;
