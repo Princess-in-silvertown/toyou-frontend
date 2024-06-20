@@ -12,9 +12,9 @@ module.exports = () => {
     mode,
     entry: './src/index.tsx',
     output: {
-      publicPath: '/',
       path: path.join(__dirname, '/build'),
-      filename: 'index.js',
+      filename: 'bundle.js',
+      publicPath: '/',
     },
     devServer: {
       port: 3000,
@@ -27,9 +27,11 @@ module.exports = () => {
         '@apis': path.resolve(__dirname, 'src/apis/'),
         '@assets': path.resolve(__dirname, 'src/assets/'),
         '@components': path.resolve(__dirname, 'src/components/'),
+        '@constants': path.resolve(__dirname, 'src/constants/'),
         '@hooks': path.resolve(__dirname, 'src/hooks/'),
         '@mocks': path.resolve(__dirname, 'src/mocks/'),
         '@pages': path.resolve(__dirname, 'src/pages/'),
+        '@utils': path.resolve(__dirname, 'src/utils/'),
         '@': path.resolve(__dirname, 'src/'),
       },
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
