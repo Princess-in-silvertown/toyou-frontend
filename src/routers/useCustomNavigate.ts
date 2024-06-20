@@ -7,5 +7,9 @@ export const useCustomNavigate = () => {
     navigate('/');
   };
 
-  return { goToHomePage };
+  const goToMyPage = () => {
+    navigate('/me');
+  };
+
+  return { goToHomePage, goToMyPage };
 };
