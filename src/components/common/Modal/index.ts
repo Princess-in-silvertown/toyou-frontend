@@ -1,3 +1,2 @@
-export { default as BasicModal } from './BasicModal';
-export { default as ConfirmationModal } from './ConfirmationModal';
-export { default as Modal } from './ModalSelector';
+export { default as Modal } from './ModalRoot';
+export { default as ConfirmButton } from './ModalConfirmButton';
