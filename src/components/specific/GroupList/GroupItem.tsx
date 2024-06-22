@@ -3,14 +3,18 @@ import { Group } from '@/types/group';
 import { useContext } from 'react';
 import styled from 'styled-components';
 import GroupSelectModalContents from './GroupSelectModalContents';
+import { useMyGroupList } from '@hooks/queries/useMyGroupList';
 
 interface Props extends Group {}
 
-const GroupItem = ({ name, value, userCount }: Props) => {
+const GroupItem = ({ id, name, value, userCount }: Props) => {
+  const { mutation } = useMyGroupList();
+  const { mutateAsync } = mutation;
+
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
 
   const handleModalSubmit = async () => {
-    handleClose();
+    mutateAsync(id).then(handleClose);
   };
 
   const handleClickGroupItem = () => {

@@ -30,7 +30,7 @@ const NavBarList = () => {
 export default NavBarList;
 
 const Nav = styled.nav`
-  position: absolute;
+  position: fixed;
   left: 50%;
   bottom: 5vh;
   transform: translate(-50%, -50%);
@@ -46,5 +46,7 @@ const Container = styled.div`
   height: 70px;
   padding: 0 15px;
   border-radius: 35px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.11);
+
   background-color: lightgray;
 `;

@@ -7,6 +7,7 @@ const GroupList = () => {
 
   return (
     <Container>
+      <Text>{'(그룹이 존재하지 않을 때)'}</Text>
       {groupList?.map((group) => (
         <GroupItem key={group.id} {...group} />
       ))}
@@ -22,4 +23,9 @@ const Container = styled.ul`
   gap: 8px;
 
   padding: 20px 25px;
+`;
+
+const Text = styled.div`
+  color: gray;
+  font: 14px;
 `;

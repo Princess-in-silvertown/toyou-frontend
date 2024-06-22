@@ -1,4 +1,5 @@
 import { ConfirmButton } from '@components/common/Modal';
+import { useMyGroupList } from '@hooks/queries/useMyGroupList';
 import styled from 'styled-components';
 
 interface Props {
@@ -14,7 +15,8 @@ const GroupSelectModalContents = ({
 }: Props) => {
   return (
     <Container>
-      <ModalMessage>{groupValue} 그룹에 들어가시겠습니까?</ModalMessage>
+      <Title>그룹 참여</Title>
+      <Message>{groupValue} 메세지 내용 </Message>
       <ConfirmButton handleClose={handleClose} handleSubmit={handleSubmit} />
     </Container>
   );
@@ -26,10 +28,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
 `;
 
-const ModalMessage = styled.div`
+const Title = styled.div``;
+
+const Message = styled.div`
   min-height: 100px;
   font-size: 14px;
   color: gray;
