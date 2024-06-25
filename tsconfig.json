@@ -17,7 +17,6 @@
       "@constants/*": ["constants/*"],
       "@hooks/*": ["hooks/*"],
       "@mocks/*": ["mocks/*"],
-      "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@react-three/fiber": ["./node_modules/@react-three/fiber"],
       "@react-three/drei": ["./node_modules/@react-three/drei"],

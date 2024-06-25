@@ -4,10 +4,10 @@ import {
   SEARCHING_USER_PAGE,
   USER_PROFILE_PAGE,
 } from '@constants/page';
-import HomePage from '@pages/HomePage';
-import MyPage from '@pages/MyPage';
-import SearchingUserPage from '@pages/SearchingUserPage';
-import UserProfilePage from '@pages/UserProfilePage';
+import HomePage from '@components/pages/HomePage';
+import MyPage from '@components/pages/MyPage';
+import SearchingUserPage from '@components/pages/SearchingUserPage';
+import UserProfilePage from '@components/pages/UserProfilePage';
 import { RouteObject } from 'react-router-dom';
 
 export const routeObject: RouteObject[] = [
