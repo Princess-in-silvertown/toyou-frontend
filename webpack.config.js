@@ -30,7 +30,6 @@ module.exports = () => {
         '@constants': path.resolve(__dirname, 'src/constants/'),
         '@hooks': path.resolve(__dirname, 'src/hooks/'),
         '@mocks': path.resolve(__dirname, 'src/mocks/'),
-        '@pages': path.resolve(__dirname, 'src/pages/'),
         '@utils': path.resolve(__dirname, 'src/utils/'),
         '@': path.resolve(__dirname, 'src/'),
       },
@@ -49,7 +48,7 @@ module.exports = () => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jpe?g|gif|svg)$/i,
+          test: /\.(png|jpe?g|gif|svg|ttf|woff)$/i,
           use: [
             {
               loader: 'file-loader',
