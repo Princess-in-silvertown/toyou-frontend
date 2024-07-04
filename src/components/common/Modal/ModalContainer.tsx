@@ -1,34 +1,26 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
-import ModalContainer from './ModalContainer';
-import { Modal } from '@/contexts/states/modalContext';
 
-const portalElement = document.getElementById('modal-root')!;
-
-interface Props {
-  modals: Modal[];
+interface Props extends React.PropsWithChildren {
+  key: string;
+  isClosing?: boolean;
   handleClose: (key?: string) => void;
 }
 
-const PortalModal = ({ modals, handleClose }: Props) => {
-  return createPortal(
-    <div>
-      {modals.map(({ key, isClosing, children }) => (
-        <ModalContainer
-          key={key}
-          isClosing={isClosing}
-          handleClose={handleClose}
-        >
-          {children}
-        </ModalContainer>
-      ))}
-    </div>,
-    portalElement
+const ModalContainer = ({ key, isClosing, handleClose, children }: Props) => {
+  const handleClickBackDrop = () => {
+    handleClose(key);
+  };
+
+  return (
+    <>
+      <BackDrop onClick={handleClickBackDrop} />
+      <Container $isClosing={isClosing}>{children}</Container>
+    </>
   );
 };
 
-export default PortalModal;
+export default ModalContainer;
 
 const appear = keyframes`  
   from {

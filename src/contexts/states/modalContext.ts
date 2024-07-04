@@ -1,21 +1,23 @@
 import { ReactNode, createContext } from 'react';
 
-type ModalDispatch = {
-  handleOpen: (newContents: ReactNode) => void;
-  handleClose: () => void;
+export type ModalDispatch = {
+  handleOpen: (key: string, newNode: ReactNode) => void;
+  handleClose: (key?: string) => void;
 };
 
-type ModalContext = {
-  isOpen: boolean;
-  contents: ReactNode;
+export type Modal = {
+  key: string;
+  isClosing: boolean;
+  children: ReactNode;
 };
 
-export const modalContext = createContext<ModalContext>({
-  isOpen: false,
-  contents: null,
-});
+export type ModalContext = {
+  [key: string]: Modal;
+};
+
+export const modalContext = createContext<ModalContext>({});
 
 export const modalDispatchContext = createContext<ModalDispatch>({
-  handleOpen: () => {},
-  handleClose: () => {},
+  handleOpen: (key: string, newNode: ReactNode) => {},
+  handleClose: (key?: string) => {},
 });

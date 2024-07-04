@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 export const useKeydownListener = (
   key: string,
   handler: () => void,
-  isListening: boolean
+  isListening: boolean = true
 ) => {
   const keydownEvent = useCallback(
     (event: KeyboardEvent) => {
