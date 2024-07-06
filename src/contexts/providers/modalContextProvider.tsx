@@ -6,10 +6,13 @@ import { useModal } from '@hooks/useModal';
 interface Props extends PropsWithChildren {}
 
 const ModalProvider = ({ children }: Props) => {
-  const { modals, handleOpen, handleClose } = useModal();
+  const { modals, handleOpen, handleClose, handleClear } = useModal();
 
   const listedModal = useMemo(() => Array.from(modals.values()), [modals]);
-  const modalDispatch = useMemo(() => ({ handleOpen, handleClose }), [modals]);
+  const modalDispatch = useMemo(
+    () => ({ handleOpen, handleClose, handleClear }),
+    [modals]
+  );
 
   return (
     <modalDispatchContext.Provider value={modalDispatch}>
