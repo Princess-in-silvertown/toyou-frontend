@@ -2,14 +2,19 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface Props extends React.PropsWithChildren {
-  key: string;
+  modalKey: string;
   isClosing?: boolean;
   handleClose: (key?: string) => void;
 }
 
-const ModalContainer = ({ key, isClosing, handleClose, children }: Props) => {
+const DialogContainer = ({
+  modalKey,
+  isClosing,
+  handleClose,
+  children,
+}: Props) => {
   const handleClickBackDrop = () => {
-    handleClose(key);
+    handleClose(modalKey);
   };
 
   return (
@@ -20,20 +25,20 @@ const ModalContainer = ({ key, isClosing, handleClose, children }: Props) => {
   );
 };
 
-export default ModalContainer;
+export default DialogContainer;
 
 const appear = keyframes`  
   from {
     background: rgba(0, 0, 0, 0);
   }
   to { 
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.1);
   }
 `;
 
 const disappear = keyframes`  
   from {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.1);
   }
   to { 
       background: rgba(0, 0, 0, 0);
@@ -51,7 +56,7 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
   right: 0;
   bottom: 0;
 
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(0.5px);
 
   animation: 0.3s ease-in-out
@@ -61,39 +66,43 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
 const slideInFromBottom = keyframes`  
   from {
     opacity: 0.7;
-    transform: translateY(100%);
+    transform: translate(-50%, 50%);
   }
   to { 
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%);
   }
 `;
 
 const slideInFromUp = keyframes`  
   from {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%);
   }
   to {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translate(-50%, 50%);
   }
 `;
 
 const Container = styled.div<{ $isClosing?: boolean }>`
-  position: absolute;
-  bottom: 0;
-  min-height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  width: 100%;
+  width: 90vw;
   height: fit-content;
-  padding: 20px 25px;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  min-height: 150px;
+  max-height: 80%;
+  padding: 25px;
+  border-radius: 10px;
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.25) 0 0 15px;
 
   background: white;
+
+  overflow-y: auto;
 
   animation: 0.5s ease-out
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};

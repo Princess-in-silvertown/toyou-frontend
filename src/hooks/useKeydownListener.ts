@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { RefObject, useCallback, useEffect } from 'react';
 
 export const useKeydownListener = (
   key: string,
@@ -16,7 +16,7 @@ export const useKeydownListener = (
 
   useEffect(() => {
     if (isListening) {
-      window.addEventListener('keydown', keydownEvent, { passive: false });
+      window.addEventListener('keydown', keydownEvent);
     }
 
     return () => {
