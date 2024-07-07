@@ -24,10 +24,15 @@ const WritingPaperModal = ({
   userName,
   userImgUrl,
 }: Props) => {
+  const [alias, setAlias] = useState('');
   const [message, setMessage] = useState('');
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [card, setCard] = useState<string>();
-  const [sticker, setSticker] = useState<string>();
+  const [card, setCard] = useState('');
+  const [sticker, setSticker] = useState('');
+
+  const handleChangeAlias = (newAlias: string) => {
+    setAlias(newAlias);
+  };
 
   const handleChangeMessage = (value: string) => {
     setMessage(value);
@@ -82,7 +87,9 @@ const WritingPaperModal = ({
                 userImgUrl={userImgUrl}
                 userName={userName}
                 message={message}
-                handleChangeMessage={handleChangeMessage}
+                alias={alias}
+                onChangeAlias={handleChangeAlias}
+                onChangeMessage={handleChangeMessage}
               />
             ),
             canNext: message.length >= 5,

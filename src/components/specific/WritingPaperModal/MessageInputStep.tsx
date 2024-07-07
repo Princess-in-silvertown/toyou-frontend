@@ -1,38 +1,57 @@
 import styled from 'styled-components';
-import profile from '@assets/icons/profile.svg';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef } from 'react';
+import Recipient from './Recipient';
+import RecipientAliasEdit from './RecipientAliasEdit';
 
 interface Props {
   userImgUrl: string;
   userName: string;
   canNext?: boolean;
+  alias: string;
   message: string;
-  handleChangeMessage: (value: string) => void;
+  onChangeAlias: (newAlias: string) => void;
+  onChangeMessage: (value: string) => void;
 }
 
 const MessageInputStep = ({
   userImgUrl,
   userName,
   message,
-  handleChangeMessage,
+  alias,
+  onChangeMessage,
+  onChangeAlias,
 }: Props) => {
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleNextAliasInput = () => {
+    // delay to solve collision focus and css animation
+    setTimeout(() => textareaRef.current?.focus(), 150);
+  };
+
+  const handleChangeMessage = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const text = event.target.value;
 
-    handleChangeMessage(text);
+    onChangeMessage(text);
   };
+
+  const handleChangeAlias = onChangeAlias;
 
   return (
     <Container>
-      <UserContainer>
-        <UserName>TO {userName}</UserName>
-        <UserImage src={profile} />
-      </UserContainer>
-      <Textarea
-        value={message}
-        onChange={handleChange}
-        placeholder="메세지를 적어주세요"
-      />
+      <Recipient userName={userName} imgUrl={userImgUrl} />
+      <RecipientAliasEdit
+        recipientName={userName}
+        recipientAlias={alias}
+        onChangeAlias={handleChangeAlias}
+        onNext={handleNextAliasInput}
+      >
+        <Textarea
+          ref={textareaRef}
+          value={message}
+          onChange={handleChangeMessage}
+          placeholder="메세지를 적어주세요"
+        />
+      </RecipientAliasEdit>
     </Container>
   );
 };
@@ -45,37 +64,22 @@ const Container = styled.div`
   gap: 20px;
 `;
 
-const UserContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  height: fit-content;
-`;
-
-const UserImage = styled.img`
-  width: 35px;
-  height: 35px;
-`;
-
-const UserName = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 45px;
-
-  font-size: 30px;
-`;
-
 const Textarea = styled.textarea`
   height: 400px;
+  width: 100%;
   border: none;
 
   font-size: 16px;
   font-weight: 400;
   line-height: 23px;
+
+  color: #616161;
+
   &:focus {
     outline: none;
+  }
+
+  &::placeholder {
+    color: #9e9e9e;
   }
 `;
