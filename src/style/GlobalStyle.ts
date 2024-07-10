@@ -1,14 +1,10 @@
+import './Font.css';
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'Gothic_Goding';
-    src: url('./assets/fonts/Gothic_Goding.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
   body {
+    font-family: 'Pretendard-Regular';
+    font-display: var(100) ;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -42,6 +38,17 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  input {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    
+    border: none;
+    &:focus{
+      outline: none
+    }
   }
 `;
 
