@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import GroupSelectModalContents from './GroupSelectModalContents';
 import { useMyGroupList } from '@hooks/queries/useMyGroupList';
+import { KEYS } from '@constants/modal';
 
 interface Props extends Group {}
 
@@ -14,7 +15,7 @@ const GroupItem = ({ id, name, value, userCount }: Props) => {
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
 
   const handleModalSubmit = async () => {
-    mutateAsync(id).then(handleClose);
+    mutateAsync(id).then(() => handleClose());
   };
 
   const handleClickGroupItem = () => {
@@ -26,7 +27,7 @@ const GroupItem = ({ id, name, value, userCount }: Props) => {
       />
     );
 
-    handleOpen(modalContents);
+    handleOpen(KEYS.CONFIRM_ADD_GROUP, modalContents);
   };
 
   return (

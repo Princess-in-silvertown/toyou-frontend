@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import MultiStepForm from './MultiStepForm';
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import MessageInputStep from './MessageInputStep';
 import { useKeydownListener } from '@hooks/useKeydownListener';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
@@ -10,6 +10,8 @@ import { KEYS } from '@constants/modal';
 import KeywordInputStep from './KeywordInputStep';
 import CardSelectStep from './CardSelectStep';
 import GenerateCardButton from './NextButton';
+import Recipient from './Recipient';
+import { useViewportHeight } from '@hooks/useViewportHeight';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -18,15 +20,10 @@ interface Props {
   userImgUrl: string;
 }
 
-const WritingPaperModal = ({
-  closeModal,
-  userId,
-  userName,
-  userImgUrl,
-}: Props) => {
+const WritingPaperModal = ({ closeModal, userName, userImgUrl }: Props) => {
   const [alias, setAlias] = useState('');
   const [message, setMessage] = useState('');
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string[] | undefined>();
   const [card, setCard] = useState('');
   const [sticker, setSticker] = useState('');
 
@@ -39,7 +36,7 @@ const WritingPaperModal = ({
   };
 
   const handleChangeKeywords = (newKeywords: string[]) => {
-    setKeywords([...newKeywords]);
+    setKeywords(() => [...newKeywords]);
   };
 
   const handleChangeCard = (newCard: string) => {
@@ -75,16 +72,17 @@ const WritingPaperModal = ({
   };
 
   useKeydownListener('Escape', handleCancel);
+  const viewHeight = useViewportHeight();
+  const height = useMemo(() => viewHeight, []);
 
   return (
-    <Container>
+    <Container style={{ height }}>
       <MultiStepForm
         steps={[
           {
             title: '메세지 작성하기',
             component: (
               <MessageInputStep
-                userImgUrl={userImgUrl}
                 userName={userName}
                 message={message}
                 alias={alias}
@@ -98,13 +96,13 @@ const WritingPaperModal = ({
             title: '메세지 카드 커스텀',
             component: (
               <KeywordInputStep
-                userName={userName}
+                message={message}
                 keywords={keywords}
-                handleChangeKeywords={handleChangeKeywords}
+                onChangeKeywords={handleChangeKeywords}
               />
             ),
             NextButton: GenerateCardButton,
-            canNext: keywords.length >= 2,
+            canNext: keywords && keywords.length >= 1,
             onNext: () => {
               console.log('generating');
             },
@@ -112,24 +110,16 @@ const WritingPaperModal = ({
           {
             title: '메세지 카드 커스텀',
             component: (
-              <div>
-                {
-                  <CardSelectStep
-                    name={userName}
-                    keywords={keywords}
-                    handleChangeKeywords={handleChangeKeywords}
-                  />
-                }
-              </div>
+              <CardSelectStep
+                name={userName}
+                keywords={keywords ?? []}
+                handleChangeKeywords={setKeywords}
+              />
             ),
             canNext: true,
           },
-          {
-            title: '네번째 스텝',
-            component: <div>4</div>,
-            canNext: true,
-          },
         ]}
+        headerContents={<Recipient userName={userName} imgUrl={userImgUrl} />}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
       />
@@ -140,6 +130,8 @@ const WritingPaperModal = ({
 export default WritingPaperModal;
 
 const Container = styled.div`
-  height: calc(100vh - 40px);
   box-sizing: border-box;
+  padding: 20px 25px;
+
+  overflow: hidden;
 `;

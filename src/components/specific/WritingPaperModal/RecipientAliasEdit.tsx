@@ -1,3 +1,4 @@
+import { useViewportHeight } from '@hooks/useViewportHeight';
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
@@ -6,11 +7,12 @@ import {
   useRef,
   useState,
 } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { Keyframes, keyframes } from 'styled-components';
 
 interface Props extends React.PropsWithChildren {
   recipientName: string;
   recipientAlias: string;
+  message: string;
   onChangeAlias: (newValue: string) => void;
   onNext: () => void;
 }
@@ -19,6 +21,7 @@ const RecipientAliasEdit = ({
   children,
   recipientName,
   recipientAlias,
+  message,
   onChangeAlias,
   onNext,
 }: Props) => {
@@ -48,25 +51,34 @@ const RecipientAliasEdit = ({
     onNext();
   };
 
-  const handleClickBackDrop = () => closeEdit();
   const handleBlurInput = () => closeEdit();
   const handleClickInput = () => openEdit();
   const handleFocusInput = () => openEdit();
 
   const handleKeydown: KeyboardEventHandler = (e) => {
     if (e.key === 'Enter' || e.key === 'Tab' || e.key === 'Escape') {
-      e.preventDefault();
-
       closeEdit();
 
-      contentsRef.current?.focus();
+      setTimeout(
+        () => contentsRef.current?.focus({ preventScroll: false }),
+        100
+      );
     }
   };
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!isEditing) return;
+
     const value = e.target.value;
 
     onChangeAlias(value);
+  };
+
+  const handleKeydownTextarea: KeyboardEventHandler = (e) => {
+    if (e.key === 'Backspace' && !message) {
+      // prevent to delete alias
+      setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100);
+    }
   };
 
   useEffect(() => {
@@ -86,14 +98,19 @@ const RecipientAliasEdit = ({
   useEffect(() => {
     if (!isEditing) return;
 
-    // delay to solve collision focus and css animation
-    setTimeout(() => inputRef.current?.focus(), 150);
+    setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 300);
   }, []);
+
+  const viewportHeight = useViewportHeight();
 
   return (
     <Container>
-      <InputContainer $isEditing={isEditing}>
-        {isEditing && <BackDrop onClick={handleClickBackDrop} />}
+      <InputContainer
+        style={{
+          height: isEditing ? `calc(${viewportHeight}px - 220px)` : '40px',
+        }}
+        $isEditing={isEditing}
+      >
         <InputContents $isEditing={isEditing}>
           <To $isEditing={isEditing}>To</To>
           <Input
@@ -110,7 +127,11 @@ const RecipientAliasEdit = ({
           <InputWidthCalculator ref={spanRef} />
         </InputContents>
       </InputContainer>
-      <ContentsContainer ref={contentsRef} $isEditing={isEditing}>
+      <ContentsContainer
+        ref={contentsRef}
+        $isEditing={isEditing}
+        onKeyDown={handleKeydownTextarea}
+      >
         {children}
       </ContentsContainer>
     </Container>
@@ -145,24 +166,6 @@ const moveLeftTop = keyframes`
   }
 `;
 
-const containerScaleUp = keyframes`  
-  from {
-    height: 40px;
-  }
-  to {
-    height: 280px;
-  }
-`;
-
-const containerScaleDown = keyframes`  
-  from {
-    height: 280px;
-  }
-  to {     
-    height: 40px;
-  }
-`;
-
 const toScaleUp = keyframes`  
   from {
     font-size: 30px;
@@ -183,19 +186,19 @@ const toScaleDown = keyframes`
 
 const contentsUp = keyframes`  
   from {
-    transform: translateY(100vh);
+    opacity: 0;
   }
   to { 
-    transform: translateY(0);
+    opacity: 1;
   }
 `;
 
 const contentsDown = keyframes`  
   from {
-    transform: translateY(0);
+    opacity: 1;
   }
   to { 
-    transform: translateY(100vh);
+    opacity: 0;
   }
 `;
 
@@ -206,28 +209,15 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const BackDrop = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  background: transparent;
-`;
-
-const InputContainer = styled.div<{ $isEditing: boolean }>`
+const InputContainer = styled.div<{
+  $isEditing: boolean;
+}>`
   position: relative;
 
   width: 100%;
+  max-height: 250px;
 
-  animation: ${({ $isEditing }) =>
-      $isEditing ? containerScaleUp : containerScaleDown}
-    0.5s ease;
-  animation-fill-mode: both;
+  transition: height 0.5s ease;
 `;
 
 const InputContents = styled.div<{ $isEditing: boolean }>`
@@ -244,10 +234,12 @@ const InputContents = styled.div<{ $isEditing: boolean }>`
 `;
 
 const To = styled.div<{ $isEditing: boolean }>`
+  position: relative;
+
   font-family: 'Montserrat';
   font-weight: 500;
   font-style: italic;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
 
   animation: ${({ $isEditing }) => ($isEditing ? toScaleUp : toScaleDown)} 0.5s
     ease;
@@ -277,6 +269,8 @@ const InputWidthCalculator = styled.span`
 
 const ContentsContainer = styled.div<{ $isEditing: boolean }>`
   width: 100%;
+
+  overflow: hidden;
   animation: ${({ $isEditing }) => ($isEditing ? contentsDown : contentsUp)}
     0.5s ease;
   animation-fill-mode: both;

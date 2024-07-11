@@ -60,6 +60,8 @@ const FormHeader = ({
   handleClickSubmitButton,
 }: Props) => {
   const RightButton = useMemo(() => {
+    if (canNext === undefined) return <div />;
+
     if (index === lastIndex)
       return (
         <ControlButton

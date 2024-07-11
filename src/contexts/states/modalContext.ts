@@ -21,6 +21,7 @@ export type ModalDispatch = {
   ) => void;
   handleClose: (key?: string) => void;
   handleClear: () => void;
+  handleUpdate: (key: string, newNode: ReactNode) => void;
 };
 
 export type ModalContext = {
@@ -37,4 +38,5 @@ export const modalDispatchContext = createContext<ModalDispatch>({
   ) => {},
   handleClose: (key?: string) => {},
   handleClear: () => {},
+  handleUpdate: (key: string, newNode: ReactNode) => {},
 });

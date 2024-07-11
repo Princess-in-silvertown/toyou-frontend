@@ -1,5 +1,4 @@
-import { Children, ReactNode, useMemo, useState } from 'react';
-import { useKeydownListener } from './useKeydownListener';
+import { ReactNode, useState } from 'react';
 import { useScrollListener } from './useScrollListener';
 import { Modal, ModalContainer } from '@/contexts/states/modalContext';
 
@@ -33,6 +32,17 @@ export const useModal = (closingTime = 500) => {
     setModals((prev) => {
       const newState = new Map(prev);
       newState.delete(key);
+      return newState;
+    });
+  };
+
+  const handleUpdate = (key: string, newNode: ReactNode) => {
+    const prevNode = modals.get(key);
+    if (!prevNode) return;
+
+    setModals((prev) => {
+      const newState = new Map(prev);
+      newState.set(key, { ...prevNode, children: newNode });
       return newState;
     });
   };
@@ -74,7 +84,7 @@ export const useModal = (closingTime = 500) => {
     });
   };
 
-  useScrollListener(isOpen);
+  // useScrollListener(isOpen);
 
-  return { handleOpen, handleClose, handleClear, modals };
+  return { handleOpen, handleClose, handleClear, handleUpdate, modals };
 };

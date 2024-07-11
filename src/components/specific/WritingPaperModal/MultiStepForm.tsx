@@ -1,22 +1,28 @@
-import { ReactElement, useEffect, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import FormHeader from './FormHeader';
 
 type Step = {
   title: string;
-  component: ReactElement;
+  component: ReactNode;
   canNext?: boolean;
-  onNext?: () => void;
   NextButton?: React.FC<{ onNext: () => void; canNext?: boolean }>; // for handling next
+  onNext?: () => void;
 };
 
 interface Props {
   steps: Step[];
   handleSubmit: () => void;
+  headerContents?: ReactNode;
   handleCancel?: () => void;
 }
 
-const MultiStepForm = ({ steps, handleCancel, handleSubmit }: Props) => {
+const MultiStepForm = ({
+  steps,
+  headerContents,
+  handleCancel,
+  handleSubmit,
+}: Props) => {
   const [index, setIndex] = useState(0);
   const [isAnimated, setIsAnimated] = useState(true);
   const [animationDirection, setAnimationDirection] = useState<
@@ -72,15 +78,16 @@ const MultiStepForm = ({ steps, handleCancel, handleSubmit }: Props) => {
         handleClickNextButton={handleClickNextButton}
         handleClickSubmitButton={handleClickSubmitButton}
       />
+      {headerContents}
       <StepContainer
         $isAnimated={isAnimated}
         $animationDirection={animationDirection}
       >
         {isAnimated && component}
-        {isAnimated && NextButton && (
-          <NextButton onNext={handleClickNextButton} canNext={canNext} />
-        )}
       </StepContainer>
+      {NextButton && (
+        <NextButton onNext={handleClickNextButton} canNext={canNext} />
+      )}
     </Container>
   );
 };

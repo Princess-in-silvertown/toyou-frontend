@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -96,6 +96,25 @@ export const handlers = [
     return HttpResponse.json(
       {
         data: indexedUserList[userId],
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get('http://localhost:3000/api/keywords', async ({ request }) => {
+    const url = new URL(request.url);
+    const message = url.searchParams.get('message');
+
+    if (!message) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    await delay(3000);
+
+    return HttpResponse.json(
+      {
+        data: ['피곤', '배고픔'],
         pageInfo: {},
       },
       { status: 200 }
