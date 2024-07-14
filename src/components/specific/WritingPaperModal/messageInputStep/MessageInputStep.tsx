@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { ChangeEvent, useEffect, useRef } from 'react';
 import RecipientAliasEdit from './RecipientAliasEdit';
-import { useViewportHeight } from '@hooks/useViewportHeight';
 
 interface Props {
   userName: string;

@@ -9,7 +9,7 @@ interface Props {
   handleChangeKeywords: (newKeywords: string[]) => void;
 }
 
-const CardSelectStep = ({ name, keywords, handleChangeKeywords }: Props) => {
+const CardEditStep = ({ name, keywords, handleChangeKeywords }: Props) => {
   const cards = [1, 2, 3, 4, 5];
   const [mainKeyword] = keywords;
 
@@ -43,7 +43,7 @@ const CardSelectStep = ({ name, keywords, handleChangeKeywords }: Props) => {
   );
 };
 
-export default CardSelectStep;
+export default CardEditStep;
 
 const Container = styled.div`
   display: flex;

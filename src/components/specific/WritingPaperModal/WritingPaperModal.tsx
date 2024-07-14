@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import MultiStepForm from './MultiStepForm';
 import { useContext, useMemo, useState } from 'react';
-import MessageInputStep from './MessageInputStep';
 import { useKeydownListener } from '@hooks/useKeydownListener';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import DialogContainer from '@components/common/Modal/DialogContainer';
 import ConfirmCancelModalContents from './ConfirmCancelModalContents';
 import { KEYS } from '@constants/modal';
-import KeywordInputStep from './KeywordInputStep';
-import CardSelectStep from './CardSelectStep';
 import GenerateCardButton from './NextButton';
-import Recipient from './Recipient';
 import { useViewportHeight } from '@hooks/useViewportHeight';
 import { User } from '@/types/user';
 import UserSearchStep from './UserSearchStep/UserSearchStep';
+import KeywordInputStep from './KeywordInputStep/KeywordInputStep';
+import MessageInputStep from './messageInputStep/MessageInputStep';
+import Recipient from './Recipient';
+import CardEditStep from './CardEditStep/CardEditStep';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -91,6 +91,17 @@ const WritingPaperModal = ({ closeModal }: Props) => {
       <MultiStepForm
         steps={[
           {
+            title: '메세지 카드 커스텀',
+            component: (
+              <CardEditStep
+                name={userInfo.name}
+                keywords={keywords ?? []}
+                handleChangeKeywords={setKeywords}
+              />
+            ),
+            canNext: true,
+          },
+          {
             title: '메세지 작성하기',
             component: <UserSearchStep onChangeUserInfo={handleChangeInfo} />,
             canNext: true,
@@ -119,17 +130,6 @@ const WritingPaperModal = ({ closeModal }: Props) => {
             ),
             NextButton: GenerateCardButton,
             canNext: keywords && keywords.length >= 1,
-          },
-          {
-            title: '메세지 카드 커스텀',
-            component: (
-              <CardSelectStep
-                name={userInfo.name}
-                keywords={keywords ?? []}
-                handleChangeKeywords={setKeywords}
-              />
-            ),
-            canNext: true,
           },
         ]}
         headerContents={
