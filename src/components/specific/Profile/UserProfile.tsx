@@ -1,9 +1,11 @@
 import { modalDispatchContext } from '@/contexts/states/modalContext';
-import { ConfirmButton } from '@components/common/Modal';
 import { useUserProfile } from '@hooks/queries/useUserProfile';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import WritingPaperModal from '../WritingPaperModal/WritingPaperModal';
+import { KEYS } from '@constants/modal';
+import FullContainer from '@components/common/Modal/FullContainer';
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -13,18 +15,24 @@ const UserProfile = () => {
   const { data: user } = useUserProfile(Number(userId));
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
 
+  const { id, imgUrl, name } = user ?? {};
+
   const handleClickWritingButton = () => {
     handleOpen(
-      <Container>
-        <TextArea />
-        <ConfirmButton handleClose={handleClose} handleSubmit={handleClose} />
-      </Container>
+      KEYS.WRITE_MESSAGE,
+      <WritingPaperModal
+        closeModal={handleClose}
+        userId={id ?? 0}
+        userImgUrl={imgUrl ?? ''}
+        userName={name ?? ''}
+      />,
+      FullContainer
     );
   };
 
   return (
     <Container>
-      <Title>{user?.name} 님의 프로필</Title>
+      <Title>{name} 님의 프로필</Title>
       <UserImage />
       <WritingButton onClick={handleClickWritingButton}>
         글 작성하러 가기

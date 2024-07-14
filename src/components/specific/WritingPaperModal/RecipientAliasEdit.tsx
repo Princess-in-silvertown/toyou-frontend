@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import styled, { Keyframes, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface Props extends React.PropsWithChildren {
   recipientName: string;
@@ -25,7 +25,7 @@ const RecipientAliasEdit = ({
   onChangeAlias,
   onNext,
 }: Props) => {
-  const [isEditing, setIsEditing] = useState(!recipientAlias);
+  const [isEditing, setIsEditing] = useState(false);
 
   const spanRef = useRef<HTMLSpanElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -96,9 +96,9 @@ const RecipientAliasEdit = ({
   }, [recipientAlias]);
 
   useEffect(() => {
-    if (!isEditing) return;
+    if (recipientAlias) return;
 
-    setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 300);
+    setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 700);
   }, []);
 
   const viewportHeight = useViewportHeight();

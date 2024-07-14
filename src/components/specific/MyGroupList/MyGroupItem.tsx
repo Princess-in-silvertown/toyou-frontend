@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 interface Props extends Group {}
 
-const GroupItem = ({ id, name, value, userCount }: Props) => {
+const GroupItem = ({ id, name }: Props) => {
   const { goToSearchingUserPage } = useCustomNavigate();
 
   const handleClickGroupItem = () => {
@@ -16,7 +16,7 @@ const GroupItem = ({ id, name, value, userCount }: Props) => {
   return (
     <Container onClick={handleClickGroupItem}>
       <Name>{name}</Name>
-      <UserCount>{userCount}</UserCount>
+      <UserCount>{3}</UserCount>
     </Container>
   );
 };

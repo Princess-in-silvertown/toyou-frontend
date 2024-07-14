@@ -5,3 +5,13 @@ export type User = {
 };
 
 export type UserList = User[];
+
+export type SameGroupUser =
+  | {
+      groupName: string;
+      introduce: string;
+      onChangeUserInfo: (newInfo: Partial<User>) => void;
+    }
+  | User;
+
+export type SameGroupUsers = SameGroupUser[];

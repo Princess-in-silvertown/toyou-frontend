@@ -7,6 +7,8 @@ interface Props {
 }
 
 const Recipient = ({ userName, imgUrl }: Props) => {
+  if (!userName || userName.length === 0) return null;
+
   return (
     <RecipientContainer>
       <UserImage src={profile} />

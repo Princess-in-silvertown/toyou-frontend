@@ -7,7 +7,7 @@ interface Props extends React.PropsWithChildren {
   handleClose: (key?: string) => void;
 }
 
-const DefaultContainer = ({
+const FullContainer = ({
   modalKey,
   isClosing,
   handleClose,
@@ -19,13 +19,12 @@ const DefaultContainer = ({
 
   return (
     <>
-      <BackDrop onClick={handleClickBackDrop} />
       <Container $isClosing={isClosing}>{children}</Container>
     </>
   );
 };
 
-export default DefaultContainer;
+export default FullContainer;
 
 const appear = keyframes`  
   from {
@@ -44,23 +43,6 @@ const disappear = keyframes`
       background: rgba(0, 0, 0, 0);
 
   }
-`;
-
-const BackDrop = styled.div<{ $isClosing?: boolean }>`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(0.5px);
-
-  animation: 0.3s ease-in-out
-    ${({ $isClosing }) => ($isClosing ? disappear : appear)};
 `;
 
 const slideInFromBottom = keyframes`  
@@ -87,7 +69,7 @@ const slideInFromUp = keyframes`
 
 const Container = styled.div<{ $isClosing?: boolean }>`
   position: fixed;
-  bottom: 0;
+  top: 0;
   min-height: 200px;
 
   width: 100%;
@@ -101,4 +83,5 @@ const Container = styled.div<{ $isClosing?: boolean }>`
 
   animation: 0.5s ease-out
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
+  animation-fill-mode: forwards;
 `;

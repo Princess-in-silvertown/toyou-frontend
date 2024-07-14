@@ -1,4 +1,11 @@
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
+import React, {
+  Children,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import styled, { keyframes } from 'styled-components';
 import FormHeader from './FormHeader';
 
@@ -7,7 +14,6 @@ type Step = {
   component: ReactNode;
   canNext?: boolean;
   NextButton?: React.FC<{ onNext: () => void; canNext?: boolean }>; // for handling next
-  onNext?: () => void;
 };
 
 interface Props {
@@ -32,13 +38,15 @@ const MultiStepForm = ({
   const { title } = useMemo(() => steps[index], [index]);
   const lastIndex = useMemo(() => steps.length - 1, [steps]);
 
-  const { component, canNext, onNext, NextButton } = steps[index];
+  const { component, canNext, NextButton } = steps[index];
 
   const handleClickCancelButton = () => {
     handleCancel?.();
   };
 
   const handleClickNextButton = () => {
+    console.log(index);
+
     if (index >= lastIndex) return;
 
     if (!canNext) return;
@@ -66,6 +74,20 @@ const MultiStepForm = ({
     setIsAnimated(true);
   }, [index]);
 
+  // children에 onNext함수가 있을 경우 props로 교체
+  const children = Children.map(component, (child) => {
+    if (React.isValidElement(child)) {
+      if (!child.props.onNext) {
+        return React.cloneElement(child, {
+          ...child.props,
+          onNext: () => handleClickNextButton(),
+        });
+      } else {
+        return React.cloneElement(child);
+      }
+    }
+  });
+
   return (
     <Container>
       <FormHeader
@@ -83,7 +105,7 @@ const MultiStepForm = ({
         $isAnimated={isAnimated}
         $animationDirection={animationDirection}
       >
-        {isAnimated && component}
+        {isAnimated && children}
       </StepContainer>
       {NextButton && (
         <NextButton onNext={handleClickNextButton} canNext={canNext} />

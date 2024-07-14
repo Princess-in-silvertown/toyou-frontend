@@ -12,20 +12,31 @@ import CardSelectStep from './CardSelectStep';
 import GenerateCardButton from './NextButton';
 import Recipient from './Recipient';
 import { useViewportHeight } from '@hooks/useViewportHeight';
+import { User } from '@/types/user';
+import UserSearchStep from './UserSearchStep/UserSearchStep';
 
 interface Props {
   closeModal: (key?: string) => void;
   userId: number;
-  userName: string;
+  userName?: string;
   userImgUrl: string;
 }
 
-const WritingPaperModal = ({ closeModal, userName, userImgUrl }: Props) => {
+const WritingPaperModal = ({ closeModal }: Props) => {
+  const [userInfo, setUserInfo] = useState<User>({
+    id: -1,
+    name: '',
+    imgUrl: '',
+  });
   const [alias, setAlias] = useState('');
   const [message, setMessage] = useState('');
   const [keywords, setKeywords] = useState<string[] | undefined>();
   const [card, setCard] = useState('');
   const [sticker, setSticker] = useState('');
+
+  const handleChangeInfo = (newInfo: Partial<User>) => {
+    setUserInfo({ ...userInfo, ...newInfo });
+  };
 
   const handleChangeAlias = (newAlias: string) => {
     setAlias(newAlias);
@@ -81,9 +92,14 @@ const WritingPaperModal = ({ closeModal, userName, userImgUrl }: Props) => {
         steps={[
           {
             title: '메세지 작성하기',
+            component: <UserSearchStep onChangeUserInfo={handleChangeInfo} />,
+            canNext: true,
+          },
+          {
+            title: '메세지 작성하기',
             component: (
               <MessageInputStep
-                userName={userName}
+                userName={userInfo.name}
                 message={message}
                 alias={alias}
                 onChangeAlias={handleChangeAlias}
@@ -103,15 +119,12 @@ const WritingPaperModal = ({ closeModal, userName, userImgUrl }: Props) => {
             ),
             NextButton: GenerateCardButton,
             canNext: keywords && keywords.length >= 1,
-            onNext: () => {
-              console.log('generating');
-            },
           },
           {
             title: '메세지 카드 커스텀',
             component: (
               <CardSelectStep
-                name={userName}
+                name={userInfo.name}
                 keywords={keywords ?? []}
                 handleChangeKeywords={setKeywords}
               />
@@ -119,7 +132,9 @@ const WritingPaperModal = ({ closeModal, userName, userImgUrl }: Props) => {
             canNext: true,
           },
         ]}
-        headerContents={<Recipient userName={userName} imgUrl={userImgUrl} />}
+        headerContents={
+          <Recipient userName={userInfo.name} imgUrl={userInfo.imgUrl} />
+        }
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
       />

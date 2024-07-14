@@ -1,7 +1,7 @@
 import { ResData } from '@/types/api';
 import { request } from './request';
 import { GroupList } from '@/types/group';
-import { User, UserList } from '@/types/user';
+import { SameGroupUsers, User, UserList } from '@/types/user';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -37,4 +37,12 @@ export const requestGetUserProfile = (userId: number) => {
   }).toString();
 
   return request.get<ResData<User>>(`api/user?${params}`);
+};
+
+export const requestGetKeywords = (message: string) => {
+  return request.get<ResData<string[]>>(`api/keywords?message=${message}`);
+};
+
+export const requestGetSameGroupUserList = () => {
+  return request.get<ResData<SameGroupUsers>>(`api/same_group_users`);
 };

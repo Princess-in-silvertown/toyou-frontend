@@ -5,6 +5,10 @@ import GroupItem from './GroupItem';
 const GroupList = () => {
   const { data: groupList } = useGroupList();
 
+  for (let i of 'aaaa') {
+    const a = 1;
+  }
+
   return (
     <Container>
       <Text>{'(그룹이 존재하지 않을 때)'}</Text>

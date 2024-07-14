@@ -1,30 +1,21 @@
-import { Canvas } from '@react-three/fiber';
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import { WebGLRenderer } from 'three';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routers';
+import { AppProvider } from './contexts/providers/AppProvider';
+import GlobalStyle from './style/GlobalStyle';
+import { ThemeProvider } from 'styled-components';
+import theme from './style/theme';
 
 const App = () => {
-  useEffect(() => {
-    const renderer = new WebGLRenderer();
-    const gl = renderer.getContext();
-    const webglVersion = gl.getParameter(gl.VERSION);
-    console.log('WebGL Version:', webglVersion);
-  }, []);
-
   return (
-    <div>
-      <CanvasBox>
-        <Canvas>
-          <></>
-        </Canvas>
-      </CanvasBox>
-    </div>
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <AppProvider>
+          <RouterProvider router={router} />
+        </AppProvider>
+      </ThemeProvider>
+    </>
   );
 };
 
 export default App;
-
-const CanvasBox = styled.div`
-  width: 800px;
-  height: 600px;
-`;

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 interface Props {
   canNext?: boolean;
-  onNext: () => void;
+  onNext?: () => void;
 }
 
 const GenerateCardButton = ({ canNext = false, onNext }: Props) => {

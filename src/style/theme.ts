@@ -13,6 +13,7 @@ const theme: DefaultTheme = {
   gray800: '#454545',
   gray900: '#333333',
   gray1000: '#000000',
+  red500: '#DD432E',
 };
 
 export default theme;

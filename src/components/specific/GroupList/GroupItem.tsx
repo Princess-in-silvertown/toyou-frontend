@@ -8,7 +8,7 @@ import { KEYS } from '@constants/modal';
 
 interface Props extends Group {}
 
-const GroupItem = ({ id, name, value, userCount }: Props) => {
+const GroupItem = ({ id, name }: Props) => {
   const { mutation } = useMyGroupList();
   const { mutateAsync } = mutation;
 
@@ -21,7 +21,7 @@ const GroupItem = ({ id, name, value, userCount }: Props) => {
   const handleClickGroupItem = () => {
     const modalContents = (
       <GroupSelectModalContents
-        groupValue={value}
+        groupValue={''}
         handleSubmit={handleModalSubmit}
         handleClose={handleClose}
       />
@@ -33,7 +33,7 @@ const GroupItem = ({ id, name, value, userCount }: Props) => {
   return (
     <Container onClick={handleClickGroupItem}>
       <Name>{name}</Name>
-      <UserCount>{userCount}</UserCount>
+      <UserCount>{3}</UserCount>
     </Container>
   );
 };

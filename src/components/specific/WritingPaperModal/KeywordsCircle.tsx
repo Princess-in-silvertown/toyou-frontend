@@ -148,7 +148,7 @@ const AddKeywordButton = styled.button`
   height: 70px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.gray500};
-  background-color: ${({ theme }) => theme.gray500};
+  background-color: ${({ theme }) => theme.gray0};
 
   transform-origin: center;
   transform: rotate(0deg) translateY(125px);
