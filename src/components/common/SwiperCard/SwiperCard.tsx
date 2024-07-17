@@ -44,7 +44,7 @@ const SwiperCard = ({
   const handleEnd = () => {
     setDeltaX(0);
 
-    if (Math.abs(deltaX) <= 50) return;
+    if (Math.abs(deltaX) <= 75) return;
 
     setIsSwiping(false);
     if (deltaX > 0) {
@@ -100,7 +100,13 @@ const SwiperCard = ({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <CardContainer $currentIndex={currentIndex} $deltaX={deltaX}>
+        <CardContainer
+          style={{
+            transform: `perspective(1000px) rotateY(calc(${
+              -currentIndex * 180
+            }deg + ${deltaX}deg))`,
+          }}
+        >
           <CardFront>{frontContents}</CardFront>
           <CardBack>{backContents}</CardBack>
         </CardContainer>
@@ -116,8 +122,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 22px;
-
-  overflow: hidden;
 `;
 
 const SwiperWrapper = styled.div`
@@ -125,15 +129,12 @@ const SwiperWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const CardContainer = styled.div<{ $currentIndex: number; $deltaX: number }>`
+const CardContainer = styled.div`
   display: inline-grid;
 
   width: 100%;
   margin: 0 auto;
 
-  transform: perspective(1000px)
-    ${({ $currentIndex, $deltaX }) =>
-      `rotateY(calc(${-$currentIndex * 180}deg + ${$deltaX}deg))`};
   transform-style: preserve-3d;
   transition: transform 0.3s;
 
