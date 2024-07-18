@@ -8,7 +8,7 @@ interface Props {
 const GenerateCardButton = ({ canNext = false, onNext }: Props) => {
   return (
     <Container onClick={onNext} $canNext={canNext}>
-      생성하기
+      확인
     </Container>
   );
 };
@@ -23,7 +23,7 @@ const Container = styled.button<{ $canNext: boolean }>`
   align-items: center;
   justify-content: center;
 
-  width: calc(100% - 40px);
+  width: 100%;
   height: 49px;
   margin: 0 auto;
   border-radius: 24.5px;
