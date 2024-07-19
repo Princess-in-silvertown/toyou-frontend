@@ -1,6 +1,5 @@
 import {
   Children,
-  DragEventHandler,
   MouseEventHandler,
   TouchEventHandler,
   useLayoutEffect,
@@ -89,10 +88,8 @@ const SwipeContainer = styled.div`
 const SwipeWrapper = styled.div<{ $currentIndex: number; $deltaX: number }>`
   display: flex;
 
-  margin-left: 12.5%;
-
   transform: ${({ $currentIndex, $deltaX }) =>
-    `translateX(calc(${-$currentIndex * 85}% + ${$deltaX}px))`};
+    `translateX(calc(${-$currentIndex * 100}% + ${$deltaX}px))`};
   transition: transform 0.3s ease;
   will-change: transform;
 `;

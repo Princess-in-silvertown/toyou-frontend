@@ -9,10 +9,9 @@ const SwiperSlider = ({ children }: Props) => {
 export default SwiperSlider;
 
 const Container = styled.div`
-  flex: 0 0 80%;
+  flex: 0 0 100%;
 
-  width: 80%;
-  margin: 0 2.5%;
+  width: 100%;
 
   background-color: #f1f1f1;
   text-align: center;
