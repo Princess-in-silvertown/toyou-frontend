@@ -24,12 +24,22 @@ const Sticker = () => {
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
+  const [isMouseMoving, setIsMouseMoving] = useState(false);
 
   // pinch zoom and rotate
   const [scale, setScale] = useState(1);
   const [startDistance, setStartDistance] = useState(0);
   const [rotation, setRotation] = useState(0);
   const [startAngle, setStartAngle] = useState(0);
+  const [isPinching, setIsPinching] = useState(false);
+
+  const pendDeletion = () => {
+    if (isPendingDeletion) return;
+
+    setIsPendingDeletion(true);
+
+    window.navigator.vibrate(50);
+  };
 
   const handleStart = (clientX: number, clientY: number) => {
     setStartX(clientX - x);
@@ -59,7 +69,7 @@ const Sticker = () => {
         clientY > top &&
         clientY < bottom
       ) {
-        setIsPendingDeletion(true);
+        pendDeletion();
       } else {
         setIsPendingDeletion(false);
       }
@@ -68,7 +78,12 @@ const Sticker = () => {
 
   const handleEnd = () => {
     setIsSwiping(false);
+    setIsPinching(false);
 
+    if (isPendingDeletion) {
+      console.log('delete');
+      setIsPendingDeletion(true);
+    }
     // save x, y, scale, rotate
   };
 
@@ -83,25 +98,32 @@ const Sticker = () => {
   };
 
   const handleMouseDown: MouseEventHandler = (e) =>
-    stopPropagationMouse(e, () => handleStart(e.clientX, e.clientY));
+    stopPropagationMouse(e, () => {
+      setIsMouseMoving(true);
+      handleStart(e.clientX, e.clientY);
+    });
 
   const handleMouseMove: MouseEventHandler = (e) =>
     stopPropagationMouse(e, () => handleMove(e.clientX, e.clientY));
 
   const handleMouseUp: MouseEventHandler = (e) =>
-    stopPropagationMouse(e, () => handleEnd());
+    stopPropagationMouse(e, () => {
+      setIsMouseMoving(false);
+
+      handleEnd();
+    });
 
   const handleMouseLeave: MouseEventHandler = (e) =>
-    stopPropagationMouse(e, () => handleEnd());
+    stopPropagationMouse(e, () => {
+      setIsMouseMoving(false);
+
+      handleEnd();
+    });
 
   const handleTouchEnd: TouchEventHandler = (e) => {
     e.stopPropagation();
 
     handleEnd();
-    if (isPendingDeletion) {
-      console.log('delete');
-      setIsPendingDeletion(true);
-    }
   };
 
   const handleTouchStart: TouchEventHandler = (e) => {
@@ -112,6 +134,8 @@ const Sticker = () => {
     }
 
     if (e.touches.length === 2) {
+      setIsPinching(true);
+
       const distance = getDistance(e.touches[0], e.touches[1]);
       const angle = getAngle(e.touches[0], e.touches[1]);
 
@@ -158,27 +182,36 @@ const Sticker = () => {
 
   const getPendingDeletionStyle = () => {
     const style: CSSProperties = {
-      top: 0,
-      left: 0,
-      transform: 'none',
+      top: y,
+      left: x,
+      transform: `scale(${scale}) rotate(${rotation}deg) `,
+      transition: isPinching ? 'none' : 'transform 0.3s ease',
     };
 
     const trashRect = trashRef.current?.getBoundingClientRect();
     const stickerRect = stickerRef.current?.getBoundingClientRect();
     const originRect = originRef.current?.getBoundingClientRect();
 
-    if (trashRect && stickerRect && originRect) {
+    if (isPendingDeletion) {
+      if (isMouseMoving) {
+        style.opacity = 0.3;
+        return style;
+      }
+
+      if (!trashRect || !stickerRect || !originRect) return style;
+
       const originX = originRect.left;
       const originY = originRect.top;
 
       const trashCenterX = trashRect.left + trashRect.width / 2;
       const trashCenterY = trashRect.top + trashRect.height / 2;
 
-      console.log(stickerWidth, stickerHeight);
-
       style.left = `${trashCenterX - stickerWidth / 2 - originX}px`;
       style.top = `${trashCenterY - stickerHeight / 2 - originY}px`;
-      style.transform = `scale(0.3) rotate(0deg)`;
+      style.transform = `scale(0.3) rotate(${rotation}deg)`;
+      style.transition = isPinching ? 'none' : 'all 0.3s ease';
+
+      return style;
     }
 
     return style;
@@ -195,17 +228,12 @@ const Sticker = () => {
 
   return (
     <>
+      {(isSwiping || isPinching) && (
+        <TrashCan isPending={isPendingDeletion} ref={trashRef} />
+      )}
       <Container
         ref={stickerRef}
-        style={
-          isPendingDeletion
-            ? getPendingDeletionStyle()
-            : {
-                top: y,
-                left: x,
-                transform: `scale(${scale}) rotate(${rotation}deg) `,
-              }
-        }
+        style={getPendingDeletionStyle()}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -216,29 +244,35 @@ const Sticker = () => {
       >
         <Image src={sticker} onLoad={handleLoad} />
       </Container>
-      <TrashCan ref={trashRef} />
       <div ref={originRef} style={{ position: 'absolute', top: 0, left: 0 }} />
     </>
   );
 };
 
-const TrashCan = forwardRef<HTMLDivElement>((props, ref) => {
-  const handleDrag: TouchEventHandler = (e) => {
-    e.stopPropagation();
+const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
+  ({ isPending }, ref) => {
+    const handleDrag: TouchEventHandler = (e) => {
+      e.stopPropagation();
 
-    console.log('DragOver');
-  };
+      console.log('DragOver');
+    };
 
-  return (
-    <Trash
-      ref={ref}
-      style={{ position: 'fixed', bottom: '10px' }}
-      onTouchMove={handleDrag}
-      onTouchEnd={handleDrag}
-      onTouchStart={handleDrag}
-    ></Trash>
-  );
-});
+    return (
+      <Trash
+        ref={ref}
+        style={{
+          position: 'fixed',
+          bottom: '10px',
+          left: '50%',
+          transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.4)' : ''),
+        }}
+        onTouchMove={handleDrag}
+        onTouchEnd={handleDrag}
+        onTouchStart={handleDrag}
+      ></Trash>
+    );
+  }
+);
 
 export default Sticker;
 
@@ -249,16 +283,20 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-  min-width: 100px;
+  min-width: 30px;
+  width: 100px;
   max-width: 300px;
   height: auto;
   transform-origin: 'center center';
 `;
 
 const Trash = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 1px solid black;
   background-color: white;
+
+  transition: transform 0.2s ease;
+  z-index: 2;
 `;
