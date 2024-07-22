@@ -28,6 +28,8 @@ const indexedUserList: Record<number, any> = {
 
 var myGroupIDList: number[] = [];
 
+let coverApiResponseCount = 0;
+
 export const handlers = [
   http.get('/test', (info) => {
     return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
@@ -120,4 +122,24 @@ export const handlers = [
       { status: 200 }
     );
   }),
+
+  http.get(
+    'http://localhost:3000/api/groups/:groupId/cover',
+    async ({ request }) => {
+      coverApiResponseCount += 1;
+
+      if (coverApiResponseCount <= 10) {
+        return HttpResponse.json({ data: { imgUrl: '' } }, { status: 400 });
+      }
+
+      return HttpResponse.json({ data: { imgUrl: '' } }, { status: 200 });
+    }
+  ),
+
+  http.post(
+    'http://localhost:3000/api/groups/:groupId/cover',
+    async ({ request }) => {
+      return HttpResponse.json({}, { status: 200 });
+    }
+  ),
 ];

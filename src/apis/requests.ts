@@ -46,3 +46,17 @@ export const requestGetKeywords = (message: string) => {
 export const requestGetSameGroupUserList = () => {
   return request.get<ResData<SameGroupUsers>>(`api/same_group_users`);
 };
+
+export const requestPostCreateCard = (groupId: number) => {
+  return request.get<ResData<SameGroupUsers>>(`api/same_group_users`);
+};
+
+export const requestGetCover = (groupId: number) => {
+  return request.get<ResData<{ imgUrl: string }>>(
+    `api/groups/${groupId}/cover`
+  );
+};
+
+export const requestPostCover = (groupId: number) => {
+  return request.post<ResData<any>>(`api/groups/${groupId}/cover`);
+};
