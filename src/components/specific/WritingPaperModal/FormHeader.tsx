@@ -4,10 +4,11 @@ import back from '@assets/icons/back.svg';
 import cancel from '@assets/icons/cancel.svg';
 
 interface Props {
-  title: string;
   index: number;
   lastIndex: number;
   canNext?: boolean;
+  progressiveStartIndex?: number;
+  progressiveLastIndex?: number;
   handleClickCancelButton: () => void;
   handleClickNextButton: () => void;
   handleClickBackButton: () => void;
@@ -50,7 +51,6 @@ const ControlButton = ({ type, handler, canNext }: ButtonProps) => {
 };
 
 const FormHeader = ({
-  title,
   index,
   lastIndex,
   canNext,
@@ -58,9 +58,13 @@ const FormHeader = ({
   handleClickNextButton,
   handleClickCancelButton,
   handleClickSubmitButton,
+  progressiveLastIndex,
+  progressiveStartIndex = 0,
 }: Props) => {
+  progressiveLastIndex = progressiveLastIndex ?? lastIndex;
+
   const RightButton = useMemo(() => {
-    if (canNext === undefined) return <div />;
+    if (canNext === undefined) return <div style={{ width: '27px' }} />;
 
     if (index === lastIndex)
       return (
@@ -90,7 +94,20 @@ const FormHeader = ({
   return (
     <Container>
       {LeftButton}
-      <Title>{title}</Title>
+      {index >= progressiveStartIndex && index <= progressiveLastIndex && (
+        <Progressive>
+          {new Array(progressiveLastIndex - progressiveStartIndex + 1)
+            .fill(0)
+            .map((_, i) => {
+              return (
+                <ProgressiveDot
+                  key={i}
+                  $isCurrent={i === index - progressiveStartIndex}
+                />
+              );
+            })}
+        </Progressive>
+      )}
       {RightButton}
     </Container>
   );
@@ -105,13 +122,6 @@ const Container = styled.div`
   width: 100%;
 
   margin-bottom: 20px;
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-
-  font-size: 14px;
 `;
 
 const Button = styled.button`
@@ -131,8 +141,24 @@ const ButtonText = styled.div<{ $canNext?: boolean }>`
   align-items: center;
 
   width: fit-content;
+  min-width: 27px;
   height: 20px;
 
   font-size: 16px;
   color: ${({ $canNext, theme }) => ($canNext ? theme.gray900 : theme.gray500)};
+`;
+
+const Progressive = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ProgressiveDot = styled.div<{ $isCurrent: boolean }>`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+
+  background-color: ${({ $isCurrent, theme }) =>
+    $isCurrent ? theme.red500 : theme.gray500};
 `;
