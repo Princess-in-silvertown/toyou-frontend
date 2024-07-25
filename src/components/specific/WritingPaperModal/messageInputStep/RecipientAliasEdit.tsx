@@ -77,7 +77,7 @@ const RecipientAliasEdit = ({
   const handleKeydownTextarea: KeyboardEventHandler = (e) => {
     if (e.key === 'Backspace' && !message) {
       // prevent to delete alias
-      setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100);
+      setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 0);
     }
   };
 
@@ -98,7 +98,7 @@ const RecipientAliasEdit = ({
   useEffect(() => {
     if (recipientAlias) return;
 
-    setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 700);
+    setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 550);
   }, []);
 
   const viewportHeight = useViewportHeight();
@@ -217,7 +217,7 @@ const InputContainer = styled.div<{
   width: 100%;
   max-height: 250px;
 
-  transition: height 0.5s ease;
+  transition: height 0.7s ease;
 `;
 
 const InputContents = styled.div<{ $isEditing: boolean }>`

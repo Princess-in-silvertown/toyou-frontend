@@ -22,8 +22,7 @@ const MessageInputStep = ({
   const pRef = useRef<HTMLParagraphElement>(null);
 
   const handleNextAliasInput = () => {
-    // delay to solve collision focus and css animation
-    setTimeout(() => textareaRef.current?.focus({ preventScroll: true }), 300);
+    setTimeout(() => textareaRef.current?.focus({ preventScroll: true }), 100);
   };
 
   const handleChangeMessage = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -78,6 +77,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  margin-top: 13px;
 `;
 
 const Textarea = styled.textarea`

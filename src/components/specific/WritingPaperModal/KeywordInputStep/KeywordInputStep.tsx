@@ -2,17 +2,30 @@ import styled from 'styled-components';
 import KeywordsCircle from './KeywordsCircle';
 import { Suspense } from 'react';
 import LoadingCircle from './LoadingCircle';
+import GenerateCardButton from '../NextButton';
+import { useViewportHeight } from '@hooks/useViewportHeight';
 
 interface Props {
   message: string;
   keywords?: string[];
   canNext?: boolean;
   onChangeKeywords: (newKeywords: string[]) => void;
+  onNext?: () => void;
 }
 
-const KeywordInputStep = ({ message, keywords, onChangeKeywords }: Props) => {
+const KeywordInputStep = ({
+  message,
+  keywords,
+  onChangeKeywords,
+  canNext,
+  onNext,
+}: Props) => {
+  const height = useViewportHeight() ?? 0;
+
+  console.log(height);
+
   return (
-    <Container>
+    <Container style={{ height: height - 60 }}>
       <Title>
         {keywords
           ? keywords.length === 0
@@ -27,6 +40,7 @@ const KeywordInputStep = ({ message, keywords, onChangeKeywords }: Props) => {
           onChangeKeywords={onChangeKeywords}
         />
       </Suspense>
+      <GenerateCardButton onNext={onNext} canNext={canNext} />
     </Container>
   );
 };
@@ -36,6 +50,8 @@ export default KeywordInputStep;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  min-height: 530px;
 `;
 
 const Title = styled.div`
@@ -50,7 +66,7 @@ const Title = styled.div`
   font-size: 20px;
   white-space: pre-wrap;
 
-  @media (max-height: 650px) {
-    margin: 48px auto 10px auto;
+  @media (max-height: 670px) {
+    margin: 28px auto 25px auto;
   }
 `;

@@ -1,13 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 import plus from '@assets/icons/plus.svg';
 import { useExtractedKeywords } from '@hooks/queries/useKeywords';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
-import KeywordInput from './KeywordInput';
-import { createContext } from 'vm';
 import { KEYS } from '@constants/modal';
-
-const KEYWORD_MAX_LENGTH = 5;
+import KeywordInput from './KeywordInput';
 
 interface Props {
   message: string;
@@ -147,8 +144,8 @@ const AddKeywordButton = styled.button`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 1px solid ${({ theme }) => theme.gray500};
-  background-color: ${({ theme }) => theme.gray0};
+  border: 5px solid ${({ theme }) => theme.gray0};
+  background-color: ${({ theme }) => theme.gray500};
 
   transform-origin: center;
   transform: rotate(0deg) translateY(125px);
@@ -171,9 +168,9 @@ const Circle = styled.div<{ rotate: number }>`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 1px solid ${({ theme }) => theme.gray500};
+  border: 5px solid ${({ theme }) => theme.gray0};
 
-  background-color: ${({ theme }) => theme.gray0};
+  background-color: ${({ theme }) => theme.gray500};
   overflow: hidden;
 
   transform-origin: center;

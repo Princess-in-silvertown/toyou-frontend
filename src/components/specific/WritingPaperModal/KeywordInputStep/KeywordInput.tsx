@@ -1,9 +1,4 @@
-import {
-  KeyboardEventHandler,
-  MouseEventHandler,
-  TouchEventHandler,
-  useRef,
-} from 'react';
+import { KeyboardEventHandler, MouseEventHandler, useRef } from 'react';
 import styled from 'styled-components';
 import cancel from '@assets/icons/cancel.svg';
 

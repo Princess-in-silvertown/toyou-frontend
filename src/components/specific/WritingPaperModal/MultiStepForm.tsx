@@ -1,6 +1,5 @@
 import React, {
   Children,
-  ReactElement,
   ReactNode,
   useEffect,
   useMemo,
@@ -10,24 +9,24 @@ import styled, { keyframes } from 'styled-components';
 import FormHeader from './FormHeader';
 
 type Step = {
-  title: string;
   component: ReactNode;
   canNext?: boolean;
-  NextButton?: React.FC<{ onNext: () => void; canNext?: boolean }>; // for handling next
 };
 
 interface Props {
   steps: Step[];
   handleSubmit: () => void;
-  headerContents?: ReactNode;
   handleCancel?: () => void;
+  progressiveStartIndex?: number;
+  progressiveLastIndex?: number;
 }
 
 const MultiStepForm = ({
   steps,
-  headerContents,
   handleCancel,
   handleSubmit,
+  progressiveLastIndex,
+  progressiveStartIndex = 0,
 }: Props) => {
   const [index, setIndex] = useState(0);
   const [isAnimated, setIsAnimated] = useState(true);
@@ -35,18 +34,15 @@ const MultiStepForm = ({
     'LEFT' | 'RIGHT' | null
   >(null);
 
-  const { title } = useMemo(() => steps[index], [index]);
   const lastIndex = useMemo(() => steps.length - 1, [steps]);
 
-  const { component, canNext, NextButton } = steps[index];
+  const { component, canNext } = steps[index];
 
   const handleClickCancelButton = () => {
     handleCancel?.();
   };
 
   const handleClickNextButton = () => {
-    console.log(index);
-
     if (index >= lastIndex) return;
 
     if (!canNext) return;
@@ -74,7 +70,7 @@ const MultiStepForm = ({
     setIsAnimated(true);
   }, [index]);
 
-  // children에 onNext함수가 있을 경우 props로 교체
+  // children에 onNext 함수 삽입
   const children = Children.map(component, (child) => {
     if (React.isValidElement(child)) {
       if (!child.props.onNext) {
@@ -91,25 +87,22 @@ const MultiStepForm = ({
   return (
     <Container>
       <FormHeader
-        title={title}
         index={index}
         lastIndex={lastIndex}
         canNext={canNext}
+        progressiveStartIndex={progressiveStartIndex}
+        progressiveLastIndex={progressiveLastIndex}
         handleClickBackButton={handleClickBackButton}
         handleClickCancelButton={handleClickCancelButton}
         handleClickNextButton={handleClickNextButton}
         handleClickSubmitButton={handleClickSubmitButton}
       />
-      {headerContents}
       <StepContainer
         $isAnimated={isAnimated}
         $animationDirection={animationDirection}
       >
         {isAnimated && children}
       </StepContainer>
-      {NextButton && (
-        <NextButton onNext={handleClickNextButton} canNext={canNext} />
-      )}
     </Container>
   );
 };
