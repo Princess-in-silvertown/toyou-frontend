@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import WritingPaperModal from '../WritingPaperModal/WritingPaperModal';
 import { KEYS } from '@constants/modal';
 import FullContainer from '@components/common/Modal/FullContainer';
+import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -20,12 +21,9 @@ const UserProfile = () => {
   const handleClickWritingButton = () => {
     handleOpen(
       KEYS.WRITE_MESSAGE,
-      <WritingPaperModal
-        closeModal={handleClose}
-        userId={id ?? 0}
-        userImgUrl={imgUrl ?? ''}
-        userName={name ?? ''}
-      />,
+      <MessageFormProvider>
+        <WritingPaperModal closeModal={handleClose} userId={id ?? 0} />
+      </MessageFormProvider>,
       FullContainer
     );
   };

@@ -1,9 +1,10 @@
 export type Sticker = {
-  id: number;
+  key: number;
+  imgUrl: string;
   x: number;
   y: number;
   rotate: number;
   scale: number;
 };
 
-export type Stickers = Sticker[];
+export type Stickers = Map<number, Sticker>;

@@ -5,18 +5,19 @@ import { useContext } from 'react';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { KEYS } from '@constants/modal';
 import KeywordInput from './KeywordInput';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 
-interface Props {
-  message: string;
-  keywords?: string[];
-  onChangeKeywords: (keywords: string[]) => void;
-}
+const KeywordsCircle = () => {
+  const { keywords, message } = useContext(messageFormContext);
+  const { handleLoadKeywords } = useContext(messageFormDispatchContext);
 
-const KeywordsCircle = ({ message, keywords, onChangeKeywords }: Props) => {
   const count = keywords?.length ?? 0;
   const angleStep = 360 / (count + 1);
 
-  useExtractedKeywords(message, !!keywords, onChangeKeywords);
+  useExtractedKeywords(message, !!keywords, handleLoadKeywords);
 
   const { handleOpen, handleUpdate } = useContext(modalDispatchContext);
 
@@ -29,7 +30,7 @@ const KeywordsCircle = ({ message, keywords, onChangeKeywords }: Props) => {
       />
     );
 
-    onChangeKeywords([...keywords]);
+    handleLoadKeywords([...keywords]);
   };
 
   const handleClickButton = () => {

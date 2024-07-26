@@ -128,7 +128,7 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 10) {
+      if (coverApiResponseCount <= 0) {
         return HttpResponse.json({ data: { imgUrl: '' } }, { status: 400 });
       }
 

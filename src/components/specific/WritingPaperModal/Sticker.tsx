@@ -2,14 +2,18 @@ import {
   MouseEventHandler,
   TouchEventHandler,
   forwardRef,
-  useEffect,
   useRef,
   useState,
 } from 'react';
 import sticker from '@assets/icons/profile.svg';
 import styled, { CSSProperties } from 'styled-components';
 
-const Sticker = () => {
+interface Props {
+  id: number;
+  onDelete: (key: number) => void;
+}
+
+const Sticker = ({ id, onDelete }: Props) => {
   // trash Sticker
   const trashRef = useRef<HTMLDivElement>(null);
   const stickerRef = useRef<HTMLDivElement>(null);
@@ -81,7 +85,8 @@ const Sticker = () => {
     setIsPinching(false);
 
     if (isPendingDeletion) {
-      console.log('delete');
+      onDelete(id);
+
       setIsPendingDeletion(true);
     }
     // save x, y, scale, rotate

@@ -1,53 +1,42 @@
 import styled from 'styled-components';
 import Sticker from './Sticker';
-import { DragEventHandler, TouchEventHandler } from 'react';
+import { useContext, useEffect } from 'react';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 
 const StickerList = () => {
-  const handleTouchStart: TouchEventHandler = (e) => {
-    // e.stopPropagation();
-  };
+  const { stickers } = useContext(messageFormContext);
 
-  const handleTouchEnd: TouchEventHandler = (e) => {
-    // e.stopPropagation();
-  };
+  const { handleAddSticker, handleDeleteSticker, getStickerList } = useContext(
+    messageFormDispatchContext
+  );
 
-  const handleTouchMove: TouchEventHandler = (e) => {
-    e.stopPropagation();
-  };
+  const stickerList = getStickerList();
+
+  useEffect(() => {
+    handleAddSticker('');
+    handleAddSticker('');
+    handleAddSticker('');
+  }, []);
+
+  console.log(stickerList);
 
   return (
-    <Container
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <Sticker />
-      <Sticker />
-      <Sticker />
+    <Container>
+      {[...stickers.values()].map((sticker) => (
+        <Sticker
+          key={sticker.key}
+          id={sticker.key}
+          onDelete={handleDeleteSticker}
+        />
+      ))}
     </Container>
   );
 };
 
 export default StickerList;
-
-const TrashCan = () => {
-  const handleDrag: TouchEventHandler = (e) => {
-    e.stopPropagation();
-
-    console.log('DragOver');
-  };
-
-  return (
-    <button
-      style={{ position: 'fixed', bottom: '10px' }}
-      onTouchMove={handleDrag}
-      onTouchEnd={handleDrag}
-      onTouchStart={handleDrag}
-    >
-      test
-    </button>
-  );
-};
 
 const Container = styled.div`
   width: 100%;

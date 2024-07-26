@@ -1,23 +1,22 @@
 import styled from 'styled-components';
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, useContext, useEffect, useRef } from 'react';
 import RecipientAliasEdit from './RecipientAliasEdit';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 
 interface Props {
-  userName: string;
   canNext?: boolean;
-  alias: string;
-  message: string;
-  onChangeAlias: (newAlias: string) => void;
-  onChangeMessage: (value: string) => void;
 }
 
-const MessageInputStep = ({
-  userName,
-  message,
-  alias,
-  onChangeMessage,
-  onChangeAlias,
-}: Props) => {
+const MessageInputStep = ({}: Props) => {
+  const { alias, message, userInfo } = useContext(messageFormContext);
+  const {
+    handleChangeAlias: onChangeAlias,
+    handleChangeMessage: onChangeMessage,
+  } = useContext(messageFormDispatchContext);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pRef = useRef<HTMLParagraphElement>(null);
 
@@ -53,7 +52,7 @@ const MessageInputStep = ({
   return (
     <Container>
       <RecipientAliasEdit
-        recipientName={userName}
+        recipientName={userInfo.name}
         recipientAlias={alias}
         message={message}
         onChangeAlias={handleChangeAlias}

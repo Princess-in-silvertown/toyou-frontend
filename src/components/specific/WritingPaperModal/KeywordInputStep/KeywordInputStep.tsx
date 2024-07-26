@@ -1,25 +1,22 @@
 import styled from 'styled-components';
 import KeywordsCircle from './KeywordsCircle';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import LoadingCircle from './LoadingCircle';
 import GenerateCardButton from '../NextButton';
 import { useViewportHeight } from '@hooks/useViewportHeight';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 
 interface Props {
-  message: string;
-  keywords?: string[];
   canNext?: boolean;
-  onChangeKeywords: (newKeywords: string[]) => void;
   onNext?: () => void;
 }
 
-const KeywordInputStep = ({
-  message,
-  keywords,
-  onChangeKeywords,
-  canNext,
-  onNext,
-}: Props) => {
+const KeywordInputStep = ({ canNext, onNext }: Props) => {
+  const { keywords } = useContext(messageFormContext);
+
   const height = useViewportHeight() ?? 0;
 
   console.log(height);
@@ -34,11 +31,7 @@ const KeywordInputStep = ({
           : '메시지에서 감정 키워드를 \n 추출하는 중이에요'}
       </Title>
       <Suspense fallback={<LoadingCircle />}>
-        <KeywordsCircle
-          message={message}
-          keywords={keywords}
-          onChangeKeywords={onChangeKeywords}
-        />
+        <KeywordsCircle />
       </Suspense>
       <GenerateCardButton onNext={onNext} canNext={canNext} />
     </Container>

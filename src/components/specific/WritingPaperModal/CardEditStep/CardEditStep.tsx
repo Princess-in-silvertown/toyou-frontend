@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 import CardEdit from './CardEdit';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import LoadingCardSpinner from './LoadingCardSpinner';
+import { messageFormContext } from '@/contexts/states/messageFormContext';
 
-interface Props {
-  alias: string;
-  message: string;
-}
+const CardEditStep = () => {
+  const { alias, message } = useContext(messageFormContext);
 
-const CardEditStep = ({ alias, message }: Props) => {
   return (
     <Container>
       <Suspense fallback={<LoadingCardSpinner />}>

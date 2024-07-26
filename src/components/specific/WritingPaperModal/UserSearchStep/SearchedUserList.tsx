@@ -1,21 +1,14 @@
 import { useDebouncing } from '@hooks/useDebouncing';
 import SearchedUserItem from './SearchedUserItem';
-import { User } from '@/types/user';
 import styled from 'styled-components';
 
 interface Props {
   groupId: number;
   input: string;
-  onChangeUserInfo: (newInfo: Partial<User>) => void;
   onNext?: () => void;
 }
 
-const SearchedUserList = ({
-  groupId,
-  input,
-  onChangeUserInfo,
-  onNext,
-}: Props) => {
+const SearchedUserList = ({ groupId, input, onNext }: Props) => {
   const debounced = useDebouncing(input, 500);
 
   return (
@@ -27,9 +20,6 @@ const SearchedUserList = ({
           imgUrl=""
           introduce="스윗한 송효섭입니다."
           groupName="그룹1"
-          onChangeUserInfo={() =>
-            onChangeUserInfo({ id: 1, name: '스윗효섭', imgUrl: '' })
-          }
           onNext={onNext}
         />
       )}
@@ -40,9 +30,6 @@ const SearchedUserList = ({
           imgUrl=""
           introduce="시크한 송효섭입니다."
           groupName="그룹1"
-          onChangeUserInfo={() =>
-            onChangeUserInfo({ id: 2, name: '시크효섭', imgUrl: '' })
-          }
           onNext={onNext}
         />
       )}
@@ -53,9 +40,6 @@ const SearchedUserList = ({
           imgUrl=""
           introduce="댄디한 송효섭입니다."
           groupName="그룹1"
-          onChangeUserInfo={() =>
-            onChangeUserInfo({ id: 3, name: '댄디효섭', imgUrl: '' })
-          }
           onNext={onNext}
         />
       )}

@@ -1,20 +1,28 @@
-import { Sticker, Stickers } from '@/types/sticker';
 import { User } from '@/types/user';
-import { useContext, useState } from 'react';
+import { useMemo, useState } from 'react';
+import {
+  DEFAULT_USERINFO,
+  messageFormContext,
+  messageFormDispatchContext,
+} from '../states/messageFormContext';
+import { useStickerEdit } from '@hooks/specific/useStickerEdit';
 
 interface Props extends React.PropsWithChildren {}
 
 export const MessageFormProvider = ({ children }: Props) => {
-  const [userInfo, setUserInfo] = useState<User>({
-    id: -1,
-    name: '',
-    imgUrl: '',
-  });
-  const [alias, setAlias] = useState('집에 가고 싶은 누군가에게 ㅠㅠ');
+  const [userInfo, setUserInfo] = useState<User>(DEFAULT_USERINFO);
+  const [alias, setAlias] = useState('');
   const [message, setMessage] = useState('');
-  const [keywords, setKeywords] = useState<string[] | undefined>();
-  const [card, setCard] = useState('');
-  const [stickers, setStickers] = useState<Stickers>([]);
+  const [coverImgUrl, setCoverImgUrl] = useState('');
+  const [keywords, setKeywords] = useState<string[]>([]);
+
+  const {
+    stickers,
+    handleAddSticker,
+    handleDeleteSticker,
+    handleChangeSticker,
+    getStickerList,
+  } = useStickerEdit();
 
   const handleChangeInfo = (newInfo: Partial<User>) => {
     setUserInfo({ ...userInfo, ...newInfo });
@@ -28,15 +36,60 @@ export const MessageFormProvider = ({ children }: Props) => {
     setMessage(value);
   };
 
-  const handleChangeKeywords = (newKeywords: string[]) => {
-    setKeywords(() => [...newKeywords]);
+  const handleChangeCoverImgUrl = (newUrl: string) => {
+    setCoverImgUrl(newUrl);
   };
 
-  const handleChangeCard = (newCard: string) => {
-    setCard(newCard);
+  const handleLoadKeywords = (newKeywords: string[]) => {
+    setKeywords(() => [...keywords, ...newKeywords]);
   };
 
-  const handleChangeSticker = (id: number, newSticker: Sticker) => {};
+  const handleAddKeyword = (newKeyword: string) => {
+    setKeywords((prev) => [...prev, newKeyword]);
+  };
 
-  return <>{children}</>;
+  const handleDeleteKeyword = (keyword: string) => {
+    setKeywords((prev) => prev.filter((item) => keyword !== item));
+  };
+
+  const dispatch = useMemo(
+    () => ({
+      handleChangeInfo,
+      handleChangeMessage,
+      handleChangeAlias,
+      handleChangeCoverImgUrl,
+
+      // keyword
+      handleLoadKeywords,
+      handleAddKeyword,
+      handleDeleteKeyword,
+
+      // sticker
+      handleAddSticker,
+      handleDeleteSticker,
+      handleChangeSticker,
+      getStickerList,
+    }),
+    [userInfo, alias, message, coverImgUrl, keywords, stickers]
+  );
+
+  const store = useMemo(
+    () => ({
+      userInfo,
+      alias,
+      message,
+      coverImgUrl,
+      keywords,
+      stickers,
+    }),
+    [userInfo, alias, message, coverImgUrl, keywords, stickers]
+  );
+
+  return (
+    <messageFormContext.Provider value={store}>
+      <messageFormDispatchContext.Provider value={dispatch!}>
+        {children}
+      </messageFormDispatchContext.Provider>
+    </messageFormContext.Provider>
+  );
 };

@@ -86,5 +86,5 @@ export const useModal = (closingTime = 500) => {
 
   // useScrollListener(isOpen);
 
-  return { handleOpen, handleClose, handleClear, handleUpdate, modals };
+  return { handleOpen, handleClose, handleClear, handleUpdate, modals, isOpen };
 };

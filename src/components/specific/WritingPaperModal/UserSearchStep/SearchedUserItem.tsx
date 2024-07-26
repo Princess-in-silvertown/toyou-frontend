@@ -1,11 +1,12 @@
 import { User } from '@/types/user';
 import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
+import { useContext } from 'react';
+import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
 
 interface Props extends User {
   groupName: string;
   introduce: string;
-  onChangeUserInfo: (newInfo: Partial<User>) => void;
   onNext?: () => void;
 }
 
@@ -15,11 +16,12 @@ const SearchedUserItem = ({
   imgUrl,
   groupName,
   introduce,
-  onChangeUserInfo,
   onNext,
 }: Props) => {
+  const { handleChangeInfo } = useContext(messageFormDispatchContext);
+
   const handleClick = () => {
-    onChangeUserInfo({ id, name, imgUrl });
+    handleChangeInfo({ id, name, imgUrl });
 
     onNext?.();
   };

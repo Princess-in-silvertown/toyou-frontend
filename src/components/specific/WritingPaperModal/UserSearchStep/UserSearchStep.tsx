@@ -6,13 +6,12 @@ import SearchBar from './SearchBar';
 import SearchedUserList from './SearchedUserList';
 
 interface Props {
-  onChangeUserInfo: (newInfo: Partial<User>) => void;
   onNext?: () => void;
 }
 
 const defaultGroup = { id: -1, name: '모든 그룹' };
 
-const UserSearchStep = ({ onChangeUserInfo, onNext }: Props) => {
+const UserSearchStep = ({ onNext }: Props) => {
   const [selectedGroup, setSelectedGroup] = useState<Group>(defaultGroup);
   const [input, setInput] = useState('');
 
@@ -33,12 +32,7 @@ const UserSearchStep = ({ onChangeUserInfo, onNext }: Props) => {
         onChangeInput={handleChangeInput}
         onChangeGroup={handleChangeGroup}
       />
-      <SearchedUserList
-        groupId={1}
-        input={input}
-        onNext={onNext}
-        onChangeUserInfo={onChangeUserInfo}
-      />
+      <SearchedUserList groupId={1} input={input} onNext={onNext} />
     </Container>
   );
 };
