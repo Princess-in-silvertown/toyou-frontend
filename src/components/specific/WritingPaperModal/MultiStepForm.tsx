@@ -45,7 +45,7 @@ const MultiStepForm = ({
   const handleClickNextButton = () => {
     if (index >= lastIndex) return;
 
-    if (!canNext) return;
+    if (canNext !== undefined && !canNext) return;
 
     setIndex((current) => current + 1);
 
