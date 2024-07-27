@@ -4,10 +4,7 @@ import { Suspense, useContext } from 'react';
 import LoadingCircle from './LoadingCircle';
 import GenerateCardButton from '../NextButton';
 import { useViewportHeight } from '@hooks/useViewportHeight';
-import {
-  messageFormContext,
-  messageFormDispatchContext,
-} from '@/contexts/states/messageFormContext';
+import { messageFormContext } from '@/contexts/states/messageFormContext';
 
 interface Props {
   canNext?: boolean;

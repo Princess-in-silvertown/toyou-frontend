@@ -1,4 +1,6 @@
 import { delay, http, HttpResponse } from 'msw';
+import sticker from '@assets/image/birthday_sticker.svg';
+import cover from '@assets/image/happy_birthday.svg';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -129,10 +131,36 @@ export const handlers = [
       coverApiResponseCount += 1;
 
       if (coverApiResponseCount <= 0) {
-        return HttpResponse.json({ data: { imgUrl: '' } }, { status: 400 });
+        return HttpResponse.json({}, { status: 400 });
       }
 
-      return HttpResponse.json({ data: { imgUrl: '' } }, { status: 200 });
+      return HttpResponse.json(
+        {
+          data: { imgUrl: cover },
+        },
+        { status: 200 }
+      );
+    }
+  ),
+
+  http.get(
+    'http://localhost:3000/api/groups/:groupId/sticker',
+    async ({ request }) => {
+      coverApiResponseCount += 1;
+
+      if (coverApiResponseCount <= 0) {
+        return HttpResponse.json(
+          {
+            data: {},
+          },
+          { status: 400 }
+        );
+      }
+
+      return HttpResponse.json(
+        { data: new Array(5).fill({ imgUrl: sticker }) },
+        { status: 200 }
+      );
     }
   ),
 

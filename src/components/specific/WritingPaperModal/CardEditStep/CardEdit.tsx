@@ -1,9 +1,13 @@
 import SwiperCard from '@components/common/SwiperCard/SwiperCard';
 import { useGetCardCover } from '@hooks/queries/useCardCover';
 import styled, { css } from 'styled-components';
-import cover from '@assets/image/happy_birthday.svg';
-import Sticker from '../Sticker';
 import StickerList from '../StickerList';
+import { useContext, useState } from 'react';
+import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
+import { modalDispatchContext } from '@/contexts/states/modalContext';
+import { KEYS } from '@constants/modal';
+import ModalContainer from '../StickerSelectModal/ModalContainer';
+import StickerSelectModalContents from '../StickerSelectModal/StickerSelectModalContents';
 
 interface Props {
   alias: string;
@@ -11,7 +15,25 @@ interface Props {
 }
 
 const CardEdit = ({ alias, message }: Props) => {
+  const [cardIndex, setCardIndex] = useState(0);
+
   const { data } = useGetCardCover(1);
+
+  const { handleAddSticker } = useContext(messageFormDispatchContext);
+
+  const { handleOpen, handleClose } = useContext(modalDispatchContext);
+
+  const handleClickStickerEditButton = () => {
+    handleOpen(
+      KEYS.STICKER_EDIT,
+      <StickerSelectModalContents
+        cardIndex={cardIndex}
+        closeModal={handleClose}
+        onAddSticker={handleAddSticker}
+      />,
+      ModalContainer
+    );
+  };
 
   return (
     <Container>
@@ -22,7 +44,8 @@ const CardEdit = ({ alias, message }: Props) => {
               <To>To</To>
               <Alias>{alias}</Alias>
             </AliasContainer>
-            <CoverImage src={cover} />
+            <CoverImage src={data.imgUrl} />
+            <StickerList side="front" />
           </CardCoverContainer>
         }
         backContents={
@@ -32,12 +55,16 @@ const CardEdit = ({ alias, message }: Props) => {
               {message}
               <Empty />
             </Message>
-            <StickerList />
+            <StickerList side="back" />
           </CardMessageContainer>
         }
         frontTitle="메시지 커버"
         backTitle="메시지 내용"
+        onSwipe={setCardIndex}
       />
+      <StickerEditButton onClick={handleClickStickerEditButton}>
+        <StickerEditIcon>+ </StickerEditIcon>스타커 추가하기
+      </StickerEditButton>
     </Container>
   );
 };
@@ -162,4 +189,21 @@ const Message = styled.div`
   font-size: 20px;
   white-space: pre-line;
   overflow: scroll;
+`;
+
+const StickerEditIcon = styled.p`
+  font-size: 20px;
+
+  margin: 0;
+`;
+
+const StickerEditButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  margin: 0 auto;
+
+  font-size: 14px;
+  line-height: 22px;
 `;

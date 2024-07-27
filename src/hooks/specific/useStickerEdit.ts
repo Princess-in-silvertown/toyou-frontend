@@ -15,9 +15,9 @@ export const useStickerEdit = () => {
     });
   };
 
-  const handleAddSticker = (imgUrl: string) => {
+  const handleAddSticker = (imgUrl: string, side: 'back' | 'front') => {
     const key = Date.now();
-    const newSticker = { key, imgUrl, x: 0, y: 0, rotate: 0, scale: 1 };
+    const newSticker = { key, imgUrl, x: 0, y: 0, rotate: 0, scale: 1, side };
 
     setStickers((prev) => new Map(prev.set(key, newSticker)));
   };

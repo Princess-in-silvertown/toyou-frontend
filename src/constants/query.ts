@@ -5,4 +5,5 @@ export const QUERY_KEY = {
   user: 'user',
   extractedKeywords: 'extractedKeywords',
   cover: 'cover',
+  sticker: 'sticker',
 } as const;

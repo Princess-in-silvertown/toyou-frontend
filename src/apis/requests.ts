@@ -60,3 +60,9 @@ export const requestGetCover = (groupId: number) => {
 export const requestPostCover = (groupId: number) => {
   return request.post<ResData<any>>(`api/groups/${groupId}/cover`);
 };
+
+export const requestGetSticker = (groupId: number) => {
+  return request.get<ResData<{ imgUrl: string }[]>>(
+    `api/groups/${groupId}/sticker`
+  );
+};

@@ -21,7 +21,7 @@ export type MessageFormDispatch = {
 
   //sticker
   handleChangeSticker: (key: number, sticker: Partial<Sticker>) => void;
-  handleAddSticker: (imgUrl: string) => void;
+  handleAddSticker: (imgUrl: string, side: 'back' | 'front') => void;
   handleDeleteSticker: (key: number) => void;
   getStickerList: () => Sticker[];
 };

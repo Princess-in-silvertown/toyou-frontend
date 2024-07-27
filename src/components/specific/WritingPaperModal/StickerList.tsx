@@ -1,37 +1,42 @@
 import styled from 'styled-components';
 import Sticker from './Sticker';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import {
   messageFormContext,
   messageFormDispatchContext,
 } from '@/contexts/states/messageFormContext';
 
-const StickerList = () => {
-  const { stickers } = useContext(messageFormContext);
+interface Props {
+  side?: 'back' | 'front';
+}
 
-  const { handleAddSticker, handleDeleteSticker, getStickerList } = useContext(
+const StickerList = ({ side }: Props) => {
+  const { stickers } = useContext(messageFormContext);
+  const { handleDeleteSticker, handleChangeSticker } = useContext(
     messageFormDispatchContext
   );
 
-  const stickerList = getStickerList();
-
-  useEffect(() => {
-    handleAddSticker('');
-    handleAddSticker('');
-    handleAddSticker('');
-  }, []);
-
-  console.log(stickerList);
-
   return (
     <Container>
-      {[...stickers.values()].map((sticker) => (
-        <Sticker
-          key={sticker.key}
-          id={sticker.key}
-          onDelete={handleDeleteSticker}
-        />
-      ))}
+      {[...stickers.values()].map((sticker) => {
+        const { key, x, y, imgUrl, rotate, scale } = sticker;
+
+        if (!side || side == sticker.side) {
+          return (
+            <Sticker
+              key={key}
+              id={key}
+              imgUrl={imgUrl}
+              defaultX={x}
+              defaultY={y}
+              defaultRotate={rotate}
+              defaultScale={scale}
+              onDelete={handleDeleteSticker}
+              onUpdate={handleChangeSticker}
+            />
+          );
+        }
+      })}
     </Container>
   );
 };

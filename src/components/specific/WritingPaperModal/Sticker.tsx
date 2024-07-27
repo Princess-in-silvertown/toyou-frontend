@@ -1,3 +1,4 @@
+import { Sticker } from '@/types/sticker';
 import {
   MouseEventHandler,
   TouchEventHandler,
@@ -5,15 +6,30 @@ import {
   useRef,
   useState,
 } from 'react';
-import sticker from '@assets/icons/profile.svg';
 import styled, { CSSProperties } from 'styled-components';
+import trash from '@assets/icons/trash.svg';
 
 interface Props {
   id: number;
+  imgUrl: string;
   onDelete: (key: number) => void;
+  onUpdate: (id: number, info: Partial<Sticker>) => void;
+  defaultX?: number;
+  defaultY?: number;
+  defaultRotate?: number;
+  defaultScale?: number;
 }
 
-const Sticker = ({ id, onDelete }: Props) => {
+const Sticker = ({
+  id,
+  imgUrl,
+  onDelete,
+  onUpdate,
+  defaultX = 0,
+  defaultY = 0,
+  defaultRotate = 0,
+  defaultScale = 1,
+}: Props) => {
   // trash Sticker
   const trashRef = useRef<HTMLDivElement>(null);
   const stickerRef = useRef<HTMLDivElement>(null);
@@ -23,17 +39,17 @@ const Sticker = ({ id, onDelete }: Props) => {
   const [isPendingDeletion, setIsPendingDeletion] = useState(false);
 
   // translate sticker
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [x, setX] = useState(defaultX);
+  const [y, setY] = useState(defaultY);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [isMouseMoving, setIsMouseMoving] = useState(false);
 
   // pinch zoom and rotate
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(defaultScale);
+  const [rotate, setRotate] = useState(defaultRotate);
   const [startDistance, setStartDistance] = useState(0);
-  const [rotation, setRotation] = useState(0);
   const [startAngle, setStartAngle] = useState(0);
   const [isPinching, setIsPinching] = useState(false);
 
@@ -89,7 +105,8 @@ const Sticker = ({ id, onDelete }: Props) => {
 
       setIsPendingDeletion(true);
     }
-    // save x, y, scale, rotate
+
+    onUpdate(id, { x, y, rotate, scale });
   };
 
   const stopPropagationMouse = (
@@ -162,10 +179,10 @@ const Sticker = ({ id, onDelete }: Props) => {
 
       if (startDistance && startAngle !== null) {
         const newScale = scale * (distance / startDistance);
-        const newRotation = rotation + (angle - startAngle);
+        const newRotation = rotate + (angle - startAngle);
 
         setScale(newScale);
-        setRotation(newRotation);
+        setRotate(newRotation);
         setStartDistance(distance);
         setStartAngle(angle);
       }
@@ -189,7 +206,7 @@ const Sticker = ({ id, onDelete }: Props) => {
     const style: CSSProperties = {
       top: y,
       left: x,
-      transform: `scale(${scale}) rotate(${rotation}deg) `,
+      transform: `scale(${scale}) rotate(${rotate}deg) `,
       transition: isPinching ? 'none' : 'transform 0.3s ease',
     };
 
@@ -213,7 +230,7 @@ const Sticker = ({ id, onDelete }: Props) => {
 
       style.left = `${trashCenterX - stickerWidth / 2 - originX}px`;
       style.top = `${trashCenterY - stickerHeight / 2 - originY}px`;
-      style.transform = `scale(0.3) rotate(${rotation}deg)`;
+      style.transform = `scale(0.3) rotate(${rotate}deg)`;
       style.transition = isPinching ? 'none' : 'all 0.3s ease';
 
       return style;
@@ -233,9 +250,7 @@ const Sticker = ({ id, onDelete }: Props) => {
 
   return (
     <>
-      {(isSwiping || isPinching) && (
-        <TrashCan isPending={isPendingDeletion} ref={trashRef} />
-      )}
+      {isSwiping && <TrashCan isPending={isPendingDeletion} ref={trashRef} />}
       <Container
         ref={stickerRef}
         style={getPendingDeletionStyle()}
@@ -247,7 +262,7 @@ const Sticker = ({ id, onDelete }: Props) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Image src={sticker} onLoad={handleLoad} />
+        <Image src={imgUrl} onLoad={handleLoad} />
       </Container>
       <div ref={originRef} style={{ position: 'absolute', top: 0, left: 0 }} />
     </>
@@ -256,12 +271,6 @@ const Sticker = ({ id, onDelete }: Props) => {
 
 const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
   ({ isPending }, ref) => {
-    const handleDrag: TouchEventHandler = (e) => {
-      e.stopPropagation();
-
-      console.log('DragOver');
-    };
-
     return (
       <Trash
         ref={ref}
@@ -271,10 +280,9 @@ const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
           left: '50%',
           transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.4)' : ''),
         }}
-        onTouchMove={handleDrag}
-        onTouchEnd={handleDrag}
-        onTouchStart={handleDrag}
-      ></Trash>
+      >
+        <TrashIcon src={trash} />
+      </Trash>
     );
   }
 );
@@ -289,19 +297,21 @@ const Container = styled.div`
 
 const Image = styled.img`
   min-width: 30px;
-  width: 100px;
+  width: 150px;
   max-width: 300px;
   height: auto;
   transform-origin: 'center center';
 `;
 
 const Trash = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid black;
-  background-color: white;
+  width: 42px;
+  height: 42px;
+  background-color: transparent;
 
   transition: transform 0.2s ease;
   z-index: 2;
+`;
+
+const TrashIcon = styled.img`
+  width: 100%;
 `;

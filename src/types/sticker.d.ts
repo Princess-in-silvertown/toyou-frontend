@@ -5,6 +5,7 @@ export type Sticker = {
   y: number;
   rotate: number;
   scale: number;
+  side: 'back' | 'front';
 };
 
 export type Stickers = Map<number, Sticker>;
