@@ -1,29 +1,42 @@
-import { KeyboardEventHandler, MouseEventHandler, useRef } from 'react';
+import {
+  KeyboardEventHandler,
+  MouseEventHandler,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import cancel from '@assets/icons/cancel.svg';
 
-interface Props {
-  keywords: string[];
-  onChangeKeywords: (newKeywords: string[]) => void;
-}
-
 const KEYWORD_MAX_LENGTH = 5;
 
-const KeywordInput = ({ keywords, onChangeKeywords }: Props) => {
+interface Props {
+  keywords: string[];
+  onAddKeyword: (keyword: string) => void;
+  onDeleteKeyword: (keyword: string) => void;
+}
+
+const KeywordInputModalContents = ({
+  keywords,
+  onAddKeyword,
+  onDeleteKeyword,
+}: Props) => {
+  const [modalKeywords, setModalKeywords] = useState(keywords);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addKeyword = (newKeyword: string) => {
     if (keywords.length >= KEYWORD_MAX_LENGTH) return;
 
-    if (keywords.includes(newKeyword)) return;
+    if (modalKeywords.includes(newKeyword)) return;
 
-    onChangeKeywords([...(keywords ?? []), newKeyword]);
+    onAddKeyword(newKeyword);
+    setModalKeywords([...modalKeywords, newKeyword]);
   };
 
   const deleteKeyword = (keyword: string) => {
-    const newKeywords = keywords?.filter((item) => item !== keyword);
-
-    onChangeKeywords(newKeywords ?? []);
+    onDeleteKeyword(keyword);
+    setModalKeywords((prev) => prev.filter((item) => item !== keyword));
   };
 
   const submit = () => {
@@ -62,7 +75,7 @@ const KeywordInput = ({ keywords, onChangeKeywords }: Props) => {
         <InputSubmitButton onClick={submit}>등록</InputSubmitButton>
       </InputContainer>
       <KeywordList>
-        {keywords.map((keyword) => (
+        {modalKeywords.map((keyword) => (
           <KeywordContainer
             key={keyword}
             onClick={() => deleteKeyword(keyword)}
@@ -76,7 +89,7 @@ const KeywordInput = ({ keywords, onChangeKeywords }: Props) => {
   );
 };
 
-export default KeywordInput;
+export default KeywordInputModalContents;
 
 const Container = styled.div`
   display: flex;
