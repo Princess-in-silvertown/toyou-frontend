@@ -16,8 +16,6 @@ const KeywordInputStep = ({ canNext, onNext }: Props) => {
 
   const height = useViewportHeight() ?? 0;
 
-  console.log(height);
-
   return (
     <Container style={{ height: height - 60 }}>
       <Title>

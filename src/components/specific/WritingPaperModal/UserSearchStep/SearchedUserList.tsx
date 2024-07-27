@@ -9,7 +9,7 @@ interface Props {
 }
 
 const SearchedUserList = ({ groupId, input, onNext }: Props) => {
-  const debounced = useDebouncing(input, 500);
+  const debounced = useDebouncing(input, 200);
 
   return (
     <Container>

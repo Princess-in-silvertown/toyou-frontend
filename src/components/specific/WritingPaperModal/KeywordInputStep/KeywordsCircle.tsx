@@ -4,41 +4,31 @@ import { useExtractedKeywords } from '@hooks/queries/useKeywords';
 import { useContext } from 'react';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { KEYS } from '@constants/modal';
-import KeywordInput from './KeywordInput';
 import {
   messageFormContext,
   messageFormDispatchContext,
 } from '@/contexts/states/messageFormContext';
+import KeywordInputModalContents from './KeywordInputModalContents';
 
 const KeywordsCircle = () => {
   const { keywords, message } = useContext(messageFormContext);
-  const { handleLoadKeywords } = useContext(messageFormDispatchContext);
+  const { handleLoadKeywords, handleAddKeyword, handleDeleteKeyword } =
+    useContext(messageFormDispatchContext);
 
   const count = keywords?.length ?? 0;
   const angleStep = 360 / (count + 1);
 
   useExtractedKeywords(message, !!keywords, handleLoadKeywords);
 
-  const { handleOpen, handleUpdate } = useContext(modalDispatchContext);
-
-  const handleUpdateModal = (keywords: string[]) => {
-    handleUpdate(
-      KEYS.KEYWORDS_INPUT,
-      <KeywordInput
-        keywords={[...keywords]}
-        onChangeKeywords={handleUpdateModal}
-      />
-    );
-
-    handleLoadKeywords([...keywords]);
-  };
+  const { handleOpen } = useContext(modalDispatchContext);
 
   const handleClickButton = () => {
     handleOpen(
       KEYS.KEYWORDS_INPUT,
-      <KeywordInput
+      <KeywordInputModalContents
         keywords={keywords ?? []}
-        onChangeKeywords={handleUpdateModal}
+        onAddKeyword={handleAddKeyword}
+        onDeleteKeyword={handleDeleteKeyword}
       />
     );
   };
@@ -145,8 +135,9 @@ const AddKeywordButton = styled.button`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 5px solid ${({ theme }) => theme.gray0};
-  background-color: ${({ theme }) => theme.gray500};
+  border: 2px solid ${({ theme }) => '#616161'};
+
+  background-color: white;
 
   transform-origin: center;
   transform: rotate(0deg) translateY(125px);
@@ -169,9 +160,10 @@ const Circle = styled.div<{ rotate: number }>`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 5px solid ${({ theme }) => theme.gray0};
 
-  background-color: ${({ theme }) => theme.gray500};
+  background-color: ${({ theme }) => '#E9E9E9'};
+  border: 5px solid ${({ theme }) => '#FCFCFC'};
+
   overflow: hidden;
 
   transform-origin: center;

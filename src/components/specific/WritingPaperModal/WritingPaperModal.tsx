@@ -15,7 +15,6 @@ import { messageFormContext } from '@/contexts/states/messageFormContext';
 
 interface Props {
   closeModal: (key?: string) => void;
-  userId: number;
 }
 
 const WritingPaperModal = ({ closeModal }: Props) => {
@@ -54,8 +53,11 @@ const WritingPaperModal = ({ closeModal }: Props) => {
       <MultiStepForm
         steps={[
           {
-            component: <CardEditStep />,
-            canNext: true,
+            component: <UserSearchStep />,
+          },
+          {
+            component: <MessageInputStep />,
+            canNext: message.length >= 5,
           },
           {
             component: (
@@ -66,15 +68,6 @@ const WritingPaperModal = ({ closeModal }: Props) => {
           {
             component: <CardEditStep />,
             canNext: true,
-          },
-
-          {
-            component: <UserSearchStep />,
-            canNext: true,
-          },
-          {
-            component: <MessageInputStep />,
-            canNext: message.length >= 5,
           },
         ]}
         progressiveStartIndex={1}

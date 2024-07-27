@@ -22,7 +22,7 @@ const UserProfile = () => {
     handleOpen(
       KEYS.WRITE_MESSAGE,
       <MessageFormProvider>
-        <WritingPaperModal closeModal={handleClose} userId={id ?? 0} />
+        <WritingPaperModal closeModal={handleClose} />
       </MessageFormProvider>,
       FullContainer
     );
@@ -72,11 +72,4 @@ const UserImage = styled.div`
   border-radius: 10px;
 
   background-color: lightgray;
-`;
-
-const TextArea = styled.textarea`
-  height: 70vh;
-  width: 100%;
-
-  border: none;
 `;

@@ -276,7 +276,7 @@ const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
         ref={ref}
         style={{
           position: 'fixed',
-          bottom: '10px',
+          bottom: '18px',
           left: '50%',
           transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.4)' : ''),
         }}
