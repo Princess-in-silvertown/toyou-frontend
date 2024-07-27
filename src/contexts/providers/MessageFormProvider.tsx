@@ -14,7 +14,7 @@ export const MessageFormProvider = ({ children }: Props) => {
   const [alias, setAlias] = useState('');
   const [message, setMessage] = useState('');
   const [coverImgUrl, setCoverImgUrl] = useState('');
-  const [keywords, setKeywords] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string[]>();
 
   const {
     stickers,
@@ -41,15 +41,17 @@ export const MessageFormProvider = ({ children }: Props) => {
   };
 
   const handleLoadKeywords = (newKeywords: string[]) => {
-    setKeywords(() => [...keywords, ...newKeywords]);
+    if (keywords !== undefined) return;
+
+    setKeywords(() => [...newKeywords]);
   };
 
   const handleAddKeyword = (newKeyword: string) => {
-    setKeywords((prev) => [...prev, newKeyword]);
+    setKeywords((prev) => [...(prev ?? []), newKeyword]);
   };
 
   const handleDeleteKeyword = (keyword: string) => {
-    setKeywords((prev) => prev.filter((item) => keyword !== item));
+    setKeywords((prev) => (prev ?? []).filter((item) => keyword !== item));
   };
 
   const dispatch = useMemo(

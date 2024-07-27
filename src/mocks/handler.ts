@@ -130,7 +130,7 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 0) {
+      if (coverApiResponseCount <= 5) {
         return HttpResponse.json({}, { status: 400 });
       }
 
@@ -148,7 +148,7 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 0) {
+      if (coverApiResponseCount <= 5) {
         return HttpResponse.json(
           {
             data: {},
