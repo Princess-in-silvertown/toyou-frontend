@@ -9,9 +9,10 @@ import { KEYS } from '@constants/modal';
 import { useViewportHeight } from '@hooks/useViewportHeight';
 import UserSearchStep from './UserSearchStep/UserSearchStep';
 import KeywordInputStep from './KeywordInputStep/KeywordInputStep';
-import MessageInputStep from './messageInputStep/MessageInputStep';
 import CardEditStep from './CardEditStep/CardEditStep';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
+import MessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
+import PaperMessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -56,7 +57,7 @@ const WritingPaperModal = ({ closeModal }: Props) => {
             component: <UserSearchStep />,
           },
           {
-            component: <MessageInputStep />,
+            component: <PaperMessageInputStep />,
             canNext: message.length >= 5,
           },
           {

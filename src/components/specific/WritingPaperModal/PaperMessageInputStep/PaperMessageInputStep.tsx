@@ -10,7 +10,7 @@ interface Props {
   canNext?: boolean;
 }
 
-const MessageInputStep = ({}: Props) => {
+const PaperMessageInputStep = ({}: Props) => {
   const { alias, message, userInfo } = useContext(messageFormContext);
   const {
     handleChangeAlias: onChangeAlias,
@@ -70,7 +70,7 @@ const MessageInputStep = ({}: Props) => {
   );
 };
 
-export default MessageInputStep;
+export default PaperMessageInputStep;
 
 const Container = styled.div`
   display: flex;
