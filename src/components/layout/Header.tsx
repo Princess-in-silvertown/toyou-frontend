@@ -1,9 +1,13 @@
 import styled from 'styled-components';
+import logo from '@assets/logo/header.svg';
+import { useCustomNavigate } from '@/routers/useCustomNavigate';
 
 const Header = () => {
+  const { goToHomePage } = useCustomNavigate();
+
   return (
     <Container>
-      <Logo>header</Logo>
+      <Logo src={logo} onClick={goToHomePage} />
     </Container>
   );
 };
@@ -18,13 +22,13 @@ const Container = styled.header`
   padding: 0 25px;
 
   height: 55px;
-  border-bottom: 0.5px solid lightgray;
 `;
 
-const Logo = styled.div`
+const Logo = styled.img`
   color: lightgray;
-  font-size: 18px;
-  font-weight: 700;
+
+  width: 64px;
+  height: 26px;
 
   cursor: pointer;
 `;
