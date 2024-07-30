@@ -14,6 +14,9 @@ const TOP = -500;
 const MIN_Y = -300;
 const MAX_Y = 10;
 
+const MIN_X = -10;
+const MAX_X = 100;
+
 class CardItem {
   public readonly key: number;
   private readonly colorName: string | undefined;
@@ -81,7 +84,7 @@ class CardList {
   }
 
   public getCards() {
-    const cards = this.cards.map((card, index) => {
+    const cards = this.cards.map((card) => {
       const key = card.key;
       const rgba = card.getRgba();
       const alpha = card.getAlpha();
@@ -96,61 +99,103 @@ class CardList {
 const cardList = new CardList();
 
 const CardSelect = ({ onSwipe }: Props) => {
-  const [isIdle, setIsIdle] = useState(true);
-  const [isSwipingY, setIsSwipingY] = useState(false);
-  const [isSelected, setIsSelected] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [isTouchPrevented, setIsTouchPrevented] = useState(false);
+
   const [_, forceUpdate] = useState(0);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [isHorizontal, setIsHorizontal] = useState<boolean | null>(null);
   const [y, setY] = useState(0);
   const [startY, setStartY] = useState(0);
   const [deltaY, setDeltaY] = useState(0);
+  const [x, setX] = useState(0);
+  const [startX, setStartX] = useState(0);
+  const [deltaX, setDeltaX] = useState(0);
 
-  const handleStart = (clientY: number) => {
+  const handleStart = (clientX: number, clientY: number) => {
+    setStartX(clientX);
     setStartY(clientY);
-    setIsSwipingY(true);
+    setIsSwiping(true);
+
+    if (!isTouchPrevented) {
+      setIsHorizontal(null);
+    }
   };
 
-  const handleMove = (clientY: number) => {
-    if (!isSwipingY) return;
+  const handleMove = (clientX: number, clientY: number) => {
+    if (!isSwiping) return;
 
+    if (isTouchPrevented) return;
+
+    let moveX = clientX - startX ?? 0;
     let moveY = clientY - startY ?? 0;
 
-    if (moveY > MAX_Y) {
-      moveY = MAX_Y;
-    } else if (moveY < MIN_Y) {
-      moveY = MIN_Y;
+    if (isHorizontal === null) {
+      if (Math.abs(moveX) > Math.abs(moveY) * 0.8) {
+        // 한손으로 좌우 스크롤을 할 때, 좀 더 편하게 스와이프를 하기 위해 가중치 추가
+        setIsHorizontal(true);
+      } else if (Math.abs(moveX) < Math.abs(moveY)) {
+        setIsHorizontal(false);
+      }
+
+      return;
     }
 
-    setDeltaY(moveY);
+    if (isHorizontal && deltaY === 0) {
+      if (moveX > MAX_X) {
+        moveX = MAX_X;
+      } else if (moveX < MIN_X) {
+        moveX = MIN_X;
+      }
+
+      setDeltaX(moveX);
+    } else if (!isHorizontal && deltaX === 0) {
+      if (moveY > MAX_Y) {
+        moveY = MAX_Y;
+      } else if (moveY < MIN_Y) {
+        moveY = MIN_Y;
+      }
+
+      setDeltaY(moveY);
+    }
   };
 
   const handleEnd = () => {
     setDeltaY(0);
+    setDeltaX(0);
 
-    if (deltaY > -100) return;
+    setIsSwiping(false);
 
-    setIsSwipingY(false);
-    setY(() => -500);
-    setCurrentIndex((prev) => prev + 1);
+    if (deltaY <= -100) {
+      setY(-500);
+      setCurrentIndex((prev) => prev + 1);
+      setIsTouchPrevented(true);
+    } else if (deltaX >= 50) {
+      setX(300);
+      setCurrentIndex((prev) => prev + 1);
+      setIsTouchPrevented(true);
+    }
   };
 
   const handleTouchStart: TouchEventHandler = (e) =>
-    handleStart(e.touches[0].clientY);
+    handleStart(e.touches[0].clientX, e.touches[0].clientY);
   const handleTouchMove: TouchEventHandler = (e) =>
-    handleMove(e.touches[0].clientY);
+    handleMove(e.touches[0].clientX, e.touches[0].clientY);
   const handleTouchEnd: TouchEventHandler = () => handleEnd();
 
-  const handleMouseDown: MouseEventHandler = (e) => handleStart(e.clientY);
-  const handleMouseMove: MouseEventHandler = (e) => handleMove(e.clientY);
+  const handleMouseDown: MouseEventHandler = (e) =>
+    handleStart(e.clientX, e.clientY);
+  const handleMouseMove: MouseEventHandler = (e) =>
+    handleMove(e.clientX, e.clientY);
   const handleMouseUp: MouseEventHandler = () => handleEnd();
   const handleMouseLeave: MouseEventHandler = () => handleEnd();
 
   const easeOutCubic = (t: number) => {
-    if (t > 1) return 1;
+    if (t > 1) return 1.05;
 
-    if (t < 0) return 0;
+    if (t < 0) return -0.05;
 
     return 1 - Math.pow(1 - t, 3);
   };
@@ -167,37 +212,148 @@ const CardSelect = ({ onSwipe }: Props) => {
     return y_min + (y_max - y_min) * easedT;
   };
 
-  const firstCardOpacity = transformEaseOut(y + deltaY, -200, -450, 0.85, 0);
-  const firstCardBlur = transformEaseOut(y + deltaY, -150, -450, 7, 0);
-  const firstCardStyle: React.CSSProperties = {
-    transform: `translateY(${-isSelected * 500 + y + deltaY}px)`,
+  const distance = isHorizontal ? x + deltaX : y + deltaY;
+  const minDistance = 0;
+  const maxDistance = isHorizontal ? 200 : -500;
+
+  const firstCardOpacityX = transformEaseOut(distance, 90, 300, 0.85, 0);
+  const firstCardBlurX = transformEaseOut(distance, 90, 300, 7, 0);
+  const firstCardRotateX = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0,
+    10
+  );
+
+  const firstCardOpacityY = transformEaseOut(distance, -200, -450, 0.85, 0);
+  const firstCardBlurY = transformEaseOut(distance, -150, -450, 7, 0);
+  const firstCardOpacity = isHorizontal ? firstCardOpacityX : firstCardOpacityY;
+
+  const firstCardStyleX: React.CSSProperties = {
+    transform: `translate(${distance}px, ${
+      -0.1 * distance
+    }px) rotate(${firstCardRotateX}deg)`,
     transition: '0.25s ease-out',
-    backdropFilter: `blur(${firstCardBlur}px)`,
-    WebkitBackdropFilter: `blur(${firstCardBlur}px)`,
+    backdropFilter: `blur(${firstCardBlurX}px)`,
+    WebkitBackdropFilter: `blur(${firstCardOpacityX}px)`,
   };
 
-  const secondCardScale = transformEaseOut(y + deltaY, 10, -500, 0.9, 1);
-  const secondCardRotate = transformEaseOut(y + deltaY, 10, -500, -22.5, 0);
-  const secondCardTranslateX = transformEaseOut(y + deltaY, 10, -500, -25, 0);
-  const secondCardOpacity = transformEaseOut(y + deltaY, 10, -500, 0.75, 0.85);
+  const firstCardStyleY: React.CSSProperties = {
+    transform: `translateY(${distance}px)`,
+    transition: '0.25s ease-out',
+    backdropFilter: `blur(${firstCardBlurY}px)`,
+    WebkitBackdropFilter: `blur(${firstCardOpacityY}px)`,
+  };
+
+  const firstCardStyle = isHorizontal ? firstCardStyleX : firstCardStyleY;
+
+  const secondCardScale = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0.9,
+    1
+  );
+
+  const secondCardRotate = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -22.5,
+    0
+  );
+
+  const secondCardTranslateX = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -25,
+    0
+  );
+
+  const secondCardOpacity = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0.75,
+    0.85
+  );
+
   const secondCardStyle: React.CSSProperties = {
     transform: `scale(${secondCardScale}) rotate(${secondCardRotate}deg) translateX(${secondCardTranslateX}px)`,
     transition: '0.4s ease-out',
   };
 
-  const thirdCardScale = transformEaseOut(y + deltaY, 10, -500, 0.8, 0.9);
-  const thirdCardRotate = transformEaseOut(y + deltaY, 10, -500, -45, -22.5);
-  const thirdCardTranslateX = transformEaseOut(y + deltaY, 10, -500, -50, -25);
-  const thirdCardOpacity = transformEaseOut(y + deltaY, 10, -500, 0.5, 0.7);
+  const thirdCardScale = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0.8,
+    0.9
+  );
+
+  const thirdCardRotate = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -45,
+    -22.5
+  );
+
+  const thirdCardTranslateX = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -50,
+    -25
+  );
+
+  const thirdCardOpacity = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0.5,
+    0.7
+  );
+
   const thirdCardStyle: React.CSSProperties = {
     transform: `scale(${thirdCardScale}) rotate(${thirdCardRotate}deg) translateX(${thirdCardTranslateX}px)`,
     transition: '0.55s ease-out',
   };
 
-  const fourthCardScale = transformEaseOut(y + deltaY, 10, -500, 0.5, 0.8);
-  const fourthCardRotate = transformEaseOut(y + deltaY, 10, -500, -55, -45);
-  const fourthCardTranslateX = transformEaseOut(y + deltaY, 10, -500, -60, -50);
-  const fourthCardOpacity = transformEaseOut(y + deltaY, 10, -500, -0.1, 0.5);
+  const fourthCardScale = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    0.5,
+    0.8
+  );
+
+  const fourthCardRotate = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -55,
+    -45
+  );
+
+  const fourthCardTranslateX = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -60,
+    -50
+  );
+
+  const fourthCardOpacity = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    -0.1,
+    0.5
+  );
+
   const fourthCardStyle: React.CSSProperties = {
     transform: `scale(${fourthCardScale}) rotate(${fourthCardRotate}deg) translateX(${fourthCardTranslateX}px)`,
     transition: '0.7s ease-out',
@@ -207,10 +363,13 @@ const CardSelect = ({ onSwipe }: Props) => {
     if (currentIndex === 0) return;
 
     setTimeout(() => {
+      setIsTouchPrevented(false);
+
       cardList.pushPopCardItem();
       setY(() => 0);
+      setX(() => 0);
       forceUpdate((prev) => prev + 1);
-    }, 500);
+    }, 400);
   }, [currentIndex]);
 
   return (
