@@ -158,7 +158,23 @@ export const handlers = [
       }
 
       return HttpResponse.json(
-        { data: new Array(5).fill({ imgUrl: sticker }) },
+        {
+          data: [
+            ...new Array(5).fill({ imgUrl: sticker }),
+            {
+              imgUrl:
+                'https://media.tenor.com/ar6xI838JiEAAAAi/cat-meme-cat.gif',
+            },
+            {
+              imgUrl:
+                'https://i.namu.wiki/i/016r0DjGVQ3em4bhgYxGZJ7VI2y30qFt6KfItWLYFREHNxPl1KBaGY60tXGr9K5qFsgE-U3BHtw5UVbeaWTWwg.gif',
+            },
+            {
+              imgUrl:
+                'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1nT8l0.img?w=373&h=359&m=6',
+            },
+          ],
+        },
         { status: 200 }
       );
     }
