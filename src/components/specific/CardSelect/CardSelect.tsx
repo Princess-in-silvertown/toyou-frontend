@@ -4,13 +4,16 @@ import {
   useEffect,
   useState,
 } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import nextIcon from '@assets/icons/up.svg';
+import NextIcon from './UpIcon';
 
 interface Props extends React.PropsWithChildren {
-  onSwipe?: (currentIndex: number) => void;
+  isSelected: boolean;
+  onSelected: (card: any) => void;
 }
 
-const TOP = -500;
+const TOP = -400;
 const MIN_Y = -300;
 const MAX_Y = 10;
 
@@ -19,7 +22,6 @@ const MAX_X = 100;
 
 class CardItem {
   public readonly key: number;
-  private readonly colorName: string | undefined;
   private readonly R: number;
   private readonly G: number;
   private readonly B: number;
@@ -27,10 +29,9 @@ class CardItem {
 
   constructor(
     key: number,
-    color: { name?: string; R: number; G: number; B: number; A: number }
+    color: { R: number; G: number; B: number; A: number }
   ) {
     this.key = key;
-    this.colorName = color.name;
     this.R = color.R;
     this.G = color.G;
     this.B = color.B;
@@ -38,8 +39,8 @@ class CardItem {
   }
 
   // # replace '$alpha' to number
-  public getRgba() {
-    return `rgba(${this.R}, ${this.G}, ${this.B}, ${ALPHA})`;
+  public getRgb() {
+    return [this.R, this.G, this.B];
   }
 
   public getAlpha() {
@@ -50,10 +51,11 @@ class CardItem {
 const ALPHA = '$alpha';
 
 class CardList {
-  private readonly COLORS = [
-    { name: 'yellow', R: 255, G: 246, B: 76, A: 1 },
+  public readonly COLORS = [
+    { name: 'yellow', R: 255, G: 234, B: 76, A: 1 },
     { name: 'red', R: 242, G: 36, B: 22, A: 0.9 },
     { name: 'blue', R: 85, G: 0, B: 255, A: 0.8 },
+    { name: 'green', R: 47, G: 223, B: 156, A: 0.8 },
   ];
 
   private readonly COLOR_LENGTH = this.COLORS.length;
@@ -80,31 +82,41 @@ class CardList {
 
   public pushPopCardItem() {
     this.addCardItem();
+
     return this.cards.shift();
   }
 
   public getCards() {
     const cards = this.cards.map((card) => {
       const key = card.key;
-      const rgba = card.getRgba();
+      const rgb = card.getRgb();
       const alpha = card.getAlpha();
 
-      return { key, rgba, alpha };
+      return { key, rgb, alpha };
     });
 
     return cards;
   }
+
+  public getCurrentCardColor() {
+    const first = [...this.cards].shift();
+
+    return first?.getRgb() ?? [0, 0, 0];
+  }
 }
+
+const ICON_COLOR = [160, 85, 9] as const;
 
 const cardList = new CardList();
 
-const CardSelect = ({ onSwipe }: Props) => {
+const CardSelect = ({ isSelected, onSelected }: Props) => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [isTouchPrevented, setIsTouchPrevented] = useState(false);
 
   const [_, forceUpdate] = useState(0);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(0);
 
   const [isHorizontal, setIsHorizontal] = useState<boolean | null>(null);
   const [y, setY] = useState(0);
@@ -127,7 +139,7 @@ const CardSelect = ({ onSwipe }: Props) => {
   const handleMove = (clientX: number, clientY: number) => {
     if (!isSwiping) return;
 
-    if (isTouchPrevented) return;
+    if (isTouchPrevented || isSelected) return;
 
     let moveX = clientX - startX ?? 0;
     let moveY = clientY - startY ?? 0;
@@ -143,7 +155,7 @@ const CardSelect = ({ onSwipe }: Props) => {
       return;
     }
 
-    if (isHorizontal && deltaY === 0) {
+    if (isHorizontal) {
       if (moveX > MAX_X) {
         moveX = MAX_X;
       } else if (moveX < MIN_X) {
@@ -151,7 +163,7 @@ const CardSelect = ({ onSwipe }: Props) => {
       }
 
       setDeltaX(moveX);
-    } else if (!isHorizontal && deltaX === 0) {
+    } else {
       if (moveY > MAX_Y) {
         moveY = MAX_Y;
       } else if (moveY < MIN_Y) {
@@ -172,6 +184,8 @@ const CardSelect = ({ onSwipe }: Props) => {
       setY(-500);
       setCurrentIndex((prev) => prev + 1);
       setIsTouchPrevented(true);
+
+      onSelected?.(1);
     } else if (deltaX >= 50) {
       setX(300);
       setCurrentIndex((prev) => prev + 1);
@@ -193,9 +207,9 @@ const CardSelect = ({ onSwipe }: Props) => {
   const handleMouseLeave: MouseEventHandler = () => handleEnd();
 
   const easeOutCubic = (t: number) => {
-    if (t > 1) return 1.05;
+    if (t > 1) return 1;
 
-    if (t < 0) return -0.05;
+    if (t < 0) return 0;
 
     return 1 - Math.pow(1 - t, 3);
   };
@@ -214,10 +228,10 @@ const CardSelect = ({ onSwipe }: Props) => {
 
   const distance = isHorizontal ? x + deltaX : y + deltaY;
   const minDistance = 0;
-  const maxDistance = isHorizontal ? 200 : -500;
+  const maxDistance = isHorizontal ? 200 : -400;
 
-  const firstCardOpacityX = transformEaseOut(distance, 90, 300, 0.85, 0);
-  const firstCardBlurX = transformEaseOut(distance, 90, 300, 7, 0);
+  const firstCardOpacityX = transformEaseOut(distance, 100, 300, 0.85, 0);
+  const firstCardBlurX = transformEaseOut(distance, 100, 300, 10, 0);
   const firstCardRotateX = transformEaseOut(
     distance,
     minDistance,
@@ -226,22 +240,22 @@ const CardSelect = ({ onSwipe }: Props) => {
     10
   );
 
-  const firstCardOpacityY = transformEaseOut(distance, -200, -450, 0.85, 0);
-  const firstCardBlurY = transformEaseOut(distance, -150, -450, 7, 0);
+  const firstCardOpacityY = transformEaseOut(distance, -200, -300, 0.85, 0);
+  const firstCardBlurY = transformEaseOut(distance, -200, -300, 10, 0);
   const firstCardOpacity = isHorizontal ? firstCardOpacityX : firstCardOpacityY;
 
   const firstCardStyleX: React.CSSProperties = {
     transform: `translate(${distance}px, ${
       -0.1 * distance
     }px) rotate(${firstCardRotateX}deg)`,
-    transition: '0.25s ease-out',
+    transition: '0.25s cubic-bezier(.17,.67,.52,1.25)',
     backdropFilter: `blur(${firstCardBlurX}px)`,
     WebkitBackdropFilter: `blur(${firstCardOpacityX}px)`,
   };
 
   const firstCardStyleY: React.CSSProperties = {
     transform: `translateY(${distance}px)`,
-    transition: '0.25s ease-out',
+    transition: '0.25s cubic-bezier(.17,.67,.52,1.25)',
     backdropFilter: `blur(${firstCardBlurY}px)`,
     WebkitBackdropFilter: `blur(${firstCardOpacityY}px)`,
   };
@@ -282,7 +296,7 @@ const CardSelect = ({ onSwipe }: Props) => {
 
   const secondCardStyle: React.CSSProperties = {
     transform: `scale(${secondCardScale}) rotate(${secondCardRotate}deg) translateX(${secondCardTranslateX}px)`,
-    transition: '0.4s ease-out',
+    transition: '0.4s cubic-bezier(.17,.67,.52,1.25)',
   };
 
   const thirdCardScale = transformEaseOut(
@@ -319,7 +333,7 @@ const CardSelect = ({ onSwipe }: Props) => {
 
   const thirdCardStyle: React.CSSProperties = {
     transform: `scale(${thirdCardScale}) rotate(${thirdCardRotate}deg) translateX(${thirdCardTranslateX}px)`,
-    transition: '0.55s ease-out',
+    transition: '0.55s cubic-bezier(.17,.67,.52,1.25)',
   };
 
   const fourthCardScale = transformEaseOut(
@@ -354,9 +368,19 @@ const CardSelect = ({ onSwipe }: Props) => {
     0.5
   );
 
+  const iconTranslateY = transformEaseOut(distance, 10, -50, -2, 5);
+  const iconTranslateX = transformEaseOut(distance, 0, 50, 0, 5);
+  const iconOpacity = transformEaseOut(
+    distance,
+    minDistance,
+    maxDistance,
+    1,
+    0
+  );
+
   const fourthCardStyle: React.CSSProperties = {
     transform: `scale(${fourthCardScale}) rotate(${fourthCardRotate}deg) translateX(${fourthCardTranslateX}px)`,
-    transition: '0.7s ease-out',
+    transition: '0.7s cubic-bezier(.17,.67,.52,1.25)',
   };
 
   useEffect(() => {
@@ -366,11 +390,38 @@ const CardSelect = ({ onSwipe }: Props) => {
       setIsTouchPrevented(false);
 
       cardList.pushPopCardItem();
+
       setY(() => 0);
       setX(() => 0);
       forceUpdate((prev) => prev + 1);
-    }, 400);
+    }, 500);
   }, [currentIndex]);
+
+  const RGBAToString = (rgba: number[]) => {
+    if (rgba.length !== 4) return;
+
+    const [R, G, B, A] = rgba;
+
+    return `rgba(${R}, ${G}, ${B}, ${A})`;
+  };
+
+  const getBlendColor = (
+    originColor: number[] | readonly number[],
+    color: number[] | readonly number[],
+    alpha: number
+  ) => {
+    if (originColor.length !== 3 || color.length !== 3)
+      throw Error('use correct color format');
+
+    const [R1, G1, B1] = originColor;
+    const [R2, G2, B2] = color;
+
+    const R = alpha * R1 + (1 - alpha) * R2;
+    const G = alpha * G1 + (1 - alpha) * G2;
+    const B = alpha * B1 + (1 - alpha) * B2;
+
+    return `rgb(${R}, ${G}, ${B})`;
+  };
 
   return (
     <Container>
@@ -384,17 +435,35 @@ const CardSelect = ({ onSwipe }: Props) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
+        {isSelected || (
+          <IconContainer
+            style={{
+              opacity: !isHorizontal || !isSwiping ? iconOpacity : 0,
+              transform: `translate(-50%, ${
+                isHorizontal ? iconTranslateX : iconTranslateY
+              }px)`,
+            }}
+          >
+            <NextIcon
+              color={getBlendColor(
+                cardList.getCurrentCardColor(),
+                ICON_COLOR,
+                0.3
+              )}
+            />
+          </IconContainer>
+        )}
         {cardList
           .getCards()
           .map((card, index) => {
-            const { key, rgba, alpha } = card;
+            const { key, rgb, alpha } = card;
             const OpacityWeight = alpha;
 
             if (index === 0) {
-              const background = rgba.replace(
-                ALPHA,
-                `${firstCardOpacity * OpacityWeight}`
-              );
+              const background = RGBAToString([
+                ...rgb,
+                firstCardOpacity * OpacityWeight,
+              ]);
 
               return (
                 <CardContainer
@@ -403,10 +472,10 @@ const CardSelect = ({ onSwipe }: Props) => {
                 />
               );
             } else if (index === 1) {
-              const background = rgba.replace(
-                ALPHA,
-                `${secondCardOpacity * OpacityWeight}`
-              );
+              const background = RGBAToString([
+                ...rgb,
+                secondCardOpacity * OpacityWeight,
+              ]);
 
               return (
                 <CardContainer
@@ -415,10 +484,10 @@ const CardSelect = ({ onSwipe }: Props) => {
                 />
               );
             } else if (index === 2) {
-              const background = rgba.replace(
-                ALPHA,
-                `${thirdCardOpacity * OpacityWeight}`
-              );
+              const background = RGBAToString([
+                ...rgb,
+                thirdCardOpacity * OpacityWeight,
+              ]);
 
               return (
                 <CardContainer
@@ -427,10 +496,10 @@ const CardSelect = ({ onSwipe }: Props) => {
                 />
               );
             } else if (index === 3) {
-              const background = rgba.replace(
-                ALPHA,
-                `${fourthCardOpacity * OpacityWeight}`
-              );
+              const background = RGBAToString([
+                ...rgb,
+                fourthCardOpacity * OpacityWeight,
+              ]);
 
               return (
                 <CardContainer
@@ -453,6 +522,8 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 22px;
+
+  width: 100%;
 `;
 
 const SwiperWrapper = styled.div`
@@ -462,79 +533,32 @@ const SwiperWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const CardContainerRed = styled.div`
-  position: absolute;
-  left: 120px;
-
-  width: 200px;
-  height: 300px;
-  border-radius: 12px;
-  margin: 0 auto;
-
-  background: rgba(242, 36, 22, 0.7);
-
-  transition: transform 0.4s ease-out;
-  transform-origin: bottom center;
-  transform: scale(0.9) rotate(-22.5deg) translateX(-25px);
-
-  -webkit-backdrop-filter: blur(7px);
-  backdrop-filter: blur(7px);
-`;
-
-const CardContainerPurple = styled.div`
-  position: absolute;
-  left: 120px;
-
-  width: 200px;
-  height: 300px;
-  border-radius: 12px;
-  margin: 0 auto;
-
-  background: rgba(85, 0, 255, 0.4);
-
-  transition: transform 0.55s ease-out;
-  transform-origin: bottom center;
-  transform: scale(0.8) rotate(-45deg) translateX(-50px);
-
-  -webkit-backdrop-filter: blur(7px);
-  backdrop-filter: blur(7px);
-`;
-
-const CardContainer1 = styled.div`
-  position: absolute;
-  left: 120px;
-
-  width: 200px;
-  height: 300px;
-  border-radius: 12px;
-  margin: 0 auto;
-
-  background: rgba(255, 246, 76, 0.8);
-
-  transition: transform 0.25s ease-out;
-  transform-origin: bottom center;
-
-  -webkit-backdrop-filter: blur(7px);
-  backdrop-filter: blur(7px);
-`;
-
 const CardContainer = styled.div`
   position: absolute;
-  left: 120px;
+  left: calc(50% - 110px);
+  top: 42px;
 
-  width: 200px;
-  height: 300px;
+  width: 221px;
+  height: 312px;
   border-radius: 12px;
   margin: 0 auto;
 
   transform-origin: bottom center;
 
-  -webkit-backdrop-filter: blur(7px);
-  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+`;
+
+const IconContainer = styled.div`
+  position: absolute;
+  left: 50%;
+
+  transform: translateX(-50%);
+  transition: opacity ease 0.3s, transform ease 0.4s 0.15s;
 `;
