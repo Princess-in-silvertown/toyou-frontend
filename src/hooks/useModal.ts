@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { useScrollListener } from './useScrollListener';
 import { Modal, ModalContainer } from '@/contexts/states/modalContext';
 
-export const useModal = (closingTime = 500) => {
+export const useModal = (closingTime = 1000) => {
   const [modals, setModals] = useState<Map<string, Modal>>(new Map());
 
   const isOpen = modals.size > 0;

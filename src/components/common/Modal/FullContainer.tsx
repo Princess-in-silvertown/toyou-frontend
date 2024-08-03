@@ -7,16 +7,7 @@ interface Props extends React.PropsWithChildren {
   handleClose: (key?: string) => void;
 }
 
-const FullContainer = ({
-  modalKey,
-  isClosing,
-  handleClose,
-  children,
-}: Props) => {
-  const handleClickBackDrop = () => {
-    handleClose(modalKey);
-  };
-
+const FullContainer = ({ isClosing, children }: Props) => {
   return (
     <>
       <Container $isClosing={isClosing}>{children}</Container>
@@ -47,22 +38,18 @@ const disappear = keyframes`
 
 const slideInFromBottom = keyframes`  
   from {
-    opacity: 0.7;
     transform: translateY(100%);
   }
   to { 
-    opacity: 1;
     transform: translateY(0);
   }
 `;
 
 const slideInFromUp = keyframes`  
   from {
-    opacity: 1;
     transform: translateY(0);
   }
   to {
-    opacity: 0;
     transform: translateY(100%);
   }
 `;
@@ -81,7 +68,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
 
   background: white;
 
-  animation: 0.5s ease-out
+  animation: 1s ease
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
-  animation-fill-mode: forwards;
+  animation-fill-mode: both;
 `;
