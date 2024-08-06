@@ -7,17 +7,22 @@ import { useViewportHeight } from '@hooks/useViewportHeight';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 
 interface Props {
+  modalHeight?: number;
   canNext?: boolean;
   onNext?: () => void;
 }
 
-const KeywordInputStep = ({ canNext, onNext }: Props) => {
+const KeywordInputStep = ({ canNext, onNext, modalHeight = 600 }: Props) => {
   const { keywords } = useContext(messageFormContext);
 
-  const height = useViewportHeight() ?? 0;
+  const handleClickNextButton = () => {
+    if (!canNext) return;
+
+    onNext?.();
+  };
 
   return (
-    <Container style={{ height: height - 60 }}>
+    <Container style={{ height: modalHeight - 60 }}>
       <Title>
         {keywords
           ? keywords.length === 0
@@ -28,7 +33,9 @@ const KeywordInputStep = ({ canNext, onNext }: Props) => {
       <Suspense fallback={<LoadingCircle />}>
         <KeywordsCircle />
       </Suspense>
-      <GenerateCardButton onNext={onNext} canNext={canNext} />
+      <NextButton onClick={handleClickNextButton} $canNext={canNext ?? false}>
+        확인
+      </NextButton>
     </Container>
   );
 };
@@ -39,7 +46,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  min-height: 530px;
+  min-height: 50px;
 `;
 
 const Title = styled.div`
@@ -57,4 +64,25 @@ const Title = styled.div`
   @media (max-height: 670px) {
     margin: 28px auto 25px auto;
   }
+`;
+
+const NextButton = styled.button<{ $canNext: boolean }>`
+  position: fixed;
+  bottom: 30px;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 49px;
+  margin: 0 auto;
+  border-radius: 24.5px;
+
+  color: ${({ theme }) => theme.gray0};
+  font-size: 16px;
+  font-weight: 400;
+
+  background-color: ${({ theme, $canNext }) =>
+    $canNext ? theme.red500 : theme.gray500};
 `;
