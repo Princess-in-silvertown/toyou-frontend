@@ -1,7 +1,7 @@
 import { delay } from 'msw';
 import React, { useMemo, useState } from 'react';
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const CalendarContainer = styled.div`
   width: 100%;
@@ -140,120 +140,110 @@ const useCalender = () => {
   const [renderingIndex, setRenderingIndex] = useState(1);
   const [renderingYear, setRenderingYear] = useState(date.getFullYear());
   const [renderingMonth, setRenderingMonth] = useState(date.getMonth());
-  const [renderingWeek, setRenderingWeek] = useState(0); // 현재를 기점으로 몇주 차이나는지
+  const [renderingWeekDate, setRenderingWeekDate] = useState(date);
 
   const [currentDate, setCurrentDate] = useState(date);
 
   const viewWeek = async () => {
     if (isResizing) return;
 
-    setIsWeekView(true);
     setIsResizing(true);
-
+    setIsWeekView(true);
     await delay(300);
-
     setIsResizing(false);
   };
 
   const viewMonth = async () => {
-    if (isMoving) return;
+    if (isResizing) return;
 
     setIsResizing(true);
-
     await delay(0);
     setIsWeekView(false);
     await delay(300);
-
     setIsResizing(false);
   };
 
   const handleNextWeek = async () => {
     if (isMoving) return;
 
+    const nextWeekSunday = getStartOfWeek(addDays(currentDate, 7));
+
+    changeCurrentDate(nextWeekSunday, () => {});
+
     setRenderingIndex(2);
     setIsMoving(true);
-
     await delay(800);
     setIsMoving(false);
     await delay(0);
-
     setRenderingIndex(1);
 
-    const nextWeekSunday = getStartOfWeek(addDays(currentDate, 7));
-    changeCurrentDate(nextWeekSunday, () => {});
+    changeRenderingDate(nextWeekSunday);
   };
 
   const handlePrevWeek = async () => {
     if (isMoving) return;
 
+    const prevWeekSunday = getStartOfWeek(addDays(currentDate, -7));
+
+    changeCurrentDate(prevWeekSunday, () => {});
+
     setRenderingIndex(0);
     setIsMoving(true);
-
     await delay(800);
     setIsMoving(false);
     await delay(0);
-
     setRenderingIndex(1);
 
-    const prevWeekSunday = getStartOfWeek(addDays(currentDate, -7));
-    changeCurrentDate(prevWeekSunday, () => {});
+    changeRenderingDate(prevWeekSunday);
   };
 
   const handleNextMonth = async () => {
     if (isMoving) return;
 
-    changeCurrentDate(
-      new Date(renderingYear, renderingMonth + 1, 1),
-      (date: Date) => {}
-    );
+    const nextDate = new Date(renderingYear, renderingMonth + 1, 1);
+
+    changeCurrentDate(nextDate, (date: Date) => {});
 
     setRenderingIndex(2);
     setIsMoving(true);
-
     await delay(500);
     setIsMoving(false);
     await delay(0);
-
     setRenderingIndex(1);
 
-    if (renderingMonth < 11) {
-      setRenderingMonth((prev) => prev + 1);
-    } else {
-      setRenderingMonth(0);
-      setRenderingYear((prev) => prev + 1);
-    }
+    changeRenderingDate(nextDate);
   };
 
   const handlePrevMonth = async () => {
     if (isMoving) return;
 
-    changeCurrentDate(
-      new Date(renderingYear, renderingMonth - 1, 1),
-      (date: Date) => {}
-    );
+    const prevDate = new Date(renderingYear, renderingMonth - 1, 1);
+
+    changeCurrentDate(prevDate, (date: Date) => {});
 
     setRenderingIndex(0);
     setIsMoving(true);
-
     await delay(500);
     setIsMoving(false);
     await delay(0);
-
     setRenderingIndex(1);
 
-    if (renderingMonth > 1) {
-      setRenderingMonth((prev) => prev - 1);
-    } else {
-      setRenderingMonth(11);
-      setRenderingYear((prev) => prev - 1);
-    }
+    changeRenderingDate(prevDate);
   };
 
-  const changeCurrentDate = (date: Date, callback: (date: Date) => void) => {
+  const changeRenderingDate = (date: Date) => {
+    const newDate = new Date(date);
+
+    setRenderingWeekDate(newDate);
+    setRenderingMonth(newDate.getMonth());
+    setRenderingYear(newDate.getFullYear());
+  };
+
+  const changeCurrentDate = (date: Date, callback?: (date: Date) => void) => {
     const newDate = new Date(date);
     setCurrentDate(newDate);
 
-    callback(newDate);
+    callback?.(newDate);
   };
 
   const getStartOfWeek = (date: Date): Date => {
@@ -283,11 +273,11 @@ const useCalender = () => {
     return result;
   };
 
-  const compareDate = (date: Date) => {
+  const compareDate = (date1: Date, date2: Date) => {
     return (
-      date.getFullYear() === currentDate.getFullYear() &&
-      date.getMonth() === currentDate.getMonth() &&
-      date.getDate() === currentDate.getDate()
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
     );
   };
 
@@ -321,18 +311,70 @@ const useCalender = () => {
     return days;
   };
 
+  const weekDays = useMemo(
+    () => getWeekDays(renderingWeekDate),
+    [renderingWeekDate]
+  );
+
+  const nextWeekDays = useMemo(
+    () => getWeekDays(addDays(renderingWeekDate, 7)),
+    [renderingWeekDate]
+  );
+
+  const prevWeekDays = useMemo(
+    () => getWeekDays(addDays(renderingWeekDate, -7)),
+    [renderingWeekDate]
+  );
+
+  const monthDays = useMemo(
+    () => getMonthDays(renderingYear, renderingMonth),
+    [renderingYear, renderingMonth]
+  );
+
+  const nextMonthDays = useMemo(
+    () => getMonthDays(renderingYear, renderingMonth + 1),
+    [renderingYear, renderingMonth]
+  );
+
+  const prevMonthDays = useMemo(
+    () => getMonthDays(renderingYear, renderingMonth - 1),
+    [renderingYear, renderingMonth]
+  );
+
+  const currentRow = useMemo(() => {
+    const date = new Date(
+      renderingWeekDate.getFullYear(),
+      renderingWeekDate.getMonth(),
+      1
+    );
+
+    const length = renderingWeekDate.getDate() + date.getDay();
+
+    return Math.ceil(length / 7) - 1;
+  }, [renderingWeekDate]);
+
+  const rowCount = Math.max(
+    Math.ceil(monthDays.length / 7),
+    Math.ceil(nextMonthDays.length / 7),
+    Math.ceil(prevMonthDays.length / 7)
+  );
+
   return {
+    weekDays,
+    prevWeekDays,
+    nextWeekDays,
+    monthDays,
+    prevMonthDays,
+    nextMonthDays,
+    currentRow,
+    rowCount,
     isMoving,
     isResizing,
     isWeekView,
     renderingIndex,
     renderingYear,
     renderingMonth,
-    renderingWeek,
     currentDate,
-    getMonthDays,
-    getWeekDays,
-    addDays,
     viewWeek,
     viewMonth,
     handleNextMonth,
@@ -340,6 +382,7 @@ const useCalender = () => {
     handleNextWeek,
     handlePrevWeek,
     changeCurrentDate,
+    changeRenderingDate,
     compareDate,
     compareRenderingMonth,
   };
@@ -347,17 +390,21 @@ const useCalender = () => {
 
 const Calendar: React.FC = () => {
   const {
+    weekDays,
+    prevWeekDays,
+    nextWeekDays,
+    monthDays,
+    prevMonthDays,
+    nextMonthDays,
+    currentRow,
+    rowCount,
     isMoving,
     isResizing,
     isWeekView,
     renderingIndex,
     renderingYear,
     renderingMonth,
-    renderingWeek,
     currentDate,
-    getMonthDays,
-    getWeekDays,
-    addDays,
     viewWeek,
     viewMonth,
     handleNextMonth,
@@ -365,6 +412,7 @@ const Calendar: React.FC = () => {
     handleNextWeek,
     handlePrevWeek,
     changeCurrentDate,
+    changeRenderingDate,
     compareDate,
     compareRenderingMonth,
   } = useCalender();
@@ -401,56 +449,31 @@ const Calendar: React.FC = () => {
 
   const renderDates = () => {
     const makeClickDayHandler = (day: Date) => () => {
-      if (day.getMonth() < renderingMonth) handlePrevMonth();
+      if (isWeekView) {
+        changeRenderingDate(day);
+        changeCurrentDate(day);
 
-      if (day.getMonth() > renderingMonth) handleNextMonth();
+        return;
+      }
 
-      changeCurrentDate(day, () => {});
-    };
+      if (day.getMonth() === renderingMonth) {
+        changeCurrentDate(day, () => {});
+        changeRenderingDate(day);
+      } else if (day < new Date(renderingYear, renderingMonth)) {
+        handlePrevMonth().then(() => {
+          changeCurrentDate(day);
+          changeRenderingDate(day);
+        });
 
-    const weekDays = useMemo(() => getWeekDays(currentDate), [currentDate]);
+        changeCurrentDate(day, () => {});
+      } else if (day > new Date(renderingYear, renderingMonth)) {
+        handleNextMonth().then(() => {
+          changeCurrentDate(day);
+          changeRenderingDate(day);
+        });
 
-    const nextWeekDays = useMemo(
-      () => getWeekDays(addDays(currentDate, 7)),
-      [currentDate]
-    );
-
-    const prevWeekDays = useMemo(
-      () => getWeekDays(addDays(currentDate, -7)),
-      [currentDate]
-    );
-
-    const days = useMemo(
-      () => getMonthDays(renderingYear, renderingMonth),
-      [renderingYear, renderingMonth]
-    );
-
-    const nextMonthDays = useMemo(
-      () => getMonthDays(renderingYear, renderingMonth + 1),
-      [renderingYear, renderingMonth]
-    );
-
-    const prevMonthDays = useMemo(
-      () => getMonthDays(renderingYear, renderingMonth - 1),
-      [renderingYear, renderingMonth]
-    );
-
-    const rowCount = Math.max(
-      Math.ceil(days.length / 7),
-      Math.ceil(nextMonthDays.length / 7),
-      Math.ceil(prevMonthDays.length / 7)
-    );
-
-    const getCurrentRow = () => {
-      const date = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        1
-      );
-
-      const length = currentDate.getDate() + date.getDay();
-
-      return Math.ceil(length / 7) - 1;
+        changeCurrentDate(day, () => {});
+      }
     };
 
     return (
@@ -466,7 +489,7 @@ const Calendar: React.FC = () => {
                 <DatesGrid
                   style={{
                     transform: `translate(${-100 * renderingIndex}%)`,
-                    transition: isMoving ? 'ease-in-out  0.8s' : 'none',
+                    transition: isMoving ? 'ease-in-out 0.8s' : 'none',
                   }}
                 >
                   {prevWeekDays.map((day) => (
@@ -476,30 +499,7 @@ const Calendar: React.FC = () => {
                     >
                       <DateCircle
                         $isSmallView={true}
-                        $isCurrentDay={compareDate(day)}
-                        $isRenderingMonth={compareRenderingMonth(day)}
-                      >
-                        {day.getDate()}
-                      </DateCircle>
-                    </DateCell>
-                  ))}
-                </DatesGrid>
-              </WeekGridContainer>
-              <WeekGridContainer>
-                <DatesGrid
-                  style={{
-                    transform: `translate(${-100 * renderingIndex}%)`,
-                    transition: isMoving ? 'ease-in-out   0.8s' : 'none',
-                  }}
-                >
-                  {weekDays.map((day) => (
-                    <DateCell
-                      key={day.toString()}
-                      onClick={makeClickDayHandler(day)}
-                    >
-                      <DateCircle
-                        $isSmallView={true}
-                        $isCurrentDay={compareDate(day)}
+                        $isCurrentDay={compareDate(day, currentDate)}
                         $isRenderingMonth={true}
                       >
                         {day.getDate()}
@@ -512,7 +512,30 @@ const Calendar: React.FC = () => {
                 <DatesGrid
                   style={{
                     transform: `translate(${-100 * renderingIndex}%)`,
-                    transition: isMoving ? 'ease-in-out   0.8s' : 'none',
+                    transition: isMoving ? 'ease-in-out 0.8s' : 'none',
+                  }}
+                >
+                  {weekDays.map((day) => (
+                    <DateCell
+                      key={day.toString()}
+                      onClick={makeClickDayHandler(day)}
+                    >
+                      <DateCircle
+                        $isSmallView={true}
+                        $isCurrentDay={compareDate(day, currentDate)}
+                        $isRenderingMonth={true}
+                      >
+                        {day.getDate()}
+                      </DateCircle>
+                    </DateCell>
+                  ))}
+                </DatesGrid>
+              </WeekGridContainer>
+              <WeekGridContainer>
+                <DatesGrid
+                  style={{
+                    transform: `translate(${-100 * renderingIndex}%)`,
+                    transition: isMoving ? 'ease-in-out 0.8s' : 'none',
                   }}
                 >
                   {nextWeekDays.map((day) => (
@@ -522,8 +545,8 @@ const Calendar: React.FC = () => {
                     >
                       <DateCircle
                         $isSmallView={true}
-                        $isCurrentDay={compareDate(day)}
-                        $isRenderingMonth={compareRenderingMonth(day)}
+                        $isCurrentDay={compareDate(day, currentDate)}
+                        $isRenderingMonth={true}
                       >
                         {day.getDate()}
                       </DateCircle>
@@ -541,9 +564,7 @@ const Calendar: React.FC = () => {
           >
             <GridContainer
               style={{
-                transform: `translateY(${
-                  isWeekView ? -48 * getCurrentRow() : 0
-                }px`,
+                transform: `translateY(${isWeekView ? -48 * currentRow : 0}px`,
               }}
             >
               <DatesGrid
@@ -559,7 +580,7 @@ const Calendar: React.FC = () => {
                   >
                     <DateCircle
                       $isSmallView={isWeekView}
-                      $isCurrentDay={compareDate(day)}
+                      $isCurrentDay={compareDate(day, currentDate)}
                       $isRenderingMonth={compareRenderingMonth(day, -1)}
                     >
                       {day.getDate()}
@@ -570,25 +591,23 @@ const Calendar: React.FC = () => {
             </GridContainer>
             <GridContainer
               style={{
-                transform: `translateY(${
-                  isWeekView ? -48 * getCurrentRow() : 0
-                }px`,
+                transform: `translateY(${isWeekView ? -48 * currentRow : 0}px`,
               }}
             >
               <DatesGrid
                 style={{
                   transform: `translateX(${-100 * renderingIndex}%`,
-                  transition: isMoving ? 'ease-out 0.5s' : 'none',
+                  transition: isMoving ? 'ease-in-out 0.5s' : 'none',
                 }}
               >
-                {days.map((day) => (
+                {monthDays.map((day) => (
                   <DateCell
                     key={day.toString() + renderingMonth}
                     onClick={makeClickDayHandler(day)}
                   >
                     <DateCircle
                       $isSmallView={isWeekView}
-                      $isCurrentDay={compareDate(day)}
+                      $isCurrentDay={compareDate(day, currentDate)}
                       $isRenderingMonth={compareRenderingMonth(day)}
                     >
                       {day.getDate()}
@@ -599,15 +618,13 @@ const Calendar: React.FC = () => {
             </GridContainer>
             <GridContainer
               style={{
-                transform: `translateY(${
-                  isWeekView ? -48 * getCurrentRow() : 0
-                }px`,
+                transform: `translateY(${isWeekView ? -48 * currentRow : 0}px`,
               }}
             >
               <DatesGrid
                 style={{
                   transform: `translateX(${-100 * renderingIndex}%)`,
-                  transition: isMoving ? 'ease-out 0.5s' : 'none',
+                  transition: isMoving ? 'ease-in-out 0.5s' : 'none',
                 }}
               >
                 {nextMonthDays.map((day) => (
@@ -617,7 +634,7 @@ const Calendar: React.FC = () => {
                   >
                     <DateCircle
                       $isSmallView={isWeekView}
-                      $isCurrentDay={compareDate(day)}
+                      $isCurrentDay={compareDate(day, currentDate)}
                       $isRenderingMonth={compareRenderingMonth(day, 1)}
                     >
                       {day.getDate()}
