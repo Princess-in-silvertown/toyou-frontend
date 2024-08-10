@@ -1,3 +1,4 @@
+import { useEvent } from '@hooks/queries/useEvent';
 import { compareDate } from '@utils/date';
 import styled from 'styled-components';
 
@@ -22,6 +23,8 @@ const MonthDaysGrid = ({
   renderingIndex,
   onChangeDay,
 }: Props) => {
+  const { data } = useEvent(renderingMonth, renderingMonth);
+
   return (
     <GridContainer
       style={{
@@ -36,7 +39,7 @@ const MonthDaysGrid = ({
       >
         {days.map((day) => (
           <DateCell
-            key={day.toString() + renderingMonth}
+            key={day.toString() + ((renderingMonth + 12) % 12)}
             onClick={() => onChangeDay(day)}
           >
             <DateCircle
@@ -76,6 +79,8 @@ const DateCell = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  height: 40px;
 `;
 
 const DateCircle = styled.div<{
@@ -83,21 +88,18 @@ const DateCircle = styled.div<{
   $isRenderingMonth: boolean;
   $isWeekView: boolean;
 }>`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: 38px;
-  height: 38px;
+  width: 31px;
+  height: 31px;
   border-radius: 50%;
-  border: 1px solid
-    ${({ $isCurrentDay, $isRenderingMonth }) => {
-      if ($isRenderingMonth) return $isCurrentDay ? 'none' : '#616161';
 
-      return '#616161';
-    }};
+  font-size: 16px;
+  letter-spacing: -0.02em;
 
-  font-size: 10px;
   color: ${({ $isCurrentDay, $isRenderingMonth }) => {
     if ($isRenderingMonth) return $isCurrentDay ? 'white' : '#616161';
 

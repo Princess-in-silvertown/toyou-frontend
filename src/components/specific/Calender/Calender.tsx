@@ -33,11 +33,15 @@ const Calendar: React.FC = () => {
 
   const renderDates = () => {
     const handleClickWeekViewDay = (day: Date) => {
+      if (isMoving) return;
+
       changeRenderingDate(day);
       changeCurrentDate(day);
     };
 
     const handleClickMonthViewDay = (day: Date) => {
+      if (isMoving) return;
+
       // click current Month day
       if (day.getMonth() === renderingMonth) {
         changeCurrentDate(day, () => {});
@@ -71,7 +75,7 @@ const Calendar: React.FC = () => {
           <>
             <DatesContainer
               style={{
-                height: 48,
+                height: 50,
               }}
             >
               {weekDaysList.map((days, index) => {
@@ -91,7 +95,7 @@ const Calendar: React.FC = () => {
         ) : (
           <DatesContainer
             style={{
-              height: isWeekView ? 48 : rowCount * 48,
+              height: isWeekView ? 50 : rowCount * 50,
             }}
           >
             {monthDaysList.map((days, index) => {
@@ -140,7 +144,7 @@ const CalendarContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-  max-width: 420px;
+  max-width: 450px;
   min-width: 350px;
 
   font-family: Arial, sans-serif;

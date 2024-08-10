@@ -62,6 +62,8 @@ const DateCell = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  height: 40px;
 `;
 
 const DateCircle = styled.div<{
@@ -72,17 +74,11 @@ const DateCircle = styled.div<{
   justify-content: center;
   align-items: center;
 
-  width: 38px;
-  height: 38px;
+  width: 31px;
+  height: 31px;
   border-radius: 50%;
-  border: 1px solid
-    ${({ $isCurrentDay, $isRenderingMonth }) => {
-      if ($isRenderingMonth) return $isCurrentDay ? 'none' : '#616161';
 
-      return '#616161';
-    }};
-
-  font-size: 10px;
+  font-size: 16px;
   color: ${({ $isCurrentDay, $isRenderingMonth }) => {
     if ($isRenderingMonth) return $isCurrentDay ? 'white' : '#616161';
 

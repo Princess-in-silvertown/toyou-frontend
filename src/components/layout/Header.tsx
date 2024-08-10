@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <Container>
-      <Logo src={logo} onClick={goToHomePage} />
+      <Logo onClick={goToHomePage}>Toyou</Logo>
     </Container>
   );
 };
@@ -24,11 +24,10 @@ const Container = styled.header`
   height: 55px;
 `;
 
-const Logo = styled.img`
-  color: lightgray;
-
-  width: 64px;
-  height: 26px;
+const Logo = styled.div`
+  font-size: 14px;
+  line-height: 16.71px;
+  letter-spacing: -0.02em;
 
   cursor: pointer;
 `;

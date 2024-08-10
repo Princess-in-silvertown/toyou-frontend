@@ -25,22 +25,24 @@ const CalenderHeader = ({
 }: Props) => {
   const handleClickViewChange = () => {
     if (isWeekView) return viewMonth();
-    if (!isWeekView) return viewWeek();
+    else return viewWeek();
   };
 
   return (
     <Header>
-      <div>{`${renderingYear}년 ${renderingMonth + 1}월`}</div>
       <ButtonContainer>
-        <ViewChangeButton onClick={handleClickViewChange}>
-          뷰 전환
-        </ViewChangeButton>
+        {`${renderingYear}년 ${renderingMonth + 1}월`}
         <Button onClick={isWeekView ? handlePrevWeek : handlePrevMonth}>
           {'<'}
         </Button>
         <Button onClick={isWeekView ? handleNextWeek : handleNextMonth}>
           {'>'}
         </Button>
+      </ButtonContainer>
+      <ButtonContainer>
+        <ViewChangeButton onClick={handleClickViewChange}>
+          뷰 전환
+        </ViewChangeButton>
       </ButtonContainer>
     </Header>
   );
@@ -62,7 +64,6 @@ const Header = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-items: end;
   gap: 8px;
 `;
 
