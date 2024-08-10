@@ -1,18 +1,18 @@
-import { User } from '@/types/user';
 import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
-import { useContext } from 'react';
-import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
+import { Event } from '@/types/event';
 
-interface Props extends User {
-  id: number;
-  name: string;
-  imgUrl: string;
-  introduce: string;
+interface Props extends Event {
   onNext?: () => void;
 }
 
-const EventUserItem = ({ id, name, imgUrl, introduce, onNext }: Props) => {
+const EventUserItem = ({
+  memberId,
+  memberName,
+  description,
+  profileImgUrl,
+  onNext,
+}: Props) => {
   const handleClick = () => {
     onNext?.();
   };
@@ -21,11 +21,11 @@ const EventUserItem = ({ id, name, imgUrl, introduce, onNext }: Props) => {
     <Container onClick={handleClick}>
       <LeftContents>
         <LeftFirstContents>
-          <Profile src={profile} />
+          <Profile src={profileImgUrl ?? profile} />
         </LeftFirstContents>
         <LeftSecondContents>
-          <Name>{name}</Name>
-          <Introduce>{introduce}</Introduce>
+          <Name>{memberName}</Name>
+          <Introduce>{description}</Introduce>
         </LeftSecondContents>
       </LeftContents>
       <RightContents>
@@ -65,6 +65,11 @@ const RightContents = styled.div`
 
 const Profile = styled.img`
   width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+
+  object-fit: cover;
 `;
 
 const Name = styled.div`
