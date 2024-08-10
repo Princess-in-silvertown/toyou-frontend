@@ -165,11 +165,14 @@ export const useCalender = () => {
     return Math.ceil(length / 7) - 1;
   }, [renderingWeekDate]);
 
-  const rowCount = Math.max(
-    Math.ceil(monthDays.length / 7),
-    Math.ceil(nextMonthDays.length / 7),
-    Math.ceil(prevMonthDays.length / 7)
-  );
+  const rowCount = useMemo(() => {
+    const monthLength = getMonthDays(
+      currentDate.getFullYear(),
+      currentDate.getMonth()
+    ).length;
+
+    return Math.ceil(monthLength / 7);
+  }, [currentDate]);
 
   const monthDaysList = [prevMonthDays, monthDays, nextMonthDays];
   const weekDaysList = [prevWeekDays, weekDays, nextWeekDays];

@@ -2,6 +2,7 @@ import { ResData } from '@/types/api';
 import { request } from './request';
 import { GroupList } from '@/types/group';
 import { SameGroupUsers, User, UserList } from '@/types/user';
+import { EventData } from '@/types/event';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -65,4 +66,8 @@ export const requestGetSticker = (groupId: number) => {
   return request.get<ResData<{ imgUrl: string }[]>>(
     `api/groups/${groupId}/sticker`
   );
+};
+
+export const requestGetEvents = (year: number, month: number) => {
+  return request.get<ResData<EventData>>(`api//events?date=${year}-${month}`);
 };

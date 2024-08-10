@@ -6,4 +6,6 @@ export const QUERY_KEY = {
   extractedKeywords: 'extractedKeywords',
   cover: 'cover',
   sticker: 'sticker',
+  events: 'events',
+  event: 'event',
 } as const;
