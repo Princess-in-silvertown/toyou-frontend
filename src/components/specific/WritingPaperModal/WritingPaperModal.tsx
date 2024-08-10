@@ -24,12 +24,18 @@ const WritingPaperModal = ({ closeModal }: Props) => {
   const { handleOpen, handleClose, handleClear } =
     useContext(modalDispatchContext);
 
+  const handleAllClose = () => {
+    closeModal();
+
+    handleClear();
+  };
+
   const handleCancel = () => {
     handleOpen(
       KEYS.WRITE_MESSAGE_CANCEL,
       <ConfirmCancelModalContents
         handleClose={() => handleClose()}
-        handleSubmit={() => handleClear()}
+        handleSubmit={() => handleAllClose()}
       />,
       DialogContainer
     );
@@ -62,7 +68,10 @@ const WritingPaperModal = ({ closeModal }: Props) => {
           },
           {
             component: (
-              <KeywordInputStep canNext={keywords && keywords.length >= 1} />
+              <KeywordInputStep
+                canNext={keywords && keywords.length >= 1}
+                modalHeight={height}
+              />
             ),
             canNext: keywords && keywords.length >= 1,
           },
