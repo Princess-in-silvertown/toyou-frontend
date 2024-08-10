@@ -3,10 +3,10 @@ import { requestGetEvents } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { QUERY_KEY } from '@constants/query';
-import { Day, Event, EventData } from '@/types/event';
+import { Day, EventData, ParsedEvent } from '@/types/event';
 
 export const useEvent = (year: number, month: number) => {
-  const query = useQuery<ResData<EventData>, ResponseError, Parsed>({
+  const query = useQuery<ResData<EventData>, ResponseError, ParsedEvent>({
     queryKey: [QUERY_KEY.events, year, month, 'GET'],
     queryFn: () => requestGetEvents(year, month),
     select: (json) => parseEvents(json.data.days),
@@ -17,7 +17,7 @@ export const useEvent = (year: number, month: number) => {
 };
 
 const parseEvents = (days: Day[]) => {
-  let parsed: Parsed = {};
+  let parsed: ParsedEvent = {};
   for (let i = 1; i <= 31; i++) {
     parsed = { [i]: { count: 0, events: [] }, ...parsed };
   }

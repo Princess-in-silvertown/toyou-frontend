@@ -1,43 +1,25 @@
+import { Events } from '@/types/event';
 import Calendar from '@components/specific/Calender/Calender';
-import EventUserItem from '@components/specific/Calender/EventUserItem';
+import EventUserItem from '@components/specific/EventList/EventUserItem';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const MyCalender = () => {
-  const data = [
-    {
-      memberId: 1,
-      name: '댄디효섭',
-      introduce: '댄디함',
-      eventType: '생일',
-      imgUrl: '',
-    },
-    {
-      memberId: 2,
-      name: '시크효섭',
-      introduce: '시크함',
-      eventType: '생일',
-      imgUrl: '',
-    },
-  ];
+  const [eventList, setEventList] = useState<Events>([]);
+
+  const handleChangeEventList = (events?: Events) => {
+    setEventList(events ?? []);
+  };
 
   return (
     <Container>
-      <Calendar />
+      <Calendar onChangeEventList={handleChangeEventList} />
       <BorderLine />
       <EventContainer>
         <EventTitle>오늘의 이벤트</EventTitle>
         <EventMemberList>
-          {data.map((item) => {
-            const { memberId, name, introduce, eventType, imgUrl } = item;
-            return (
-              <EventUserItem
-                key={memberId}
-                id={memberId}
-                name={name}
-                imgUrl={imgUrl}
-                introduce={introduce}
-              />
-            );
+          {eventList.map((item) => {
+            return <EventUserItem key={item.memberId} {...item} />;
           })}
         </EventMemberList>
       </EventContainer>

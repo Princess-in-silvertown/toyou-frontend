@@ -16,3 +16,7 @@ export type Event = {
   profileImgUrl: string;
   description: string;
 };
+
+export type ParsedEvent = {
+  [key: number]: { count: 0; events: Events };
+};

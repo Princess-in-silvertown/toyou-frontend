@@ -1,13 +1,18 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import CalenderHeader from './CalenderHeader';
 import MonthDaysGrid from './MonthDaysGrid';
 import WeekDaysGrid from './WeekDaysGrid';
 import { useCalender } from '@hooks/useCalender';
 import DaysOfWeek from './DaysOfWeek';
+import { useEvent } from '@hooks/queries/useEvent';
+import { Events } from '@/types/event';
 
-const Calendar: React.FC = () => {
+interface Props {
+  onChangeEventList?: (events?: Events) => void;
+}
+
+const Calendar = ({ onChangeEventList }: Props) => {
   const {
     monthDaysList,
     weekDaysList,
@@ -32,6 +37,11 @@ const Calendar: React.FC = () => {
   } = useCalender();
 
   const renderDates = () => {
+    const { data } = useEvent(
+      currentDate.getFullYear(),
+      currentDate.getMonth()
+    );
+
     const handleClickWeekViewDay = (day: Date) => {
       if (isMoving) return;
 
@@ -69,6 +79,11 @@ const Calendar: React.FC = () => {
       }
     };
 
+    useEffect(() => {
+      const date = currentDate.getDate();
+      onChangeEventList?.(data?.[date].events);
+    }, [currentDate, data]);
+
     return (
       <>
         {!isResizing && isWeekView ? (
@@ -83,6 +98,8 @@ const Calendar: React.FC = () => {
                   <WeekDaysGrid
                     key={renderingWeekDate.getDay() + index - 7}
                     days={days}
+                    renderingYear={renderingYear}
+                    renderingMonth={renderingMonth + index - 1}
                     renderingIndex={renderingIndex}
                     currentDate={currentDate}
                     isMoving={isMoving}
@@ -103,6 +120,7 @@ const Calendar: React.FC = () => {
                 <MonthDaysGrid
                   key={renderingMonth + index - 1}
                   days={days}
+                  renderingYear={renderingYear}
                   renderingMonth={renderingMonth + index - 1}
                   renderingIndex={renderingIndex}
                   currentDate={currentDate}

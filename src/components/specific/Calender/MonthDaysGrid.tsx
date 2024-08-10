@@ -8,6 +8,7 @@ interface Props {
   isWeekView: boolean;
   isMoving: boolean;
   currentRow: number;
+  renderingYear: number;
   renderingMonth: number;
   renderingIndex: number;
   onChangeDay: (day: Date) => void;
@@ -19,11 +20,16 @@ const MonthDaysGrid = ({
   isWeekView,
   isMoving,
   currentRow,
+  renderingYear,
   renderingMonth,
   renderingIndex,
   onChangeDay,
 }: Props) => {
-  const { data } = useEvent(renderingMonth, renderingMonth);
+  const { data } = useEvent(renderingYear, renderingMonth);
+
+  const isEventDay = (day: number) => {
+    return (data?.[day].count ?? 0) >= 1;
+  };
 
   return (
     <GridContainer
@@ -49,6 +55,7 @@ const MonthDaysGrid = ({
             >
               {day.getDate()}
             </DateCircle>
+            {isEventDay(day.getDate()) && <EventMarker />}
           </DateCell>
         ))}
       </DatesGrid>
@@ -76,11 +83,23 @@ const DatesGrid = styled.div`
 `;
 
 const DateCell = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 
   height: 40px;
+`;
+
+const EventMarker = styled.div`
+  position: absolute;
+  bottom: -5px;
+
+  width: 5px;
+  height: 5px;
+  border-radius: 2px;
+
+  background: #dd432e;
 `;
 
 const DateCircle = styled.div<{

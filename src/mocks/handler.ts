@@ -186,4 +186,100 @@ export const handlers = [
       return HttpResponse.json({}, { status: 200 });
     }
   ),
+
+  http.get('http://localhost:3000/api/events', ({ request }) => {
+    const url = new URL(request.url);
+    const date = url.searchParams.get('date');
+
+    if (!date) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    let data = null;
+
+    const month = Number(date.split('-')[1]);
+    if (month === 8) {
+      data = {
+        days: [
+          {
+            date: '2024-08-10',
+            events: [
+              {
+                memberId: 1,
+                memberName: '시크효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://mblogthumb-phinf.pstatic.net/MjAyMTA0MzBfMjMg/MDAxNjE5NzY2MDc3Njc1.QTn3NuadrIe8IarOOZAN61-7C06Ce_E1693wilcYrLMg.b4cO2kVaUx0wD9BGXQ5ux7DjT-e6qW8fXQT23Hjc6vQg.JPEG.paran-paran/%EC%9E%A5%EB%8F%99%EA%B1%B4_10.jpg?type=w800',
+              },
+              {
+                memberId: 2,
+                memberName: '댄디효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://i.namu.wiki/i/bCmE_8XrnEYeEKlbme2ZS8rsG6dcB1vGD-UJtxvGncvXuYL9fiBqL8Fk_6cQ58EKJYTyyw9mA0LWK3yIaRYQow.webp',
+              },
+            ],
+          },
+
+          {
+            date: '2024-08-24',
+            events: [
+              {
+                memberId: 3,
+                memberName: '간지효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://i.namu.wiki/i/xifChGswbLh8qg2qQyJADGr-9IKZ4DES71zkmTs5sN-zMpZQq60trPR2XR9gr7kjMjsDX1y5zE6EAL0nWruGkg.webp',
+              },
+            ],
+          },
+
+          {
+            date: '2024-08-05',
+            events: [
+              {
+                memberId: 4,
+                memberName: '최애의 효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (month === 9) {
+      data = {
+        days: [
+          {
+            date: '2024-09-01',
+            events: [
+              {
+                memberId: 4,
+                memberName: '최애의 효섭',
+                eventType: '',
+                description: '콘서트 당일입니다.',
+                profileImgUrl:
+                  'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    return HttpResponse.json(
+      {
+        data,
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
 ];

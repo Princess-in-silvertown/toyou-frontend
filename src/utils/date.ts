@@ -58,3 +58,10 @@ export const getWeekDays = (date: Date): Date[] => {
 
   return days;
 };
+
+export const getYearMonthDateTime = (date: Date) => {
+  const localeDate = date.toLocaleDateString();
+  const [dateTime] = localeDate.replace('. ', '-').split('.');
+
+  return dateTime;
+};

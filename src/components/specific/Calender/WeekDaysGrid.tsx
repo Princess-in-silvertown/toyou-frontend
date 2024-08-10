@@ -1,3 +1,4 @@
+import { useEvent } from '@hooks/queries/useEvent';
 import { compareDate } from '@utils/date';
 import styled from 'styled-components';
 
@@ -6,6 +7,8 @@ interface Props {
   currentDate: Date;
   isMoving: boolean;
   renderingIndex: number;
+  renderingYear: number;
+  renderingMonth: number;
   onChangeDay: (day: Date) => void;
 }
 
@@ -13,9 +16,17 @@ const WeekDaysGrid = ({
   days,
   currentDate,
   isMoving,
+  renderingYear,
+  renderingMonth,
   renderingIndex,
   onChangeDay,
 }: Props) => {
+  const { data } = useEvent(renderingYear, renderingMonth);
+
+  const isEventDay = (day: number) => {
+    return (data?.[day].count ?? 0) >= 1;
+  };
+
   return (
     <WeekGridContainer>
       <DatesGrid
@@ -32,6 +43,7 @@ const WeekDaysGrid = ({
             >
               {day.getDate()}
             </DateCircle>
+            {isEventDay(day.getDate()) && <EventMarker />}
           </DateCell>
         ))}
       </DatesGrid>
@@ -59,11 +71,23 @@ const DatesGrid = styled.div`
 `;
 
 const DateCell = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 
   height: 40px;
+`;
+
+const EventMarker = styled.div`
+  position: absolute;
+  bottom: -5px;
+
+  width: 5px;
+  height: 5px;
+  border-radius: 2px;
+
+  background: #dd432e;
 `;
 
 const DateCircle = styled.div<{
