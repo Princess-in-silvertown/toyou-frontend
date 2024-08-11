@@ -2,7 +2,7 @@ import { ResData } from '@/types/api';
 import { request } from './request';
 import { GroupList } from '@/types/group';
 import { SameGroupUsers, User, UserList } from '@/types/user';
-import { EventData } from '@/types/event';
+import { EventData, Events } from '@/types/event';
 import { getYearMonthDateTime } from '@utils/date';
 
 export const requestGetTest = () => {
@@ -71,7 +71,23 @@ export const requestGetSticker = (groupId: number) => {
 
 export const requestGetEvents = (year: number, month: number) => {
   const date = new Date(year, month);
-  const dateTime = getYearMonthDateTime(date);
+
+  const yearString = `${date.getFullYear()}`;
+  const monthString = `${date.getMonth()}`.padStart(2, '0');
+
+  const dateTime = `${yearString}-${monthString}`;
 
   return request.get<ResData<EventData>>(`api/events?date=${dateTime}`);
+};
+
+export const requestGetEventToday = () => {
+  const date = new Date();
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth()}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+
+  const dateTime = `${year}-${month}-${day}`;
+
+  return request.get<ResData<Events>>(`api/events?date=${dateTime}`);
 };

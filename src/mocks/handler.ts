@@ -187,22 +187,26 @@ export const handlers = [
     }
   ),
 
-  http.get('http://localhost:3000/api/events', ({ request }) => {
+  http.get('http://localhost:3000/api/events', async ({ request }) => {
     const url = new URL(request.url);
     const date = url.searchParams.get('date');
+
+    await delay(1000);
 
     if (!date) {
       return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
     }
 
-    let data = null;
+    let data;
+
+    data = { days: [] };
 
     const month = Number(date.split('-')[1]);
     if (month === 8) {
       data = {
         days: [
           {
-            date: '2024-08-10',
+            date: '2024-08-11',
             events: [
               {
                 memberId: 1,
@@ -267,6 +271,18 @@ export const handlers = [
                 description: '콘서트 당일입니다.',
                 profileImgUrl:
                   'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
+              },
+            ],
+          },
+          {
+            date: '2024-09-02',
+            events: [
+              {
+                memberId: 6,
+                memberName: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImgUrl: 'error',
               },
             ],
           },
