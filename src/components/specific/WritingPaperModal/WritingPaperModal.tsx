@@ -11,7 +11,6 @@ import UserSearchStep from './UserSearchStep/UserSearchStep';
 import KeywordInputStep from './KeywordInputStep/KeywordInputStep';
 import CardEditStep from './CardEditStep/CardEditStep';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
-import MessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
 import PaperMessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
 
 interface Props {

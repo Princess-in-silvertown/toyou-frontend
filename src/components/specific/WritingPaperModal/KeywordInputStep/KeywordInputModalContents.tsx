@@ -1,7 +1,6 @@
 import {
   KeyboardEventHandler,
   MouseEventHandler,
-  useContext,
   useRef,
   useState,
 } from 'react';
@@ -26,7 +25,7 @@ const KeywordInputModalContents = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addKeyword = (newKeyword: string) => {
-    if (keywords.length >= KEYWORD_MAX_LENGTH) return;
+    if (modalKeywords.length >= KEYWORD_MAX_LENGTH) return;
 
     if (modalKeywords.includes(newKeyword)) return;
 
@@ -165,3 +164,4 @@ const KeywordText = styled.div`
   font-size: 14px;
   font-weight: 500;
 `;
+
