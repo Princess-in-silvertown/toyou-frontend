@@ -110,13 +110,10 @@ const ICON_COLOR = [160, 85, 9] as const;
 const cardList = new CardList();
 
 const CardSelect = ({ isSelected, onSelected }: Props) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const [isSwiping, setIsSwiping] = useState(false);
   const [isTouchPrevented, setIsTouchPrevented] = useState(false);
-
-  const [_, forceUpdate] = useState(0);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
 
   const [isHorizontal, setIsHorizontal] = useState<boolean | null>(null);
   const [y, setY] = useState(0);
@@ -125,6 +122,8 @@ const CardSelect = ({ isSelected, onSelected }: Props) => {
   const [x, setX] = useState(0);
   const [startX, setStartX] = useState(0);
   const [deltaX, setDeltaX] = useState(0);
+
+  const [_, forceUpdate] = useState(0);
 
   const handleStart = (clientX: number, clientY: number) => {
     setStartX(clientX);
@@ -368,6 +367,11 @@ const CardSelect = ({ isSelected, onSelected }: Props) => {
     0.5
   );
 
+  const fourthCardStyle: React.CSSProperties = {
+    transform: `scale(${fourthCardScale}) rotate(${fourthCardRotate}deg) translateX(${fourthCardTranslateX}px)`,
+    transition: '0.7s cubic-bezier(.17,.67,.52,1.25)',
+  };
+
   const iconTranslateY = transformEaseOut(distance, 10, -50, -2, 5);
   const iconTranslateX = transformEaseOut(distance, 0, 50, 0, 5);
   const iconOpacity = transformEaseOut(
@@ -378,10 +382,7 @@ const CardSelect = ({ isSelected, onSelected }: Props) => {
     0
   );
 
-  const fourthCardStyle: React.CSSProperties = {
-    transform: `scale(${fourthCardScale}) rotate(${fourthCardRotate}deg) translateX(${fourthCardTranslateX}px)`,
-    transition: '0.7s cubic-bezier(.17,.67,.52,1.25)',
-  };
+  const titleOpacity = transformEaseOut(y + deltaY, -180, -220, 1, 0);
 
   useEffect(() => {
     if (currentIndex === 0) return;
@@ -425,7 +426,28 @@ const CardSelect = ({ isSelected, onSelected }: Props) => {
 
   return (
     <Container>
-      <TitleContainer></TitleContainer>
+      <TitleContainer>
+        <WritingButton
+          style={{
+            transform: `translateY(${(y + deltaY) * 0.3}px) `,
+            opacity: isSelected ? 0 : titleOpacity,
+            transition: '1.2s cubic-bezier(.17,.67,.52,1.25)',
+          }}
+        >
+          <Title
+            style={{
+              color: getBlendColor(
+                cardList.getCurrentCardColor(),
+                ICON_COLOR,
+                0.3
+              ),
+            }}
+          >
+            Send a Message Card <br /> To
+          </Title>
+          <TitleGray>your friend</TitleGray>
+        </WritingButton>
+      </TitleContainer>
       <SwiperWrapper
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -559,6 +581,30 @@ const IconContainer = styled.div`
   position: absolute;
   left: 50%;
 
+  filter: saturate(0.9);
   transform: translateX(-50%);
   transition: opacity ease 0.3s, transform ease 0.4s 0.15s;
+`;
+
+const Title = styled.span`
+  font-size: 28px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #212121;
+  filter: saturate(0.7) brightness(0.5);
+`;
+
+const TitleGray = styled.span`
+  margin-left: 7px;
+  font-size: 28px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #21212180;
+`;
+
+const WritingButton = styled.button`
+  font-size: 18px;
+  color: gray;
 `;
