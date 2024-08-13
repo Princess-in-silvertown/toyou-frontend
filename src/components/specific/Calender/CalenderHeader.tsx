@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import leftArrow from '@assets/icons/leftarrow.svg';
+import rightArrow from '@assets/icons/rightarrow.svg';
 
 interface Props {
   isWeekView: boolean;
@@ -31,12 +33,12 @@ const CalenderHeader = ({
   return (
     <Header>
       <ButtonContainer>
-        {`${renderingYear}년 ${renderingMonth + 1}월`}
+        <HeaderDate>{`${renderingYear}년 ${renderingMonth + 1}월`}</HeaderDate>
         <Button onClick={isWeekView ? handlePrevWeek : handlePrevMonth}>
-          {'<'}
+          <Icon src={leftArrow} />
         </Button>
         <Button onClick={isWeekView ? handleNextWeek : handleNextMonth}>
-          {'>'}
+          <Icon src={rightArrow} />
         </Button>
       </ButtonContainer>
       <ButtonContainer>
@@ -53,23 +55,33 @@ export default CalenderHeader;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: center;
   padding: 16px 30px;
+`;
+
+const HeaderDate = styled.div`
+  width: 108px;
 
   font-size: 20px;
   font-weight: 500;
   line-height: 23.87px;
-  text-align: left;
+
+  white-space: nowrap;
+`;
+
+const Icon = styled.img`
+  width: 4.5px;
+  height: 10px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  gap: 8px;
+  align-items: center;
 `;
 
 const Button = styled.button`
-  font-size: 12px;
-  padding: 3px;
+  padding: 7px;
+  box-sizing: border-box;
 
   cursor: pointer;
 `;

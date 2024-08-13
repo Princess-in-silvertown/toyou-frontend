@@ -9,30 +9,25 @@ export const useEvent = (year: number, month: number) => {
   const query = useQuery<ResData<EventData>, ResponseError, ParsedEvent>({
     queryKey: [QUERY_KEY.events, year, month, 'GET'],
     queryFn: () => requestGetEvents(year, month),
-    select: (json) => parseEvents(json.data?.days, month),
+    select: (json) => parseEvents(json.data?.days),
     staleTime: Infinity,
   });
 
   return query;
 };
 
-const parseEvents = (days: Day[], month: number) => {
-  let parsed: ParsedEvent = { monthIndex: month };
-  for (let i = 1; i <= 31; i++) {
-    parsed = { [i]: { count: 0, events: [] }, ...parsed };
-  }
+const eventStore: ParsedEvent = {};
 
+const parseEvents = (days: Day[]) => {
   days &&
     days.forEach((day) => {
-      const dayNumber = Number(day.date.split('-')[2]);
+      const key = day.date;
 
-      if (dayNumber < 1 || dayNumber > 31) {
-        throw new Error('invalid day number');
-      }
+      if (!eventStore[key]) eventStore[key] = { count: 0, events: [] };
 
-      parsed[dayNumber].count += 1;
-      parsed[dayNumber].events = [...parsed[dayNumber].events, ...day.events];
+      eventStore[key].count += 1;
+      eventStore[key].events = [...day.events];
     });
 
-  return parsed;
+  return eventStore;
 };

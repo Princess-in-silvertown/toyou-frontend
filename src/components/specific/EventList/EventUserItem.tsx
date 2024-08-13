@@ -29,7 +29,7 @@ const EventUserItem = ({
         </LeftSecondContents>
       </LeftContents>
       <RightContents>
-        <GroupName>메시지 전송하기</GroupName>
+        <SendButton>메시지 카드 보내기</SendButton>
       </RightContents>
     </Container>
   );
@@ -47,10 +47,14 @@ const Container = styled.div`
 
 const LeftContents = styled.div`
   display: flex;
+  align-items: center;
   gap: 16px;
 `;
 
-const LeftFirstContents = styled.div``;
+const LeftFirstContents = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const LeftSecondContents = styled.div`
   display: flex;
@@ -83,7 +87,7 @@ const Introduce = styled.div`
   color: #616161;
 `;
 
-const GroupName = styled.div`
+const SendButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,8 +96,8 @@ const GroupName = styled.div`
   height: 24px;
   border-radius: 13px;
   padding: 6px, 16px, 6px, 16px;
+  border: 1px solid #dd432e;
 
-  border: 1px solid #9e9e9e;
-
+  color: #dd432e;
   font-size: 10px;
 `;

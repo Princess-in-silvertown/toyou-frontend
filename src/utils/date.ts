@@ -65,3 +65,14 @@ export const getYearMonthDateTime = (date: Date) => {
 
   return dateTime;
 };
+
+export const getDateTime = (date: Date) => {
+  const yearString = `${date.getFullYear()}`;
+  const month = (date.getMonth() % 12) + 1;
+  const monthString = `${month}`.padStart(2, '0');
+  const dayString = `${date.getDate()}`.padStart(2, '0');
+
+  const dateTime = `${yearString}-${monthString}-${dayString}`;
+
+  return dateTime;
+};

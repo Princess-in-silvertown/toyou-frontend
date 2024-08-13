@@ -18,6 +18,5 @@ export type Event = {
 };
 
 export type ParsedEvent = {
-  monthIndex: number;
-  [key: number]: { count: 0; events: Events };
+  [key: string]: { count: 0; events: Events };
 };

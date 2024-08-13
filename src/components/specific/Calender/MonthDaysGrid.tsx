@@ -1,5 +1,5 @@
 import { useEvent } from '@hooks/queries/useEvent';
-import { compareDate } from '@utils/date';
+import { compareDate, getDateTime } from '@utils/date';
 import styled from 'styled-components';
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
   renderingYear: number;
   renderingMonth: number;
   renderingIndex: number;
+  deltaX: number;
+  deltaY: number;
   onChangeDay: (day: Date) => void;
 }
 
@@ -23,12 +25,19 @@ const MonthDaysGrid = ({
   renderingYear,
   renderingMonth,
   renderingIndex,
+  deltaX,
+  deltaY,
   onChangeDay,
 }: Props) => {
   const { data } = useEvent(renderingYear, renderingMonth);
 
-  const isEventDay = (day: number) => {
-    return (data?.[day].count ?? 0) >= 1;
+  const isEventDay = (date: Date) => {
+    const key = getDateTime(date);
+    return (data?.[key]?.count ?? 0) >= 1;
+  };
+
+  const isRenderingMonth = (date: Date) => {
+    return date.getMonth() === renderingMonth;
   };
 
   return (
@@ -37,28 +46,35 @@ const MonthDaysGrid = ({
         transform: `translateY(${isWeekView ? -48 * currentRow : 0}px`,
       }}
     >
-      <DatesGrid
-        style={{
-          transform: `translateX(${-100 * renderingIndex}%)`,
-          transition: isMoving ? 'ease-in-out 0.5s' : 'none',
-        }}
-      >
-        {days.map((day) => (
-          <DateCell
-            key={day.toString() + ((renderingMonth + 12) % 12)}
-            onClick={() => onChangeDay(day)}
-          >
-            <DateCircle
-              $isWeekView={isWeekView}
-              $isCurrentDay={compareDate(day, currentDate)}
-              $isRenderingMonth={day.getMonth() === (renderingMonth + 12) % 12}
+      <TranslateX style={{ transform: `translateX(${deltaX}px)` }}>
+        <DatesGrid
+          style={{
+            transform: `translateX(calc(${-100 * renderingIndex}%))`,
+            transition: isMoving ? 'ease-out 0.3s' : 'none',
+          }}
+        >
+          {days.map((day) => (
+            <DateCell
+              key={day.toString() + ((renderingMonth + 12) % 12)}
+              onClick={() => onChangeDay(day)}
             >
-              {day.getDate()}
-            </DateCircle>
-            {isEventDay(day.getDate()) && <EventMarker />}
-          </DateCell>
-        ))}
-      </DatesGrid>
+              <DateCircle
+                $isWeekView={isWeekView}
+                $isCurrentDay={compareDate(day, currentDate)}
+                $isRenderingMonth={isRenderingMonth(day)}
+              >
+                {day.getDate()}
+              </DateCircle>
+              {isEventDay(day) && (
+                <EventMarker
+                  $isRenderingMonth={isRenderingMonth(day)}
+                  $isWeekView={isWeekView}
+                />
+              )}
+            </DateCell>
+          ))}
+        </DatesGrid>
+      </TranslateX>
     </GridContainer>
   );
 };
@@ -71,7 +87,11 @@ const GridContainer = styled.div`
   width: 100%;
   padding: 4px 0;
 
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-out;
+`;
+
+const TranslateX = styled.div`
+  transition: transform ease-out 0.2s;
 `;
 
 const DatesGrid = styled.div`
@@ -91,7 +111,10 @@ const DateCell = styled.div`
   height: 40px;
 `;
 
-const EventMarker = styled.div`
+const EventMarker = styled.div<{
+  $isRenderingMonth: boolean;
+  $isWeekView: boolean;
+}>`
   position: absolute;
   bottom: -5px;
 
@@ -100,6 +123,11 @@ const EventMarker = styled.div`
   border-radius: 2px;
 
   background: #dd432e;
+
+  opacity: ${({ $isRenderingMonth, $isWeekView }) =>
+    $isWeekView || $isRenderingMonth ? 1 : 0.3};
+
+  transition: opacity 0.3s ease-in-out;
 `;
 
 const DateCircle = styled.div<{

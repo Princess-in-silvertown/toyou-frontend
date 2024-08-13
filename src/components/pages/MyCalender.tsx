@@ -16,7 +16,10 @@ const MyCalender = () => {
       <Calendar onChangeEventList={handleChangeEventList} />
       <BorderLine />
       <EventContainer>
-        <EventTitle>오늘의 이벤트</EventTitle>
+        <EventHeader>
+          <EventTitle>이벤트</EventTitle>
+          <EventLength>{eventList.length}개</EventLength>
+        </EventHeader>
         <EventMemberList>
           {eventList.map((item) => {
             return <EventUserItem key={item.memberId} {...item} />;
@@ -39,11 +42,30 @@ const BorderLine = styled.div`
   border: 1px solid #e9e9e9;
 `;
 
+const EventHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 25px;
+  letter-spacing: -0.03em;
+`;
+
 const EventTitle = styled.div`
   font-size: 14px;
   font-weight: 500;
   line-height: 25px;
   letter-spacing: -0.03em;
+`;
+
+const EventLength = styled.div`
+  font-size: 14px;
+  line-height: 20.27px;
+  letter-spacing: -0.02em;
+  text-align: center;
+
+  color: #9e9e9e;
 `;
 
 const EventContainer = styled.div`
@@ -59,6 +81,6 @@ const EventMemberList = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-top: 10px;
-  gap: 10px;
+  margin-top: 16px;
+  gap: 16px;
 `;
