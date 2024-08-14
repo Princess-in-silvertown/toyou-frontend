@@ -5,6 +5,7 @@ type Direction = 'horizontal' | 'vertical';
 type DragCallback = (params: {
   xy: [number, number];
   delta: [number, number];
+  defaultXY: [number, number];
   velocity: number;
   direction: Direction | undefined;
   startDirection: Direction | undefined;
@@ -16,15 +17,16 @@ type DragCallback = (params: {
 }) => void;
 
 type Params = {
-  // [[minX, minY], [minY, maxY]]
-  moveXMinMax?: [number | 'Infinity', number | 'Infinity'];
-  moveYMinMax?: [number | 'Infinity', number | 'Infinity'];
+  defaultXY?: [number, number];
+  moveXMinMax?: [number | '-Infinity', number | 'Infinity'];
+  moveYMinMax?: [number | '-Infinity', number | 'Infinity'];
   onStart?: DragCallback;
   onMove?: DragCallback;
   onEnd?: DragCallback;
 };
 
 export const useDrag = ({
+  defaultXY = [0, 0],
   moveXMinMax,
   moveYMinMax,
   onStart,
@@ -35,8 +37,8 @@ export const useDrag = ({
   const [isEnable, setIsEnable] = useState(true);
 
   // controllable from outside
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [x, setX] = useState(defaultXY[0]);
+  const [y, setY] = useState(defaultXY[1]);
 
   // uncontrollable from outside
   const [startX, setStartX] = useState(0);
@@ -51,11 +53,11 @@ export const useDrag = ({
 
   const validateScope = (
     number: number,
-    scope?: [number | 'Infinity', number | 'Infinity']
+    scope?: [number | '-Infinity', number | 'Infinity']
   ) => {
-    const [min, max] = scope ?? ['Infinity', 'Infinity'];
+    const [min, max] = scope ?? ['-Infinity', 'Infinity'];
 
-    const isOverMin = min === 'Infinity' || min <= number;
+    const isOverMin = min === '-Infinity' || min <= number;
     const isBelowMax = max === 'Infinity' || number <= max;
 
     return isOverMin && isBelowMax;
@@ -93,6 +95,7 @@ export const useDrag = ({
     onStart?.({
       xy: [clientX, clientY],
       delta: [0, 0],
+      defaultXY,
       velocity: 0,
       direction: undefined,
       startDirection: undefined,
@@ -105,6 +108,7 @@ export const useDrag = ({
     timeStamp.current = new Date().getTime();
     direction.current = undefined;
     startDirection.current = undefined;
+    velocity.current = 0;
   };
 
   const calculateVelocity = (moveX: number, moveY: number) => {
@@ -147,6 +151,7 @@ export const useDrag = ({
     onMove?.({
       xy: [x, y],
       delta: [moveX, moveY],
+      defaultXY,
       velocity: velocity.current,
       direction: direction.current,
       startDirection: startDirection.current,
@@ -160,12 +165,15 @@ export const useDrag = ({
     calculateDirection(moveX, moveY);
   };
 
-  const handleEnd = async () => {
+  const handleEnd = () => {
     if (!isEnable) return;
+
+    if (!isDragging) return;
 
     onEnd?.({
       xy: [x, y],
       delta: [deltaX, deltaY],
+      defaultXY,
       velocity: velocity.current,
       direction: direction.current,
       startDirection: startDirection.current,
@@ -183,7 +191,7 @@ export const useDrag = ({
   const onTouchMove: TouchEventHandler = (e) =>
     handleMove(e.touches[0].clientX, e.touches[0].clientY);
 
-  const onTouchEnd = () => handleEnd();
+  const onTouchEnd: TouchEventHandler = () => handleEnd();
 
   const onMouseDown: MouseEventHandler = (e) => {
     e.preventDefault();
