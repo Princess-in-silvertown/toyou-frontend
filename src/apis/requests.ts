@@ -69,11 +69,12 @@ export const requestGetSticker = (groupId: number) => {
   );
 };
 
-export const requestGetEvents = (year: number, month: number) => {
-  const date = new Date(year, month);
+export const requestGetEvents = (year: number, monthIndex: number) => {
+  const date = new Date(year, monthIndex);
+  const month = (monthIndex % 12) + 1;
 
   const yearString = `${date.getFullYear()}`;
-  const monthString = `${date.getMonth()}`.padStart(2, '0');
+  const monthString = `${month}`.padStart(2, '0');
 
   const dateTime = `${yearString}-${monthString}`;
 
