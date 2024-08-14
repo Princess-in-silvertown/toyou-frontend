@@ -107,8 +107,8 @@ const SwiperCard = ({
             }deg + ${deltaX}deg))`,
           }}
         >
-          <CardFront>{frontContents}</CardFront>
-          <CardBack>{backContents}</CardBack>
+          <CardFront $isFront={isFront}>{frontContents}</CardFront>
+          <CardBack $isFront={isFront}>{backContents}</CardBack>
         </CardContainer>
       </SwiperWrapper>
     </Container>
@@ -150,21 +150,25 @@ const CardContainer = styled.div`
   }
 `;
 
-const CardFront = styled.div`
+const CardFront = styled.div<{ $isFront: boolean }>`
   border: 1px solid ${({ theme }) => theme.gray500};
 
   background: ${({ theme }) => theme.gray0};
 
   overflow: hidden;
+
+  pointer-events: ${({ $isFront }) => !$isFront && 'none'};
 `;
 
-const CardBack = styled.div`
+const CardBack = styled.div<{ $isFront: boolean }>`
   border: 1px solid ${({ theme }) => theme.gray500};
 
   background: ${({ theme }) => theme.gray0};
   transform: rotateY(180deg);
 
   overflow: hidden;
+
+  pointer-events: ${({ $isFront }) => $isFront && 'none'};
 `;
 
 const TitleContainer = styled.div`
