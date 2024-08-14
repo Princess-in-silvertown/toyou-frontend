@@ -19,8 +19,8 @@ export type ModalDispatch = {
     newNode: ReactNode,
     container?: React.FC<ModalContainer>
   ) => void;
-  handleClose: (key?: string) => void;
-  handleClear: () => void;
+  handleClose: (key?: string, time?: number) => void;
+  handleClear: (time?: number) => void;
   handleUpdate: (key: string, newNode: ReactNode) => void;
 };
 

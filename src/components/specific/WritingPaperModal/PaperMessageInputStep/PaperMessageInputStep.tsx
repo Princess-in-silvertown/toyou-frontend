@@ -12,6 +12,7 @@ interface Props {
 
 const PaperMessageInputStep = ({}: Props) => {
   const { alias, message, userInfo } = useContext(messageFormContext);
+
   const {
     handleChangeAlias: onChangeAlias,
     handleChangeMessage: onChangeMessage,

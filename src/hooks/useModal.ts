@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { useScrollListener } from './useScrollListener';
 import { Modal, ModalContainer } from '@/contexts/states/modalContext';
 
-export const useModal = (closingTime = 1000) => {
+export const useModal = (closingTime = 500) => {
   const [modals, setModals] = useState<Map<string, Modal>>(new Map());
 
   const isOpen = modals.size > 0;
@@ -17,7 +17,7 @@ export const useModal = (closingTime = 1000) => {
     setModals((prev) => new Map(prev.set(key, newModal)));
   };
 
-  const handleClose = (key?: string) => {
+  const handleClose = (key?: string, time?: number) => {
     if (modals.size <= 0) return;
 
     const targetKey = key ?? getLastKey() ?? '';
@@ -25,7 +25,7 @@ export const useModal = (closingTime = 1000) => {
     triggerClosingAnimation(targetKey);
     setTimeout(() => {
       deleteModal(targetKey);
-    }, closingTime);
+    }, time ?? closingTime);
   };
 
   const deleteModal = (key: string) => {
@@ -47,7 +47,7 @@ export const useModal = (closingTime = 1000) => {
     });
   };
 
-  const handleClear = () => {
+  const handleClear = (time?: number) => {
     if (modals.size <= 0) return;
 
     const first = modals.get(getFirstKey()!)!;
@@ -59,7 +59,7 @@ export const useModal = (closingTime = 1000) => {
 
     setTimeout(() => {
       setModals(new Map());
-    }, closingTime);
+    }, time ?? closingTime);
   };
 
   const getLastKey = () => {

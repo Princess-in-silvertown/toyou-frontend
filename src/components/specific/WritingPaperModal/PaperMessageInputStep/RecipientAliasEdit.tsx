@@ -31,7 +31,7 @@ const RecipientAliasEdit = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const contentsRef = useRef<HTMLDivElement>(null);
 
-  const defaultAlias = useMemo(() => `${recipientName}에게`, []);
+  const defaultAlias = `${recipientName}에게`;
 
   const openEdit = () => {
     if (isEditing) return;
@@ -93,7 +93,7 @@ const RecipientAliasEdit = ({
       const newWidth = spanRef.current.offsetWidth + 20;
       inputRef.current.style.width = `${newWidth}px`;
     }
-  }, [recipientAlias]);
+  }, [recipientAlias, defaultAlias]);
 
   useEffect(() => {
     if (recipientAlias) return;

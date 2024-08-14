@@ -1,36 +1,60 @@
 import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import FullContainer from '@components/common/Modal/FullContainer';
-import GroupList from '@components/specific/GroupList/GroupList';
-import MyGroupList from '@components/specific/MyGroupList/MyGroupList';
+import CardSelect from '@components/specific/CardSelect/CardSelect';
 import WritingPaperModal from '@components/specific/WritingPaperModal/WritingPaperModal';
 import { KEYS } from '@constants/modal';
-import { useMyGroupList } from '@hooks/queries/useMyGroupList';
-import { useUserProfile } from '@hooks/queries/useUserProfile';
-import { useContext } from 'react';
+import { useViewport } from '@hooks/useViewport';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 const HomePage = () => {
-  useMyGroupList();
-
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
+
+  const [isCardSelected, setIsCardSelected] = useState(false);
+  const [isDraggable, setIsDraggable] = useState(true);
+
+  const handleSelectCard = () => {
+    if (!isDraggable) return;
+
+    setIsDraggable(true);
+    setIsCardSelected(true);
+
+    setTimeout(() => {
+      handleClickWritingButton();
+    }, 200);
+  };
+
+  const handleCloseModal = () => {
+    handleClose();
+    setIsCardSelected(false);
+
+    setTimeout(() => {
+      setIsDraggable(true);
+    }, 1000);
+  };
 
   const handleClickWritingButton = () => {
     handleOpen(
       KEYS.WRITE_MESSAGE,
       <MessageFormProvider>
-        <WritingPaperModal closeModal={handleClose} />,
+        <WritingPaperModal closeModal={handleCloseModal} />,
       </MessageFormProvider>,
       FullContainer
     );
   };
 
+  const [, viewHeight] = useViewport();
+  const marginTop = Math.max((viewHeight - 800) / 2, 0);
+
   return (
-    <>
-      <WritingButton onClick={handleClickWritingButton}>
-        글 작성하러 가기
-      </WritingButton>
-    </>
+    <Container style={{ marginTop }}>
+      <CardSelect
+        isSelected={isCardSelected}
+        onSelected={handleSelectCard}
+        canDrag={isDraggable}
+      />
+    </Container>
   );
 };
 
@@ -40,31 +64,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
-
-  margin: 25px 0;
-`;
-
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  box-sizing: border-box;
-
-  font-size: 18px;
-  color: gray;
-`;
-
-const WritingButton = styled.button`
-  font-size: 18px;
-  color: gray;
-`;
-
-const UserImage = styled.div`
-  width: 330px;
-  height: 330px;
-  border-radius: 10px;
-
-  background-color: lightgray;
+  gap: 7px;
 `;

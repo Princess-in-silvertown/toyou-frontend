@@ -101,4 +101,5 @@ const Container = styled.div<{ $isClosing?: boolean }>`
 
   animation: 0.5s ease-out
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
+  animation-fill-mode: both;
 `;

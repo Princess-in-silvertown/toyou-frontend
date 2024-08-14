@@ -5,12 +5,12 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import nextIcon from '@assets/icons/up.svg';
 import NextIcon from './UpIcon';
 
 interface Props extends React.PropsWithChildren {
   isSelected: boolean;
   onSelected: (card: any) => void;
+  canDrag?: boolean;
 }
 
 const TOP = -400;
@@ -47,8 +47,6 @@ class CardItem {
     return this.A;
   }
 }
-
-const ALPHA = '$alpha';
 
 class CardList {
   public readonly COLORS = [
@@ -109,7 +107,7 @@ const ICON_COLOR = [160, 85, 9] as const;
 
 const cardList = new CardList();
 
-const CardSelect = ({ isSelected, onSelected }: Props) => {
+const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [isSwiping, setIsSwiping] = useState(false);
@@ -138,7 +136,7 @@ const CardSelect = ({ isSelected, onSelected }: Props) => {
   const handleMove = (clientX: number, clientY: number) => {
     if (!isSwiping) return;
 
-    if (isTouchPrevented || isSelected) return;
+    if (isTouchPrevented || !canDrag) return;
 
     let moveX = clientX - startX ?? 0;
     let moveY = clientY - startY ?? 0;

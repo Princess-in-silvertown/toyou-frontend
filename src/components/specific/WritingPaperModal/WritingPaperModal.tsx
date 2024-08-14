@@ -1,24 +1,31 @@
 import styled from 'styled-components';
 import MultiStepForm from './MultiStepForm';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useKeydownListener } from '@hooks/useKeydownListener';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import DialogContainer from '@components/common/Modal/DialogContainer';
 import ConfirmCancelModalContents from './ConfirmCancelModalContents';
 import { KEYS } from '@constants/modal';
-import { useViewportHeight } from '@hooks/useViewportHeight';
 import UserSearchStep from './UserSearchStep/UserSearchStep';
 import KeywordInputStep from './KeywordInputStep/KeywordInputStep';
 import CardEditStep from './CardEditStep/CardEditStep';
-import { messageFormContext } from '@/contexts/states/messageFormContext';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 import PaperMessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
+import { useViewport } from '@hooks/useViewport';
+import { User } from '@/types/user';
 
 interface Props {
   closeModal: (key?: string) => void;
+  userInfo?: User;
 }
 
-const WritingPaperModal = ({ closeModal }: Props) => {
+const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
   const { keywords, message } = useContext(messageFormContext);
+
+  const { handleChangeInfo } = useContext(messageFormDispatchContext);
 
   const { handleOpen, handleClose, handleClear } =
     useContext(modalDispatchContext);
@@ -26,7 +33,7 @@ const WritingPaperModal = ({ closeModal }: Props) => {
   const handleAllClose = () => {
     closeModal();
 
-    handleClear();
+    handleClear(1000);
   };
 
   const handleCancel = () => {
@@ -51,36 +58,49 @@ const WritingPaperModal = ({ closeModal }: Props) => {
   };
 
   useKeydownListener('Escape', handleCancel);
-  const viewHeight = useViewportHeight();
-  const height = useMemo(() => viewHeight ?? 0, []);
+  const [, height] = useViewport();
+
+  const getSteps = () => {
+    const arr = [
+      {
+        component: <UserSearchStep />,
+      },
+      {
+        component: <PaperMessageInputStep />,
+        canNext: message.length >= 5,
+      },
+      {
+        component: (
+          <KeywordInputStep
+            canNext={keywords && keywords.length >= 1}
+            modalHeight={height}
+          />
+        ),
+        canNext: keywords && keywords.length >= 1,
+      },
+      {
+        component: <CardEditStep />,
+        canNext: true,
+      },
+    ];
+
+    if (userInfo) arr.shift();
+
+    return arr;
+  };
+
+  useEffect(() => {
+    if (userInfo) {
+      handleChangeInfo({ ...userInfo });
+    }
+  }, []);
 
   return (
     <Container style={{ height }}>
       <MultiStepForm
-        steps={[
-          {
-            component: <UserSearchStep />,
-          },
-          {
-            component: <PaperMessageInputStep />,
-            canNext: message.length >= 5,
-          },
-          {
-            component: (
-              <KeywordInputStep
-                canNext={keywords && keywords.length >= 1}
-                modalHeight={height}
-              />
-            ),
-            canNext: keywords && keywords.length >= 1,
-          },
-          {
-            component: <CardEditStep />,
-            canNext: true,
-          },
-        ]}
-        progressiveStartIndex={1}
-        progressiveLastIndex={3}
+        steps={getSteps()}
+        progressiveStartIndex={userInfo ? 0 : 1}
+        progressiveLastIndex={userInfo ? 2 : 3}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
       />

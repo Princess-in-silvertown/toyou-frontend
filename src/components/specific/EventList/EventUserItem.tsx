@@ -1,20 +1,51 @@
 import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
 import { Event } from '@/types/event';
+import { useContext, useState } from 'react';
+import { modalDispatchContext } from '@/contexts/states/modalContext';
+import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
+import { KEYS } from '@constants/modal';
+import WritingPaperModal from '../WritingPaperModal/WritingPaperModal';
+import FullContainer from '@components/common/Modal/FullContainer';
+import { User } from '@/types/user';
 
-interface Props extends Event {
-  onNext?: () => void;
-}
+interface Props extends Event {}
 
 const EventUserItem = ({
   memberId,
   memberName,
   description,
   profileImgUrl,
-  onNext,
 }: Props) => {
+  const { handleOpen, handleClose } = useContext(modalDispatchContext);
+  const [isClickPrevented, setIsClickPrevented] = useState(false);
+
+  const userInfo: User = {
+    id: memberId,
+    name: memberName,
+    imgUrl: profileImgUrl,
+  };
+
+  const handleCloseModal = () => {
+    handleClose();
+
+    setTimeout(() => {
+      setIsClickPrevented(false);
+    }, 1000);
+  };
+
   const handleClick = () => {
-    onNext?.();
+    if (isClickPrevented) return;
+
+    setIsClickPrevented(true);
+
+    handleOpen(
+      KEYS.WRITE_MESSAGE,
+      <MessageFormProvider>
+        <WritingPaperModal closeModal={handleCloseModal} userInfo={userInfo} />,
+      </MessageFormProvider>,
+      FullContainer
+    );
   };
 
   return (
