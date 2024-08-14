@@ -12,7 +12,7 @@ const NavBarItem = ({ isSelected, name, svg, handleClick }: Props) => {
 
   return (
     <Container onClick={handleClick}>
-      <Svg color={isSelected ? 'black' : 'gray'} />
+      <Svg color={isSelected ? 'black' : '#9E9E9E'} />
       <Text $isSelected={isSelected}>{name}</Text>
     </Container>
   );
