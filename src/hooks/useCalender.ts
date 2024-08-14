@@ -49,7 +49,7 @@ export const useCalender = () => {
 
     setRenderingIndex(2);
     setIsMoving(true);
-    await delay(300);
+    await delay(200);
     setIsMoving(false);
     await delay(0);
     setRenderingIndex(1);
@@ -66,7 +66,7 @@ export const useCalender = () => {
 
     setRenderingIndex(0);
     setIsMoving(true);
-    await delay(300);
+    await delay(200);
     setIsMoving(false);
     await delay(0);
     setRenderingIndex(1);
@@ -83,7 +83,7 @@ export const useCalender = () => {
 
     setRenderingIndex(2);
     setIsMoving(true);
-    await delay(300);
+    await delay(200);
     setIsMoving(false);
     await delay(0);
     setRenderingIndex(1);
@@ -100,7 +100,7 @@ export const useCalender = () => {
 
     setRenderingIndex(0);
     setIsMoving(true);
-    await delay(300);
+    await delay(200);
     setIsMoving(false);
     await delay(0);
     setRenderingIndex(1);

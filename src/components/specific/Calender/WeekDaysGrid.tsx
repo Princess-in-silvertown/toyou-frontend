@@ -39,7 +39,7 @@ const WeekDaysGrid = ({
         <DatesGrid
           style={{
             transform: `translateX(calc(${-100 * renderingIndex}%)`,
-            transition: isMoving ? 'ease-out 0.3s' : 'none',
+            transition: isMoving ? 'ease-out 0.2s' : 'none',
           }}
         >
           {days.map((day) => (
@@ -93,7 +93,7 @@ const DateCell = styled.div`
 
 const EventMarker = styled.div`
   position: absolute;
-  bottom: -5px;
+  bottom: -4px;
 
   width: 5px;
   height: 5px;

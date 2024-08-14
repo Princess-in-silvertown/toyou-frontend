@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import CalenderHeader from './CalenderHeader';
 import MonthDaysGrid from './MonthDaysGrid';
@@ -14,6 +14,8 @@ import { useViewport } from '@hooks/useViewport';
 interface Props {
   onChangeEventList?: (events?: Events) => void;
 }
+
+const ROW_HEIGHT = 48;
 
 const Calendar = ({ onChangeEventList }: Props) => {
   const {
@@ -52,45 +54,51 @@ const Calendar = ({ onChangeEventList }: Props) => {
 
     if (deltaX < -150 || (deltaX < -30 && velocity > 0.2)) {
       return handleNextMonth();
-    } else if (deltaX > 150 || (deltaX > -30 && velocity > 0.2)) {
+    } else if (deltaX > 150 || (deltaX > 30 && velocity > 0.2)) {
       return handlePrevMonth();
     }
   };
 
   const handleDragEndYCalender = (deltaY: number, velocity: number) => {
     if (!isWeekView) {
-      if (deltaY < -100 || (deltaY < -30 && velocity > 0.2)) {
+      if (deltaY < -75 || (deltaY < -30 && velocity > 0.2)) {
         viewWeek();
       }
-    } else if (deltaY > 100 || (deltaY > 30 && velocity > 0.2)) {
+    } else if (deltaY > 75 || (deltaY > 30 && velocity > 0.2)) {
       viewMonth();
     }
   };
 
   const { collected, bind } = useDrag({
     moveXMinMax: [-windowWidth + 50, windowWidth - 50],
+
     onMove: ({ delta, startDirection, setStates }) => {
       const [deltaX, deltaY] = delta;
+
       if (startDirection === 'horizontal') {
         setStates.setX(deltaX);
+        setStates.setY(0);
       } else {
         setStates.setY(deltaY);
+        setStates.setY(0);
       }
     },
 
     onEnd: ({ delta, velocity, startDirection, setStates }) => {
       const [deltaX, deltaY] = delta;
+
+      setStates.setX(0);
+      setStates.setY(0);
+
       if (startDirection === 'horizontal') {
         handleDragEndXCalender(deltaX, velocity);
       } else {
         handleDragEndYCalender(deltaY, velocity);
       }
 
-      setStates.setX(0);
-      setStates.setY(0);
-
       setStates.canDrag(false);
-      setTimeout(() => setStates.canDrag(true), 300);
+
+      setTimeout(() => setStates.canDrag(true), 250);
     },
   });
 
@@ -149,7 +157,7 @@ const Calendar = ({ onChangeEventList }: Props) => {
           <>
             <DatesContainer
               style={{
-                height: 50,
+                height: ROW_HEIGHT,
               }}
             >
               {weekDaysList.map((days, index) => {
@@ -175,7 +183,7 @@ const Calendar = ({ onChangeEventList }: Props) => {
         ) : (
           <DatesContainer
             style={{
-              height: isWeekView ? 50 : rowCount * 50,
+              height: isWeekView ? ROW_HEIGHT : rowCount * ROW_HEIGHT,
             }}
           >
             {monthDaysList.map((days, index) => {
