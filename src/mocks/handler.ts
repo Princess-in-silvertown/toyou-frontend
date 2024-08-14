@@ -202,6 +202,26 @@ export const handlers = [
     data = { days: [] };
 
     const month = Number(date.split('-')[1]);
+
+    if (month === 7) {
+      data = {
+        days: [
+          {
+            date: '2024-07-30',
+            events: [
+              {
+                memberId: 6,
+                memberName: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImgUrl: 'error',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
     if (month === 8) {
       data = {
         days: [
