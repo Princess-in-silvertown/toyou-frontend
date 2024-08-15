@@ -90,5 +90,7 @@ export const requestGetEventToday = () => {
 
   const dateTime = `${year}-${month}-${day}`;
 
-  return request.get<ResData<Events>>(`api/events?date=${dateTime}`);
+  return request.get<ResData<{ events: Events }>>(
+    `api/events?date=${dateTime}`
+  );
 };

@@ -5,14 +5,24 @@ interface Props {
   name: string;
   svg: React.FC<{ color: string }>;
   handleClick: () => void;
+  eventCount: number;
 }
 
-const NavBarItem = ({ isSelected, name, svg, handleClick }: Props) => {
+const NavBarItem = ({
+  isSelected,
+  name,
+  svg,
+  eventCount,
+  handleClick,
+}: Props) => {
   const Svg = svg;
 
   return (
     <Container onClick={handleClick}>
-      <Svg color={isSelected ? 'black' : '#9E9E9E'} />
+      <IconContainer>
+        <Svg color={isSelected ? 'black' : '#9E9E9E'} />
+        {eventCount > 0 && <EventCount>{eventCount}</EventCount>}
+      </IconContainer>
       <Text $isSelected={isSelected}>{name}</Text>
     </Container>
   );
@@ -33,8 +43,26 @@ const Container = styled.div`
   background-color: none;
 `;
 
-const Icon = styled.img`
-  fill: 'blue';
+const IconContainer = styled.div`
+  position: relative;
+`;
+
+const EventCount = styled.div`
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+
+  color: white;
+  font-size: 10px;
+
+  background-color: ${({ theme }) => theme.red500};
 `;
 
 const Text = styled.div<{ $isSelected: boolean }>`

@@ -201,7 +201,26 @@ export const handlers = [
 
     data = { days: [] };
 
-    const month = Number(date.split('-')[1]);
+    const [year, month, day] = date.split('-').map((num) => Number(num));
+
+    if (day) {
+      return HttpResponse.json(
+        {
+          data: {
+            events: [
+              {
+                memberId: 6,
+                memberName: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImgUrl: 'error',
+              },
+            ],
+          },
+        },
+        { status: 200 }
+      );
+    }
 
     if (month === 7) {
       data = {

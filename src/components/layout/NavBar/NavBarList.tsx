@@ -10,13 +10,14 @@ const NavBarList = () => {
   return (
     <Container>
       {navigationInfo.map((page) => {
-        const { value, name, svg, handleClick } = page;
+        const { value, name, eventCount, svg, handleClick } = page;
         const isSelected = currentPage == page.value;
 
         return (
           <NavBarItem
             key={value}
             name={name}
+            eventCount={eventCount}
             svg={svg}
             isSelected={isSelected}
             handleClick={handleClick}

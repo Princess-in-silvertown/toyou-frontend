@@ -5,29 +5,31 @@ import {
   MY_MESSAGES_PAGE,
   NAVIGATE_INFO,
 } from '@constants/page';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Message from '@assets/iconComponents/Message';
 import Home from '@assets/iconComponents/Home';
 import Calender from '@assets/iconComponents/Calender';
+import { useTodayEvent } from './queries/useTodayEvent';
+import { useLocation } from 'react-router-dom';
 
 export const useNavigateBar = () => {
+  const location = useLocation();
   const startPage = getCurrentPage();
-
   const [currentPage, setCurrentPage] = useState(startPage);
+
   const { goToHomePage, goToMyCalender, goToMyMessages } = useCustomNavigate();
 
+  const { data } = useTodayEvent();
+
   const handleClickHomePageButton = () => {
-    setCurrentPage(HOME_PAGE.value);
     goToHomePage();
   };
 
   const handleClickMyMessagesButton = () => {
-    setCurrentPage(MY_MESSAGES_PAGE.value);
     goToMyMessages();
   };
 
   const handleClickMyCalenderButton = () => {
-    setCurrentPage(MY_CALENDER_PAGE.value);
     goToMyCalender();
   };
 
@@ -43,13 +45,24 @@ export const useNavigateBar = () => {
     [MY_CALENDER_PAGE.value]: Calender,
   };
 
+  const eventCount = {
+    [HOME_PAGE.value]: 0,
+    [MY_MESSAGES_PAGE.value]: 0,
+    [MY_CALENDER_PAGE.value]: data?.length ?? 0,
+  };
+
   const navigationInfo = NAVIGATE_INFO.map((item) => ({
     ...item,
+    eventCount: eventCount[item.value],
     svg: icons[item.value],
     handleClick: () => {
       clickHandlers[item.value]();
     },
   }));
+
+  useEffect(() => {
+    setCurrentPage(getCurrentPage());
+  }, [location]);
 
   return { currentPage, navigationInfo };
 };
