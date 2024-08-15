@@ -80,7 +80,10 @@ const EventContainer = styled.div`
 const EventMemberList = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 16px;
 
   margin-top: 16px;
-  gap: 16px;
+  margin-bottom: 116px;
+
+  overflow: auto;
 `;
