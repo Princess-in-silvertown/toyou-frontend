@@ -1,6 +1,7 @@
 import { delay, http, HttpResponse } from 'msw';
 import sticker from '@assets/image/birthday_sticker.svg';
 import cover from '@assets/image/happy_birthday.svg';
+import H from '@assets/image/H.jpeg';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -248,6 +249,13 @@ export const handlers = [
             date: '2024-08-11',
             events: [
               {
+                memberId: 22,
+                memberName: '트루효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl: H,
+              },
+              {
                 memberId: 1,
                 memberName: '시크효섭',
                 eventType: '',
@@ -262,6 +270,14 @@ export const handlers = [
                 description: '오늘 생일입니다.',
                 profileImgUrl:
                   'https://i.namu.wiki/i/bCmE_8XrnEYeEKlbme2ZS8rsG6dcB1vGD-UJtxvGncvXuYL9fiBqL8Fk_6cQ58EKJYTyyw9mA0LWK3yIaRYQow.webp',
+              },
+              {
+                memberId: 12,
+                memberName: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
               },
             ],
           },
