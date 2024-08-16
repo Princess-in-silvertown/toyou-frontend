@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface Props {
   isSelected: boolean;
@@ -30,6 +30,16 @@ const NavBarItem = ({
 
 export default NavBarItem;
 
+const appear = keyframes`
+  from{
+    transform: scale(0);
+  }
+  
+  to{
+    transform: scale(1);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,6 +55,8 @@ const Container = styled.div`
 
 const IconContainer = styled.div`
   position: relative;
+
+  animation: ${appear} 0.3s cubic-bezier(0.17, 0.67, 0.52, 1.25) both;
 `;
 
 const EventCount = styled.div`
@@ -63,6 +75,8 @@ const EventCount = styled.div`
   font-size: 10px;
 
   background-color: ${({ theme }) => theme.red500};
+
+  animation: ${appear} 0.3s cubic-bezier(0.17, 0.67, 0.52, 1.25) both;
 `;
 
 const Text = styled.div<{ $isSelected: boolean }>`
@@ -72,4 +86,9 @@ const Text = styled.div<{ $isSelected: boolean }>`
   line-height: 16px;
   letter-spacing: 0.5px;
   text-align: center;
+  font-display: swap;
+
+  animation: ${appear} 0.3s cubic-bezier(0.17, 0.67, 0.52, 1.25);
+  animation-fill-mode: both;
+  animation-delay: 1s;
 `;
