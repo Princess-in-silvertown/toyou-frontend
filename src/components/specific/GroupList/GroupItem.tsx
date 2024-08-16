@@ -9,13 +9,12 @@ import { KEYS } from '@constants/modal';
 interface Props extends Group {}
 
 const GroupItem = ({ id, name }: Props) => {
-  const { mutation } = useMyGroupList();
-  const { mutateAsync } = mutation;
+  // const { mutateAsync } = mutation;
 
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
 
   const handleModalSubmit = async () => {
-    mutateAsync(id).then(() => handleClose());
+    // mutateAsync(id).then(() => handleClose());
   };
 
   const handleClickGroupItem = () => {

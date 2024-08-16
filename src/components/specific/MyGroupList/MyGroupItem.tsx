@@ -7,18 +7,16 @@ import styled from 'styled-components';
 interface Props extends Group {}
 
 const GroupItem = ({ id, name }: Props) => {
-  const { goToSearchingUserPage } = useCustomNavigate();
-
-  const handleClickGroupItem = () => {
-    goToSearchingUserPage(id);
-  };
-
-  return (
-    <Container onClick={handleClickGroupItem}>
-      <Name>{name}</Name>
-      <UserCount>{3}</UserCount>
-    </Container>
-  );
+  // const { goToSearchingUserPage } = useCustomNavigate();
+  // const handleClickGroupItem = () => {
+  //   goToSearchingUserPage(id);
+  // };
+  // return (
+  //   <Container onClick={handleClickGroupItem}>
+  //     <Name>{name}</Name>
+  //     <UserCount>{3}</UserCount>
+  //   </Container>
+  // );
 };
 
 export default GroupItem;

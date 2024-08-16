@@ -3,4 +3,4 @@ export type Group = {
   name: string;
 };
 
-export type GroupList = Group[];
+export type GroupList = { groups: Group[] };

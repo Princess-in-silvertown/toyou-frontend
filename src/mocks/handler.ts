@@ -6,19 +6,18 @@ import H from '@assets/image/H.jpeg';
 const indexedGroupList: Record<number, any> = {
   1: {
     id: 1,
-    name: 'group_name1',
-    value: 'group1',
-    userCount: 5,
-    userIds: [1, 2, 3, 4, 5],
+    name: '경희대학교',
   },
+
   2: {
     id: 2,
-    name: 'group_name2',
-    value: 'group2',
-    userCount: 2,
-    userIds: [2, 3],
+    name: '경희고고고등학교',
   },
-  3: { id: 3, name: 'group_name3', value: 'group3', userCount: 0, userIds: [] },
+
+  3: {
+    id: 3,
+    name: '테스트용약간긴긴이름',
+  },
 };
 
 const indexedUserList: Record<number, any> = {
@@ -29,7 +28,7 @@ const indexedUserList: Record<number, any> = {
   5: { id: 5, name: '효섭(댄디함)' },
 };
 
-var myGroupIDList: number[] = [];
+var myGroupIDList: number[] = [1, 2, 3];
 
 let coverApiResponseCount = 0;
 
@@ -48,10 +47,10 @@ export const handlers = [
     );
   }),
 
-  http.get('api/group/me', () => {
+  http.get('api/groups', () => {
     return HttpResponse.json(
       {
-        data: myGroupIDList.map((id) => indexedGroupList[id]),
+        data: { groups: myGroupIDList.map((id) => indexedGroupList[id]) },
         pageInfo: {},
       },
       { status: 200 }

@@ -3,11 +3,7 @@ import styled from 'styled-components';
 import GroupItem from './GroupItem';
 
 const GroupList = () => {
-  const { data: groupList } = useGroupList();
-
-  for (let i of 'aaaa') {
-    const a = 1;
-  }
+  const { data: groupList } = useGroupList(1);
 
   return (
     <Container>

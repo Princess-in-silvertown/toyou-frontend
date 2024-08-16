@@ -2,25 +2,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { requestGetMyGroupList, requestPostMyGroupList } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
-import { GroupList } from '@/types/group';
+import { Group, GroupList } from '@/types/group';
 import { QUERY_KEY } from '@constants/query';
-import { queryClient } from '@/contexts/providers/QueryClientProvider';
 
 export const useMyGroupList = () => {
-  const query = useQuery<ResData<GroupList>, ResponseError, GroupList>({
+  const query = useQuery<ResData<GroupList>, ResponseError, Group[]>({
     queryKey: [QUERY_KEY.myGroupList, 'GET'],
     queryFn: requestGetMyGroupList,
-    select: (json) => json.data,
+    select: (json) => json.data.groups,
   });
 
-  const mutation = useMutation({
-    mutationFn: (groupId: number) => requestPostMyGroupList(groupId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.myGroupList, 'GET'],
-      });
-    },
-  });
-
-  return { query, mutation };
+  return query;
 };
