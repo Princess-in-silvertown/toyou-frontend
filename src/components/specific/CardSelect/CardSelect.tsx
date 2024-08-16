@@ -22,29 +22,39 @@ const MAX_X = 100;
 
 class CardItem {
   public readonly key: number;
-  private readonly R: number;
-  private readonly G: number;
-  private readonly B: number;
-  private readonly A: number;
+  private readonly color: [number, number, number, number];
+  private readonly subColor: [number, number, number, number];
+  private readonly message: string;
 
   constructor(
     key: number,
-    color: { R: number; G: number; B: number; A: number }
+    color: { R: number; G: number; B: number; A: number },
+    subColor: { R: number; G: number; B: number; A: number },
+    message: string
   ) {
     this.key = key;
-    this.R = color.R;
-    this.G = color.G;
-    this.B = color.B;
-    this.A = color.A;
+    this.color = [color.R, color.G, color.B, color.A];
+    this.subColor = [subColor.R, subColor.G, subColor.B, subColor.A];
+    this.message = message;
   }
 
   // # replace '$alpha' to number
   public getRgb() {
-    return [this.R, this.G, this.B];
+    const color = [...this.color];
+    return color.splice(0, 3);
   }
 
   public getAlpha() {
-    return this.A;
+    return this.color[3];
+  }
+
+  public getSubRgb() {
+    const color = [...this.subColor];
+    return color.splice(0, 3);
+  }
+
+  public getMessage() {
+    return this.message;
   }
 }
 
@@ -54,6 +64,20 @@ class CardList {
     { name: 'red', R: 242, G: 36, B: 22, A: 0.9 },
     { name: 'blue', R: 85, G: 0, B: 255, A: 0.8 },
     { name: 'green', R: 47, G: 223, B: 156, A: 0.8 },
+  ];
+
+  public readonly SUB_COLORS = [
+    { name: 'yellow', R: 255, G: 234, B: 76, A: 1 },
+    { name: 'red', R: 242, G: 36, B: 22, A: 0.9 },
+    { name: 'blue', R: 85, G: 0, B: 255, A: 0.8 },
+    { name: 'green', R: 47, G: 223, B: 156, A: 0.8 },
+  ];
+
+  public readonly MESSAGES = [
+    '생일 축하해 카드',
+    '정말 고마워 카드',
+    '너를 응원해 카드',
+    '힘내, 할수있어 카드',
   ];
 
   private readonly COLOR_LENGTH = this.COLORS.length;
@@ -71,7 +95,10 @@ class CardList {
   private addCardItem() {
     const colorIndex = this.next % this.COLOR_LENGTH;
     const color = this.COLORS[colorIndex];
-    const newCard = new CardItem(this.next, color);
+    const subColor = this.SUB_COLORS[colorIndex];
+    const message = this.MESSAGES[colorIndex];
+
+    const newCard = new CardItem(this.next, color, subColor, message);
 
     this.cards.push(newCard);
 
@@ -96,10 +123,22 @@ class CardList {
     return cards;
   }
 
+  public getCurrentCardMessage() {
+    const first = [...this.cards].shift();
+
+    return first?.getMessage();
+  }
+
   public getCurrentCardColor() {
     const first = [...this.cards].shift();
 
     return first?.getRgb() ?? [0, 0, 0];
+  }
+
+  public getCurrentCardRGBA() {
+    const first = [...this.cards].shift();
+
+    return [...(first?.getRgb() ?? []), first?.getAlpha()] ?? [0, 0, 0, 0];
   }
 }
 
@@ -432,18 +471,9 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
             transition: '1.2s cubic-bezier(.17,.67,.52,1.25)',
           }}
         >
-          <Title
-            style={{
-              color: getBlendColor(
-                cardList.getCurrentCardColor(),
-                ICON_COLOR,
-                0.3
-              ),
-            }}
-          >
-            Send a Message Card <br /> To
+          <Title>
+            메시지 카드를 보내 <br /> 마음을 전달해 보세요
           </Title>
-          <TitleGray>your friend</TitleGray>
         </WritingButton>
       </TitleContainer>
       <SwiperWrapper
@@ -530,6 +560,13 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
             }
           })
           .reverse()}
+        <DescriptionContainer
+          style={{
+            opacity: isSwiping || isTouchPrevented ? 0 : 0.8,
+          }}
+        >
+          <Description> {cardList.getCurrentCardMessage()} </Description>
+        </DescriptionContainer>
       </SwiperWrapper>
     </Container>
   );
@@ -579,27 +616,51 @@ const IconContainer = styled.div`
   position: absolute;
   left: 50%;
 
-  filter: saturate(0.9);
   transform: translateX(-50%);
-  transition: opacity ease 0.3s, transform ease 0.4s 0.15s;
+  transition: opacity ease-out 0.3s, transform ease-out 0.4s 0.15s;
 `;
 
 const Title = styled.span`
-  font-size: 28px;
-  line-height: 28px;
-  letter-spacing: -0.02em;
+  color: #212121f2;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: -0.04em;
   text-align: center;
-  color: #212121;
-  filter: saturate(0.7) brightness(0.5);
+
+  transition: opacity ease 0.3s;
+
+  @media (max-height: 650px) {
+    font-size: 22px;
+    line-height: 28px;
+  }
 `;
 
-const TitleGray = styled.span`
-  margin-left: 7px;
-  font-size: 28px;
-  line-height: 28px;
+const DescriptionContainer = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 365px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 32px;
+  width: 162px;
+  border-radius: 16px;
+
+  background-color: #f2f2f2b2;
+
+  transform: translateX(-50%);
+  transition: opacity ease-out 0.5s;
+`;
+
+const Description = styled.div`
+  color: #212121df;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
   letter-spacing: -0.02em;
   text-align: center;
-  color: #21212180;
 `;
 
 const WritingButton = styled.button`
