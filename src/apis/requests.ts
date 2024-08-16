@@ -9,18 +9,18 @@ export const requestGetTest = () => {
   return request.get<any>('test');
 };
 
-export const requestGetGroupList = () => {
-  return request.get<ResData<GroupList>>('api/group/searched');
+export const requestGetGroupList = (memberId: number) => {
+  return request.post<ResData<GroupList>>(`api/groups?memberId=${memberId}`);
 };
 
 export const requestPostMyGroupList = (groupId: number) => {
   const body = JSON.stringify({ groupId });
 
-  return request.post<ResData<any>>('api/group/me', body);
+  return request.post<ResData<any>>('api/groups/me', body);
 };
 
 export const requestGetMyGroupList = () => {
-  return request.get<ResData<GroupList>>('api/group/me');
+  return request.get<ResData<GroupList>>('api/groups');
 };
 
 export const requestGetUserList = (groupId?: number) => {
