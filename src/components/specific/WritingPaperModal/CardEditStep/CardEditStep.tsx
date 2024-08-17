@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import CardEdit from './CardEdit';
-import { Suspense, useContext } from 'react';
+import { Suspense, useContext, useEffect } from 'react';
 import LoadingCardSpinner from './LoadingCardSpinner';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 
@@ -12,6 +12,10 @@ interface Props {
 
 const CardEditStep = ({ isWaitSubmit, waitSubmit, canEdit }: Props) => {
   const { alias, message } = useContext(messageFormContext);
+
+  useEffect(() => {
+    setTimeout(waitSubmit, 2000);
+  }, []);
 
   return (
     <Container>

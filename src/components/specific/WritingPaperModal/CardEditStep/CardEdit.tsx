@@ -1,13 +1,18 @@
 import SwiperCard from '@components/common/SwiperCard/SwiperCard';
 import { useGetCardCover } from '@hooks/queries/useCardCover';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import StickerList from '../StickerList';
 import { useContext, useState } from 'react';
-import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
+import {
+  messageFormContext,
+  messageFormDispatchContext,
+} from '@/contexts/states/messageFormContext';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { KEYS } from '@constants/modal';
 import ModalContainer from '../StickerSelectModal/ModalContainer';
 import StickerSelectModalContents from '../StickerSelectModal/StickerSelectModalContents';
+import { CARD_THEME } from '@constants/card';
+import { CardColor } from '@/types/card';
 
 interface Props {
   alias: string;
@@ -15,76 +20,109 @@ interface Props {
 }
 
 const CardEdit = ({ alias, message }: Props) => {
-  const [cardIndex, setCardIndex] = useState(0);
-
   const { data } = useGetCardCover(1);
 
-  const { handleAddSticker } = useContext(messageFormDispatchContext);
+  const { cardTheme } = useContext(messageFormContext);
+  const { color, subColor } = CARD_THEME[cardTheme];
 
-  const { handleOpen, handleClose } = useContext(modalDispatchContext);
+  const getColorString = (color: Readonly<CardColor>) => {
+    return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.85})`;
+  };
 
-  const handleClickStickerEditButton = () => {
-    handleOpen(
-      KEYS.STICKER_EDIT,
-      <StickerSelectModalContents
-        cardIndex={cardIndex}
-        closeModal={handleClose}
-        onAddSticker={handleAddSticker}
-      />,
-      ModalContainer
-    );
+  const getSubColorString = (color: Readonly<CardColor>) => {
+    return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.35})`;
   };
 
   return (
     <Container>
       <SwiperCard
         frontContents={
-          <CardCoverContainer>
-            <AliasContainer>
-              <To>To</To>
-              <Alias>{alias}</Alias>
-            </AliasContainer>
-            <CoverImage src={data.imgUrl} />
-            <StickerList side="front" />
-          </CardCoverContainer>
+          <CardContainer
+            $color={getColorString(color)}
+            $subColor={getSubColorString(subColor)}
+          >
+            <CardCoverContainer>
+              <CoverImage src={data.imgUrl} />
+              <StickerList side="front" />
+            </CardCoverContainer>
+          </CardContainer>
         }
         backContents={
-          <CardMessageContainer>
-            <Message>
-              <Empty />
-              {message}
-              <Empty />
-            </Message>
-            <StickerList side="back" />
-          </CardMessageContainer>
+          <CardContainer
+            $color={getColorString(color)}
+            $subColor={getSubColorString(color)}
+          >
+            <BackContainer>
+              <CardMessageContainer>
+                <AliasContainer>
+                  <To>To.</To>
+                  <Alias>{alias}</Alias>
+                </AliasContainer>
+                <Message>{message}</Message>
+                <StickerList side="back" />
+              </CardMessageContainer>
+            </BackContainer>
+          </CardContainer>
         }
         frontTitle="메시지 커버"
         backTitle="메시지 내용"
-        onSwipe={setCardIndex}
       />
-      <StickerEditButton onClick={handleClickStickerEditButton}>
-        <StickerEditIcon>+ </StickerEditIcon>스타커 추가하기
-      </StickerEditButton>
     </Container>
   );
 };
 
 export default CardEdit;
 
+const zoomIn = keyframes`
+  from {
+    transform: scale(0.6875);
+  }
+
+  to {
+    transform: scale(1);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 
-  width: 100%;
-  min-width: 250px;
-  max-width: 330px;
   margin: 36px auto 0 auto;
 
   @media (max-height: 670px) {
     margin: 20px auto 0 auto;
+  }
+`;
 
-    width: 90%;
+const CardContainer = styled.div<{ $color: string; $subColor: string }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 320px;
+  height: 458px;
+  border-radius: 16px;
+
+  background-color: ${({ $color }) => $color};
+
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      ellipse at center,
+      ${({ $subColor }) => $subColor} 40%,
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0)
+    );
+    mix-blend-mode: overlay;
   }
 `;
 
@@ -94,8 +132,6 @@ const CardCoverContainer = styled.div`
   box-sizing: border-box;
 
   width: 100%;
-
-  overflow: hidden;
 `;
 
 const AliasContainer = styled.div`
@@ -103,31 +139,30 @@ const AliasContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   align-items: end;
-  gap: 10px;
+  gap: 7px;
 
   width: 100%;
   overflow: hidden;
 `;
 
 const To = styled.div`
+  font-family: 'Nanum Myeongjo';
   font-size: 38px;
-  font-family: 'Montserrat';
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: -2px;
+  font-weight: 400;
+  line-height: 47.5px;
+  letter-spacing: -0.03em;
+  text-align: left;
 `;
 
 const Alias = styled.div`
   max-width: 100%;
-  margin-bottom: 7px;
+  margin-bottom: 2px;
 
   font-family: 'Montserrat';
   font-size: 24px;
   font-weight: 500;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const CoverImage = styled.img`
@@ -136,74 +171,45 @@ const CoverImage = styled.img`
 
 const blur = css`
   content: '';
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
-  height: 30px;
+  height: 54px;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0.3)
-  );
+  z-index: 1;
 `;
 
-const Empty = styled.div``;
-
-const CardMessageContainer = styled.div`
-  position: relative;
-
-  padding: 35px 25px;
-  box-sizing: border-box;
+const BackContainer = styled.div`
+  display: block;
+  flex-direction: column;
 
   width: 100%;
+  height: 100%;
+  padding: 40px 20px;
+  box-sizing: border-box;
+`;
 
-  &::before {
-    ${blur}
-    top: 25px;
-    z-index: 1;
-  }
-
-  &::after {
-    ${blur}
-    bottom: 25px;
-    background: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0.3)
-    );
-    z-index: 1;
-  }
+const CardMessageContainer = styled.div`
+  width: 100%;
+  height: 378px;
+  overflow: scroll;
 `;
 
 const Message = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 35px;
 
   width: 100%;
-  max-height: 360px;
-  aspect-ratio: 278 / 360;
+  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 45px;
 
-  font-size: 20px;
-  white-space: pre-line;
-  overflow: scroll;
-`;
+  font-size: 18px;
+  letter-spacing: -0.04em;
+  line-height: 26px;
+  white-space: pre-wrap;
 
-const StickerEditIcon = styled.p`
-  font-size: 20px;
-
-  margin: 0;
-`;
-
-const StickerEditButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  margin: 0 auto;
-
-  font-size: 14px;
-  line-height: 22px;
+  overflow-x: hidden;
 `;

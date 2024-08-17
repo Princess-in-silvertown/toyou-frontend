@@ -8,11 +8,14 @@ export const DEFAULT_USERINFO = {
   imgUrl: '',
 };
 
+export const DEFAULT_THEME = 1;
+
 export type MessageFormDispatch = {
   handleChangeInfo: (info: Partial<User>) => void;
   handleChangeMessage: (message: string) => void;
   handleChangeAlias: (alias: string) => void;
   handleChangeCoverImgUrl: (coverImg: string) => void;
+  handleChangeCardTheme: (theme: number) => void;
 
   // keyword
   handleLoadKeywords: (keywords: string[]) => void;
@@ -33,6 +36,7 @@ export type MessageFormContext = {
   coverImgUrl: string;
   stickers: Stickers;
   keywords?: string[];
+  cardTheme: number;
 };
 
 export const messageFormContext = createContext<MessageFormContext>({
@@ -41,6 +45,7 @@ export const messageFormContext = createContext<MessageFormContext>({
   alias: '',
   coverImgUrl: '',
   stickers: new Map(),
+  cardTheme: DEFAULT_THEME,
 });
 
 //@ts-ignore

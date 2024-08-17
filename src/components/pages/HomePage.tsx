@@ -14,14 +14,14 @@ const HomePage = () => {
   const [isCardSelected, setIsCardSelected] = useState(false);
   const [isDraggable, setIsDraggable] = useState(true);
 
-  const handleSelectCard = () => {
+  const handleSelectCard = (themeId: number) => {
     if (!isDraggable) return;
 
     setIsDraggable(true);
     setIsCardSelected(true);
 
     setTimeout(() => {
-      handleClickWritingButton();
+      handleClickWritingButton(themeId);
     }, 200);
   };
 
@@ -34,10 +34,10 @@ const HomePage = () => {
     }, 1000);
   };
 
-  const handleClickWritingButton = () => {
+  const handleClickWritingButton = (themeId: number) => {
     handleOpen(
       KEYS.WRITE_MESSAGE,
-      <MessageFormProvider>
+      <MessageFormProvider themeId={themeId}>
         <WritingPaperModal closeModal={handleCloseModal} />,
       </MessageFormProvider>,
       FullContainer
