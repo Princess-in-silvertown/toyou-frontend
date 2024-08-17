@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import styled, { CSSProperties } from 'styled-components';
-import trash from '@assets/icons/trash.svg';
+import trash from '@assets/icons/delete-sticker.svg';
 
 interface Props {
   id: number;
@@ -18,6 +18,8 @@ interface Props {
   defaultY?: number;
   defaultRotate?: number;
   defaultScale?: number;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
 }
 
 const Sticker = ({
@@ -29,6 +31,8 @@ const Sticker = ({
   defaultY = 0,
   defaultRotate = 0,
   defaultScale = 1,
+  onDragStart,
+  onDragEnd,
 }: Props) => {
   // trash Sticker
   const trashRef = useRef<HTMLDivElement>(null);
@@ -66,6 +70,8 @@ const Sticker = ({
     setStartY(clientY - y);
 
     setIsSwiping(true);
+
+    onDragStart?.();
   };
 
   const handleMove = (clientX: number, clientY: number) => {
@@ -107,6 +113,8 @@ const Sticker = ({
     }
 
     onUpdate(id, { x, y, rotate, scale });
+
+    onDragEnd?.();
   };
 
   const stopPropagationMouse = (
@@ -276,9 +284,9 @@ const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
         ref={ref}
         style={{
           position: 'fixed',
-          bottom: '18px',
+          bottom: '22px',
           left: '50%',
-          transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.4)' : ''),
+          transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.29)' : ''),
         }}
       >
         <TrashIcon src={trash} />
@@ -304,14 +312,24 @@ const Image = styled.img`
 `;
 
 const Trash = styled.div`
-  width: 42px;
-  height: 42px;
-  background-color: transparent;
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+
+  width: 53px;
+  height: 53px;
+  background: #fcfcfc;
+  border-radius: 50%;
+  box-shadow: 10px 10px 60px 0px #21212126;
 
   transition: transform 0.2s ease;
+
   z-index: 2;
 `;
 
 const TrashIcon = styled.img`
+  width: 26px;
+  height: 27.75px;
+
   width: 100%;
 `;
