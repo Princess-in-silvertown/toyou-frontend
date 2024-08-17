@@ -19,3 +19,12 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('https://fonts.cdnfonts.com/css/montserrat') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
