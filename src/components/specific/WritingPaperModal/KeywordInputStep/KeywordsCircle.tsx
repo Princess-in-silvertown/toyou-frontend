@@ -17,6 +17,7 @@ const KeywordsCircle = () => {
 
   const count = keywords?.length ?? 0;
   const angleStep = 360 / (count + 1);
+  const keywordLength = keywords?.length ?? 0;
 
   useExtractedKeywords(message, !!keywords, handleLoadKeywords);
 
@@ -35,10 +36,9 @@ const KeywordsCircle = () => {
 
   return (
     <KeywordContainer>
-      <CountContainer>
-        <Number>{keywords?.length}</Number>
-        <KeywordCount>단어</KeywordCount>
-      </CountContainer>
+      <CountContainer
+        style={{ opacity: keywordLength > 0 ? 1 : 0 }}
+      >{`${keywordLength}가지 마음`}</CountContainer>
       <Orbit>
         <CircleContainer>
           <AddKeywordButton onClick={handleClickButton}>
@@ -89,28 +89,19 @@ const CountContainer = styled.div`
   display: flex;
   align-items: end;
   gap: 3px;
-  top: 49%;
+  top: calc(50% + 8px);
   left: 50%;
 
-  height: 85px;
+  border-bottom: 1px solid #616161;
+
+  color: #616161;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.71px;
+  text-align: center;
 
   transform: translate(-50%, -50%);
-`;
-
-const KeywordCount = styled.div`
-  padding: 8px 0;
-  box-sizing: border-box;
-
-  font-size: 24px;
-  color: ${({ theme }) => theme.gray900};
-`;
-
-const Number = styled.div`
-  min-width: 25px;
-
-  font-size: 60px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.gray700};
+  transition: opacity 0.3s ease;
 `;
 
 const PlusIcon = styled.img`
@@ -135,7 +126,8 @@ const AddKeywordButton = styled.button`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 2px solid ${({ theme }) => '#616161'};
+  border: 2px solid #616161;
+  box-shadow: 0 0 0 7px white; /* 두 번째 border처럼 보이는 효과 */
 
   background-color: white;
 

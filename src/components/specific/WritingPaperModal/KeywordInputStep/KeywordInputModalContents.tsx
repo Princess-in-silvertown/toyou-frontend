@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import cancel from '@assets/icons/cancel.svg';
+import cancel from '@assets/icons/cancel_gray.svg';
 
 const KEYWORD_MAX_LENGTH = 5;
 
@@ -27,7 +27,7 @@ const KeywordInputModalContents = ({
   const addKeyword = (newKeyword: string) => {
     if (modalKeywords.length >= KEYWORD_MAX_LENGTH) return;
 
-    if (modalKeywords.includes(newKeyword)) return;
+    if (modalKeywords.includes(newKeyword) || newKeyword === '') return;
 
     onAddKeyword(newKeyword);
     setModalKeywords([...modalKeywords, newKeyword]);
@@ -65,12 +65,16 @@ const KeywordInputModalContents = ({
       <Title>메세지 키워드 추가하기</Title>
       <InputContainer>
         <InputClearButton src={cancel} onClick={handleClearInput} />
-        <Input
-          ref={inputRef}
-          placeholder="검색"
-          maxLength={4}
-          onKeyDown={handleKeyDownInput}
-        />
+        {modalKeywords.length < KEYWORD_MAX_LENGTH ? (
+          <Input
+            ref={inputRef}
+            placeholder="메시지 키워드 입력"
+            maxLength={4}
+            onKeyDown={handleKeyDownInput}
+          />
+        ) : (
+          <NotInput>최대 5개의 키워드를 입력할 수 있어요</NotInput>
+        )}
         <InputSubmitButton onClick={submit}>등록</InputSubmitButton>
       </InputContainer>
       <KeywordList>
@@ -113,7 +117,8 @@ const InputContainer = styled.div`
   padding: 0 20px;
   box-sizing: border-box;
   border-radius: 20px;
-  border: 1px solid #616161;
+
+  background: #e9e9e9b2;
 `;
 
 const InputClearButton = styled.img`
@@ -125,11 +130,33 @@ const InputSubmitButton = styled.button`
   height: 25px;
   font-size: 14px;
   font-weight: 500;
-  color: #616161;
+  color: #dd432e;
 `;
 
 const Input = styled.input`
   width: calc(100% - 70px);
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #212121;
+
+  background-color: transparent;
+
+  &::placeholder {
+    color: #616161b2;
+  }
+`;
+
+const NotInput = styled.div`
+  width: calc(100% - 70px);
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #616161b2;
+
+  background-color: transparent;
 `;
 
 const KeywordList = styled.ul`
@@ -150,7 +177,8 @@ const KeywordContainer = styled.li`
   height: 33px;
   padding: 0 16px;
   border-radius: 16.5px;
-  border: 1px solid #616161;
+
+  background: #e9e9e9b2;
 
   cursor: pointer;
 `;
@@ -163,5 +191,6 @@ const KeywordDeleteButton = styled.img`
 const KeywordText = styled.div`
   font-size: 14px;
   font-weight: 500;
-`;
 
+  color: #212121;
+`;

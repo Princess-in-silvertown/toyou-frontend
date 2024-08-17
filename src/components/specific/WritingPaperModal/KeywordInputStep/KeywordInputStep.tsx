@@ -11,7 +11,7 @@ interface Props {
 }
 
 const KeywordInputStep = ({ canNext, onNext, modalHeight = 600 }: Props) => {
-  const { keywords } = useContext(messageFormContext);
+  const { keywords, userInfo } = useContext(messageFormContext);
 
   const handleClickNextButton = () => {
     if (!canNext) return;
@@ -24,9 +24,9 @@ const KeywordInputStep = ({ canNext, onNext, modalHeight = 600 }: Props) => {
       <Title>
         {keywords
           ? keywords.length === 0
-            ? '1개 이상의 키워드를 입력해주세요.'
-            : `${keywords.length}가지의 키워드로 메시지를 대표하는 \n 감정 카드를 만들 수 있어요`
-          : '메시지에서 감정 키워드를 \n 추출하는 중이에요'}
+            ? '1개 이상의\n마음을 입력해주세요.'
+            : `분석된 마음 키워드가\n정확한지 확인해주세요`
+          : `${userInfo.name} 님에게 전하고 싶은\n마음을 분석 중이에요`}
       </Title>
       <Suspense fallback={<LoadingCircle />}>
         <KeywordsCircle />
@@ -53,15 +53,11 @@ const Title = styled.div`
 
   width: fit-content;
   height: 48px;
-  margin: 48px auto 40px auto;
+  margin: 14px auto 40px auto;
 
   text-align: center;
   font-size: 20px;
   white-space: pre-wrap;
-
-  @media (max-height: 670px) {
-    margin: 28px auto 25px auto;
-  }
 `;
 
 const NextButton = styled.button<{ $canNext: boolean }>`
