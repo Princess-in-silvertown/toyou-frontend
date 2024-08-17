@@ -6,10 +6,11 @@ import {
 } from 'react';
 import styled from 'styled-components';
 import NextIcon from './UpIcon';
+import { CARD_THEME } from '@constants/card';
 
 interface Props extends React.PropsWithChildren {
   isSelected: boolean;
-  onSelected: (card: any) => void;
+  onSelected: (themeId: number) => void;
   canDrag?: boolean;
 }
 
@@ -22,23 +23,25 @@ const MAX_X = 100;
 
 class CardItem {
   public readonly key: number;
+  public readonly themeId: number;
   private readonly color: [number, number, number, number];
   private readonly subColor: [number, number, number, number];
   private readonly message: string;
 
   constructor(
     key: number,
+    themeId: number,
     color: { R: number; G: number; B: number; A: number },
     subColor: { R: number; G: number; B: number; A: number },
     message: string
   ) {
     this.key = key;
+    this.themeId = themeId;
     this.color = [color.R, color.G, color.B, color.A];
     this.subColor = [subColor.R, subColor.G, subColor.B, subColor.A];
     this.message = message;
   }
 
-  // # replace '$alpha' to number
   public getRgb() {
     const color = [...this.color];
     return color.splice(0, 3);
@@ -59,29 +62,7 @@ class CardItem {
 }
 
 class CardList {
-  public readonly COLORS = [
-    { name: 'yellow', R: 255, G: 234, B: 76, A: 1 },
-    { name: 'red', R: 242, G: 36, B: 22, A: 0.9 },
-    { name: 'blue', R: 85, G: 0, B: 255, A: 0.8 },
-    { name: 'green', R: 47, G: 223, B: 156, A: 0.8 },
-  ];
-
-  public readonly SUB_COLORS = [
-    { name: 'yellow', R: 255, G: 234, B: 76, A: 1 },
-    { name: 'red', R: 242, G: 36, B: 22, A: 0.9 },
-    { name: 'blue', R: 85, G: 0, B: 255, A: 0.8 },
-    { name: 'green', R: 47, G: 223, B: 156, A: 0.8 },
-  ];
-
-  public readonly MESSAGES = [
-    '생일 축하해 카드',
-    '정말 고마워 카드',
-    '너를 응원해 카드',
-    '힘내, 할수있어 카드',
-  ];
-
-  private readonly COLOR_LENGTH = this.COLORS.length;
-  private readonly MAX_LENGTH = this.COLORS.length + 1;
+  private readonly MAX_LENGTH = CARD_THEME.length + 1;
 
   private next: number = 0;
   private cards: CardItem[] = [];
@@ -93,12 +74,18 @@ class CardList {
   }
 
   private addCardItem() {
-    const colorIndex = this.next % this.COLOR_LENGTH;
-    const color = this.COLORS[colorIndex];
-    const subColor = this.SUB_COLORS[colorIndex];
-    const message = this.MESSAGES[colorIndex];
+    const colorIndex = this.next % CARD_THEME.length;
+    const color = CARD_THEME[colorIndex].color;
+    const subColor = CARD_THEME[colorIndex].subColor;
+    const message = CARD_THEME[colorIndex].message;
 
-    const newCard = new CardItem(this.next, color, subColor, message);
+    const newCard = new CardItem(
+      this.next,
+      colorIndex,
+      color,
+      subColor,
+      message
+    );
 
     this.cards.push(newCard);
 
@@ -139,6 +126,12 @@ class CardList {
     const first = [...this.cards].shift();
 
     return [...(first?.getRgb() ?? []), first?.getAlpha()] ?? [0, 0, 0, 0];
+  }
+
+  public getCurrentCardTheme() {
+    const first = [...this.cards].shift();
+
+    return first?.themeId;
   }
 }
 
@@ -221,7 +214,7 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
       setCurrentIndex((prev) => prev + 1);
       setIsTouchPrevented(true);
 
-      onSelected?.(1);
+      onSelected?.(cardList.getCurrentCardTheme() ?? 0);
     } else if (deltaX >= 50) {
       setX(300);
       setCurrentIndex((prev) => prev + 1);
