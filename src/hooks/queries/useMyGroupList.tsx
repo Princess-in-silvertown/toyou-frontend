@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { requestGetMyGroupList, requestPostMyGroupList } from '@apis/requests';
+import { useQuery } from '@tanstack/react-query';
+import { requestGetMyGroupList } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { Group, GroupList } from '@/types/group';

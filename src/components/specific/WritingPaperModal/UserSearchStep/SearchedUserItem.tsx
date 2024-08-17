@@ -3,25 +3,23 @@ import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
 import { useContext } from 'react';
 import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
+import { Member } from '@/types/member';
 
-interface Props extends User {
-  groupName: string;
-  introduce: string;
+interface Props extends Member {
   onNext?: () => void;
 }
 
 const SearchedUserItem = ({
   id,
   name,
-  imgUrl,
-  groupName,
-  introduce,
+  imageUrl,
+  introduction,
   onNext,
 }: Props) => {
   const { handleChangeInfo } = useContext(messageFormDispatchContext);
 
   const handleClick = () => {
-    handleChangeInfo({ id, name, imgUrl });
+    handleChangeInfo({ id, name, imgUrl: imageUrl });
 
     onNext?.();
   };
@@ -34,12 +32,10 @@ const SearchedUserItem = ({
         </LeftFirstContents>
         <LeftSecondContents>
           <Name>{name}</Name>
-          <Introduce>{introduce}</Introduce>
+          <Introduce>{introduction}</Introduce>
         </LeftSecondContents>
       </LeftContents>
-      <RightContents>
-        <GroupName>{groupName}</GroupName>
-      </RightContents>
+      <RightContents />
     </Container>
   );
 };
@@ -49,6 +45,8 @@ export default SearchedUserItem;
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+
+  height: 55px;
 
   cursor: pointer;
 `;

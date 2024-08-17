@@ -1,20 +1,10 @@
 import styled, { keyframes } from 'styled-components';
-import UserItem from './UserItem';
-import { useUserList } from '@hooks/queries/useUserList';
 import { useParams } from 'react-router-dom';
 
 const UserList = () => {
   const { groupId } = useParams();
 
-  const { data: userList } = useUserList(Number(groupId));
-
-  return (
-    <Container>
-      {userList?.map((user) => (
-        <UserItem key={user.id} {...user} />
-      ))}
-    </Container>
-  );
+  return <Container></Container>;
 };
 
 export default UserList;

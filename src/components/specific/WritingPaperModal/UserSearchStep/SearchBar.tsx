@@ -2,15 +2,16 @@ import styled from 'styled-components';
 import search from '@assets/icons/search.svg';
 import { ChangeEventHandler } from 'react';
 import { Group } from '@/types/group';
+import GroupFilter from './GroupFilter';
 
 interface Props {
   input: string;
-  group: Group;
+  group: Group | null;
   onChangeInput: (input: string) => void;
-  onChangeGroup: (group: Group) => void;
+  onChangeGroup: (group: Group | null) => void;
 }
 
-const SearchBar = ({ input, onChangeGroup, onChangeInput }: Props) => {
+const SearchBar = ({ input, group, onChangeGroup, onChangeInput }: Props) => {
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (event) => {
     const input = event.target.value;
 
@@ -21,7 +22,7 @@ const SearchBar = ({ input, onChangeGroup, onChangeInput }: Props) => {
     <InputContainer>
       <InputSearchButton src={search} />
       <Input value={input} placeholder="검색" onChange={handleChangeInput} />
-      <GroupFilterContainer>{}</GroupFilterContainer>
+      <GroupFilter group={group} onChangeGroup={onChangeGroup} />
     </InputContainer>
   );
 };
@@ -32,13 +33,15 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 
   width: 100%;
-  height: 40px;
-  padding: 0 20px;
+  height: 43px;
+  padding: 0 6px 0 20px;
   box-sizing: border-box;
   border-radius: 20px;
-  border: 1px solid #616161;
+
+  background-color: #e9e9e9;
 `;
 
 const InputSearchButton = styled.img`
@@ -46,13 +49,8 @@ const InputSearchButton = styled.img`
   height: 16px;
 `;
 
-const GroupFilterContainer = styled.button`
-  height: 25px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #616161;
-`;
-
 const Input = styled.input`
   width: calc(100% - 40px);
+
+  background-color: transparent;
 `;

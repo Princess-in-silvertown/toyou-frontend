@@ -1,5 +1,4 @@
 import { Group } from '@/types/group';
-import { User } from '@/types/user';
 import { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
@@ -9,18 +8,16 @@ interface Props {
   onNext?: () => void;
 }
 
-const defaultGroup = { id: -1, name: '모든 그룹' };
-
 const UserSearchStep = ({ onNext }: Props) => {
-  const [selectedGroup, setSelectedGroup] = useState<Group>(defaultGroup);
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [input, setInput] = useState('');
 
   const handleChangeInput = (newInput: string) => {
     setInput(newInput);
   };
 
-  const handleChangeGroup = (newGroup: Group) => {
-    setSelectedGroup({ ...newGroup });
+  const handleChangeGroup = (newGroup: Group | null) => {
+    setSelectedGroup(newGroup && { ...newGroup });
   };
 
   return (
@@ -32,7 +29,11 @@ const UserSearchStep = ({ onNext }: Props) => {
         onChangeInput={handleChangeInput}
         onChangeGroup={handleChangeGroup}
       />
-      <SearchedUserList groupId={1} input={input} onNext={onNext} />
+      <SearchedUserList
+        groupId={selectedGroup?.id}
+        input={input}
+        onNext={onNext}
+      />
     </Container>
   );
 };

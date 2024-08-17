@@ -1,9 +1,9 @@
 import { ResData } from '@/types/api';
 import { request } from './request';
 import { GroupList } from '@/types/group';
-import { SameGroupUsers, User, UserList } from '@/types/user';
+import { User, UserList } from '@/types/user';
 import { EventData, Events } from '@/types/event';
-import { getYearMonthDateTime } from '@utils/date';
+import { Member } from '@/types/member';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -13,24 +13,19 @@ export const requestGetGroupList = (memberId: number) => {
   return request.post<ResData<GroupList>>(`api/groups?memberId=${memberId}`);
 };
 
-export const requestPostMyGroupList = (groupId: number) => {
-  const body = JSON.stringify({ groupId });
-
-  return request.post<ResData<any>>('api/groups/me', body);
-};
-
 export const requestGetMyGroupList = () => {
   return request.get<ResData<GroupList>>('api/groups');
 };
 
-export const requestGetUserList = (groupId?: number) => {
+export const requestGetMemberList = (search: string, groupId?: number) => {
   const stringId = typeof groupId === 'number' ? String(groupId) : undefined;
 
   const params = new URLSearchParams({
     ...(stringId && { groupId: stringId }),
+    ...(search.length > 0 && { search }),
   }).toString();
 
-  return request.get<ResData<UserList>>(`api/users?${params}`);
+  return request.get<ResData<Member[]>>(`api/members?${params}`);
 };
 
 export const requestGetUserProfile = (userId: number) => {
@@ -43,14 +38,6 @@ export const requestGetUserProfile = (userId: number) => {
 
 export const requestGetKeywords = (message: string) => {
   return request.get<ResData<string[]>>(`api/keywords?message=${message}`);
-};
-
-export const requestGetSameGroupUserList = () => {
-  return request.get<ResData<SameGroupUsers>>(`api/same_group_users`);
-};
-
-export const requestPostCreateCard = (groupId: number) => {
-  return request.get<ResData<SameGroupUsers>>(`api/same_group_users`);
 };
 
 export const requestGetCover = (groupId: number) => {

@@ -21,11 +21,45 @@ const indexedGroupList: Record<number, any> = {
 };
 
 const indexedUserList: Record<number, any> = {
-  1: { id: 1, name: '효섭' },
-  2: { id: 2, name: '효효섭' },
-  3: { id: 3, name: '효효효효섭' },
-  4: { id: 4, name: '효섭(시크함)' },
-  5: { id: 5, name: '효섭(댄디함)' },
+  1: {
+    id: 1,
+    name: '효섭',
+    groupIds: [1, 2],
+    introduction: '디폴트효섭',
+    imageUrl: '',
+  },
+
+  2: {
+    id: 2,
+    name: '효효섭',
+    groupIds: [1],
+    introduction: '효효섭이다',
+    imageUrl: '',
+  },
+
+  3: {
+    id: 3,
+    name: '효효효효섭',
+    groupIds: [2],
+    introduction: '효효효섭이다',
+    imageUrl: '',
+  },
+
+  4: {
+    id: 4,
+    name: '효섭(시크함)',
+    groupIds: [1, 2, 3],
+    introduction: '시크한 효섭이다',
+    imageUrl: '',
+  },
+
+  5: {
+    id: 5,
+    name: '효섭(댄디함)',
+    groupIds: [],
+    introduction: '댄디한 효섭이다',
+    imageUrl: '',
+  },
 };
 
 var myGroupIDList: number[] = [1, 2, 3];
@@ -37,10 +71,28 @@ export const handlers = [
     return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
   }),
 
-  http.get('api/group/searched', (info) => {
+  http.get('api/members', ({ request }) => {
+    const url = new URL(request.url);
+    const groupId = Number(url.searchParams.get('groupId'));
+    const search = url.searchParams.get('search');
+
+    const inGroupList = groupId
+      ? Object.values(indexedUserList).filter((item) =>
+          item.groupIds.includes(groupId)
+        )
+      : Object.values(indexedUserList);
+
+    const searchedList = search
+      ? inGroupList.filter((item) => item.name.includes(search))
+      : inGroupList;
+
+    const data = searchedList.map((item) => {
+      return { groupId, ...item };
+    });
+
     return HttpResponse.json(
       {
-        data: Object.values(indexedGroupList),
+        data: data,
         pageInfo: {},
       },
       { status: 200 }
