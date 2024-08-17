@@ -34,7 +34,7 @@ const ControlButton = ({ type, handler, canNext }: ButtonProps) => {
     case 'SUBMIT':
       icon = (
         <ButtonText $canNext={canNext} onClick={handler}>
-          완료
+          전송
         </ButtonText>
       );
       break;

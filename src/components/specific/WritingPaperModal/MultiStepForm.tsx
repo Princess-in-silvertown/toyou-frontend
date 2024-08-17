@@ -63,6 +63,8 @@ const MultiStepForm = ({
   };
 
   const handleClickSubmitButton = () => {
+    if (canNext !== undefined && !canNext) return;
+
     handleSubmit();
   };
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import MultiStepForm from './MultiStepForm';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useKeydownListener } from '@hooks/useKeydownListener';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import DialogContainer from '@components/common/Modal/DialogContainer';
@@ -29,6 +29,16 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
 
   const { handleOpen, handleClose, handleClear } =
     useContext(modalDispatchContext);
+
+  const [isWaitSubmit, setIsWaitSubmit] = useState(false);
+
+  const waitSubmit = () => {
+    setIsWaitSubmit(true);
+  };
+
+  const canEdit = () => {
+    setIsWaitSubmit(false);
+  };
 
   const handleAllClose = () => {
     closeModal();
@@ -79,8 +89,14 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
         canNext: keywords && keywords.length >= 1,
       },
       {
-        component: <CardEditStep />,
-        canNext: true,
+        component: (
+          <CardEditStep
+            isWaitSubmit={isWaitSubmit}
+            canEdit={canEdit}
+            waitSubmit={waitSubmit}
+          />
+        ),
+        canNext: isWaitSubmit,
       },
     ];
 

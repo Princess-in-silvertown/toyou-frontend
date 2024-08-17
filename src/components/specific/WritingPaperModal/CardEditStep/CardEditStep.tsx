@@ -4,7 +4,13 @@ import { Suspense, useContext } from 'react';
 import LoadingCardSpinner from './LoadingCardSpinner';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 
-const CardEditStep = () => {
+interface Props {
+  isWaitSubmit: boolean;
+  waitSubmit: () => void;
+  canEdit: () => void;
+}
+
+const CardEditStep = ({ isWaitSubmit, waitSubmit, canEdit }: Props) => {
   const { alias, message } = useContext(messageFormContext);
 
   return (
