@@ -7,7 +7,6 @@ import {
   messageFormDispatchContext,
 } from '../states/messageFormContext';
 import { useStickerEdit } from '@hooks/specific/useStickerEdit';
-import theme from '@/style/theme';
 
 interface Props extends React.PropsWithChildren {
   themeId?: number;

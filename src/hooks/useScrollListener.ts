@@ -6,7 +6,7 @@ const preventScroll = (event: Event) => {
 
 export const useScrollListener = (isSwitchOn: boolean) => {
   useEffect(() => {
-    if (isSwitchOn) {
+    if (!isSwitchOn) {
       window.addEventListener('scroll', preventScroll, { passive: false });
       window.addEventListener('wheel', preventScroll, { passive: false });
       window.addEventListener('touchmove', preventScroll, { passive: false });

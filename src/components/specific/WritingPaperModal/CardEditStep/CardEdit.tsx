@@ -3,16 +3,10 @@ import { useGetCardCover } from '@hooks/queries/useCardCover';
 import styled, { css, keyframes } from 'styled-components';
 import StickerList from '../StickerList';
 import { useContext, useState } from 'react';
-import {
-  messageFormContext,
-  messageFormDispatchContext,
-} from '@/contexts/states/messageFormContext';
-import { modalDispatchContext } from '@/contexts/states/modalContext';
-import { KEYS } from '@constants/modal';
-import ModalContainer from '../StickerSelectModal/ModalContainer';
-import StickerSelectModalContents from '../StickerSelectModal/StickerSelectModalContents';
+import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
+import { useScrollListener } from '@hooks/useScrollListener';
 
 interface Props {
   alias: string;
@@ -30,7 +24,7 @@ const CardEdit = ({ alias, message }: Props) => {
   };
 
   const getSubColorString = (color: Readonly<CardColor>) => {
-    return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.35})`;
+    return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.45})`;
   };
 
   return (
@@ -50,7 +44,7 @@ const CardEdit = ({ alias, message }: Props) => {
         backContents={
           <CardContainer
             $color={getColorString(color)}
-            $subColor={getSubColorString(color)}
+            $subColor={getSubColorString(subColor)}
           >
             <BackContainer>
               <CardMessageContainer>
@@ -87,6 +81,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  touch-action: none;
 
   margin: 36px auto 0 auto;
 
@@ -167,16 +162,6 @@ const Alias = styled.div`
 
 const CoverImage = styled.img`
   width: 100%;
-`;
-
-const blur = css`
-  content: '';
-  position: fixed;
-  left: 0;
-  right: 0;
-  height: 54px;
-  pointer-events: none;
-  z-index: 1;
 `;
 
 const BackContainer = styled.div`

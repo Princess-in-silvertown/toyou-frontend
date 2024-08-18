@@ -1,5 +1,4 @@
 import { ReactNode, useState } from 'react';
-import { useScrollListener } from './useScrollListener';
 import { Modal, ModalContainer } from '@/contexts/states/modalContext';
 
 export const useModal = (closingTime = 500) => {
@@ -83,8 +82,6 @@ export const useModal = (closingTime = 500) => {
       return newState.set(key, { ...prevModal, isClosing: true });
     });
   };
-
-  // useScrollListener(isOpen);
 
   return { handleOpen, handleClose, handleClear, handleUpdate, modals, isOpen };
 };

@@ -9,7 +9,8 @@ export const useMyGroupList = () => {
   const query = useQuery<ResData<GroupList>, ResponseError, Group[]>({
     queryKey: [QUERY_KEY.myGroupList, 'GET'],
     queryFn: requestGetMyGroupList,
-    select: (json) => json.data.groups,
+    select: (json) => json?.data?.groups,
+    staleTime: Infinity,
   });
 
   return query;

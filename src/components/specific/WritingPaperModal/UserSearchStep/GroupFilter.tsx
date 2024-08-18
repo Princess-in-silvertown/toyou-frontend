@@ -3,13 +3,7 @@ import styled from 'styled-components';
 import down from '@assets/icons/down.svg';
 import close from '@assets/icons/filterclose.svg';
 import { useMyGroupList } from '@hooks/queries/useMyGroupList';
-import {
-  EventHandler,
-  ReactEventHandler,
-  TouchEventHandler,
-  useState,
-} from 'react';
-import { useViewport } from '@hooks/useViewport';
+import { ReactEventHandler, useEffect, useState } from 'react';
 
 interface Props {
   group: Group | null;

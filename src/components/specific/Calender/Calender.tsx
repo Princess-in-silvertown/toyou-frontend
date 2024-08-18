@@ -45,26 +45,26 @@ const Calendar = ({ onChangeEventList }: Props) => {
 
   const handleDragEndXCalender = (deltaX: number, velocity: number) => {
     if (isWeekView) {
-      if (deltaX < -150 || (deltaX < -30 && velocity > 0.2)) {
+      if (deltaX < -150 || (deltaX < -30 && velocity > 5)) {
         return handleNextWeek();
-      } else if (deltaX > 150 || (deltaX > 30 && velocity > 0.2)) {
+      } else if (deltaX > 150 || (deltaX > 30 && velocity > 5)) {
         return handlePrevWeek();
       }
     }
 
-    if (deltaX < -150 || (deltaX < -30 && velocity > 0.2)) {
+    if (deltaX < -150 || (deltaX < -30 && velocity > 5)) {
       return handleNextMonth();
-    } else if (deltaX > 150 || (deltaX > 30 && velocity > 0.2)) {
+    } else if (deltaX > 150 || (deltaX > 30 && velocity > 5)) {
       return handlePrevMonth();
     }
   };
 
   const handleDragEndYCalender = (deltaY: number, velocity: number) => {
     if (!isWeekView) {
-      if (deltaY < -75 || (deltaY < -30 && velocity > 0.2)) {
+      if (deltaY < -75 || (deltaY < -30 && velocity > 2)) {
         viewWeek();
       }
-    } else if (deltaY > 75 || (deltaY > 30 && velocity > 0.2)) {
+    } else if (deltaY > 75 || (deltaY > 30 && velocity > 2)) {
       viewMonth();
     }
   };
