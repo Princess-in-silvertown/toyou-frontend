@@ -142,7 +142,6 @@ const CardContainer = styled.div`
     grid-area: 1 / 1 / 1 / 1;
 
     width: 100%;
-    aspect-ratio: 325 / 438;
     box-sizing: border-box;
     border-radius: 16px;
 
@@ -151,22 +150,12 @@ const CardContainer = styled.div`
 `;
 
 const CardFront = styled.div<{ $isFront: boolean }>`
-  border: 1px solid ${({ theme }) => theme.gray500};
-
-  background: ${({ theme }) => theme.gray0};
-
-  overflow: hidden;
-
   pointer-events: ${({ $isFront }) => !$isFront && 'none'};
 `;
 
 const CardBack = styled.div<{ $isFront: boolean }>`
-  border: 1px solid ${({ theme }) => theme.gray500};
-
   background: ${({ theme }) => theme.gray0};
   transform: rotateY(180deg);
-
-  overflow: hidden;
 
   pointer-events: ${({ $isFront }) => $isFront && 'none'};
 `;

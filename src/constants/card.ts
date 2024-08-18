@@ -15,10 +15,10 @@ export const SUB_COLORS = [
 ] as const;
 
 export const MESSAGES = [
-  '생일 축하해 카드',
-  '정말 고마워 카드',
-  '너를 응원해 카드',
-  '힘내, 할수있어 카드',
+  '생일 축하해',
+  '정말 고마워',
+  '너를 응원해',
+  '힘내, 할수있어',
 ] as const;
 
 export const CARD_THEME: CardTheme[] = [

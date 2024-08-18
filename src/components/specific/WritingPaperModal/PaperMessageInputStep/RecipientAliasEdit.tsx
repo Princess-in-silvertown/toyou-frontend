@@ -112,7 +112,7 @@ const RecipientAliasEdit = ({
         $isEditing={isEditing}
       >
         <InputContents $isEditing={isEditing}>
-          <To $isEditing={isEditing}>To</To>
+          <To $isEditing={isEditing}>To.</To>
           <Input
             ref={inputRef}
             placeholder={defaultAlias}
@@ -224,7 +224,7 @@ const InputContents = styled.div<{ $isEditing: boolean }>`
   position: relative;
   display: flex;
   align-items: end;
-  gap: 10px;
+  gap: 7px;
 
   width: fit-content;
 
@@ -236,9 +236,8 @@ const InputContents = styled.div<{ $isEditing: boolean }>`
 const To = styled.div<{ $isEditing: boolean }>`
   position: relative;
 
-  font-family: 'Montserrat';
+  font-family: 'Nanum Myeongjo';
   font-weight: 500;
-  font-style: italic;
   letter-spacing: -2px;
 
   animation: ${({ $isEditing }) => ($isEditing ? toScaleUp : toScaleDown)} 0.5s
@@ -247,13 +246,13 @@ const To = styled.div<{ $isEditing: boolean }>`
 `;
 
 const Input = styled.input<{ $isEditing: boolean }>`
-  margin-bottom: ${({ $isEditing }) => ($isEditing ? '7px' : '2px')};
+  margin-bottom: ${({ $isEditing }) => ($isEditing ? '1px' : '0')};
   max-width: 300px;
 
   font-family: 'Montserrat';
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
 
   animation-fill-mode: both;
 `;
@@ -263,7 +262,7 @@ const InputWidthCalculator = styled.span`
   visibility: hidden;
   white-space: nowrap;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 400;
   font-family: 'Montserrat';
 `;
 
