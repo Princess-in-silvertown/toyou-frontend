@@ -2,6 +2,8 @@ import { delay, http, HttpResponse } from 'msw';
 import sticker from '@assets/image/birthday_sticker.svg';
 import cover from '@assets/image/happy_birthday.svg';
 import H from '@assets/image/H.jpeg';
+import { ResData } from '@/types/api';
+import { Letters } from '@/types/letter';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -67,11 +69,11 @@ var myGroupIDList: number[] = [1, 2, 3];
 let coverApiResponseCount = 0;
 
 export const handlers = [
-  http.get('/test', (info) => {
+  http.get('http://localhost:3000/test', (info) => {
     return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
   }),
 
-  http.get('api/members', ({ request }) => {
+  http.get('http://localhost:3000/api/members', ({ request }) => {
     const url = new URL(request.url);
     const groupId = Number(url.searchParams.get('groupId'));
     const search = url.searchParams.get('search');
@@ -99,7 +101,7 @@ export const handlers = [
     );
   }),
 
-  http.get('api/groups', () => {
+  http.get('http://localhost:3000/api/groups', async () => {
     return HttpResponse.json(
       {
         data: { groups: myGroupIDList.map((id) => indexedGroupList[id]) },
@@ -109,7 +111,7 @@ export const handlers = [
     );
   }),
 
-  http.post('api/group/me', async ({ request }) => {
+  http.post('http://localhost:3000/api/group/me', async ({ request }) => {
     const data = (await request.json()) as { groupId: number };
     const id = Number(data?.groupId);
 
@@ -182,7 +184,7 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 5) {
+      if (coverApiResponseCount <= 1) {
         return HttpResponse.json({}, { status: 400 });
       }
 
@@ -330,6 +332,30 @@ export const handlers = [
                 profileImgUrl:
                   'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
               },
+              {
+                memberId: 142,
+                memberName: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+              {
+                memberId: 122,
+                memberName: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+              {
+                memberId: 1222,
+                memberName: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImgUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
             ],
           },
 
@@ -404,4 +430,78 @@ export const handlers = [
       { status: 200 }
     );
   }),
+
+  http.get(
+    'http://localhost:3000/api/letters',
+
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const cursor = Number(url.searchParams.get('cursor')) ?? 0;
+
+      const data: Letters = {
+        letters: [
+          {
+            themeId: 1,
+            coverImageUrl: 'test',
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 100,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 3,
+            coverImageUrl: 'test',
+            content: 'dafs',
+            stickers: [],
+          },
+
+          {
+            themeId: 2,
+            coverImageUrl: 'test',
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+        ],
+      };
+
+      if (cursor == 2) {
+        return HttpResponse.json(
+          {
+            data,
+            pageInfo: {},
+          },
+          { status: 200 }
+        );
+      }
+
+      return HttpResponse.json(
+        {
+          data,
+          pageInfo: {
+            nextCursor: cursor + 1,
+          },
+        },
+        { status: 200 }
+      );
+    }
+  ),
 ];

@@ -1,9 +1,10 @@
 import { ResData } from '@/types/api';
 import { request } from './request';
 import { GroupList } from '@/types/group';
-import { User, UserList } from '@/types/user';
+import { User } from '@/types/user';
 import { EventData, Events } from '@/types/event';
 import { Member } from '@/types/member';
+import { Letters } from '@/types/letter';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -80,4 +81,12 @@ export const requestGetEventToday = () => {
   return request.get<ResData<{ events: Events }>>(
     `api/events?date=${dateTime}`
   );
+};
+
+export const requestGetMessageList = (cursor?: number) => {
+  const params = new URLSearchParams({
+    ...(cursor && { cursor: String(cursor) }),
+  }).toString();
+
+  return request.get<ResData<Letters>>(`api/letters?${params}`);
 };
