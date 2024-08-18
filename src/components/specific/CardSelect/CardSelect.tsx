@@ -425,7 +425,7 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
       setY(() => 0);
       setX(() => 0);
       forceUpdate((prev) => prev + 1);
-    }, 500);
+    }, 300);
   }, [currentIndex]);
 
   const RGBAToString = (rgba: number[]) => {
@@ -574,6 +574,8 @@ const Container = styled.div`
   gap: 22px;
 
   width: 100%;
+
+  touch-action: none;
 `;
 
 const SwiperWrapper = styled.div`

@@ -18,8 +18,8 @@ type DragCallback = (params: {
 
 type Params = {
   defaultXY?: [number, number];
-  moveXMinMax?: [number | '-Infinity', number | 'Infinity'];
-  moveYMinMax?: [number | '-Infinity', number | 'Infinity'];
+  moveXMinMax?: [number | typeof Infinity, number | typeof Infinity];
+  moveYMinMax?: [number | typeof Infinity, number | typeof Infinity];
   onStart?: DragCallback;
   onMove?: DragCallback;
   onEnd?: DragCallback;
@@ -53,12 +53,12 @@ export const useDrag = ({
 
   const validateScope = (
     number: number,
-    scope?: [number | '-Infinity', number | 'Infinity']
+    scope?: [number | typeof Infinity, number | typeof Infinity]
   ) => {
-    const [min, max] = scope ?? ['-Infinity', 'Infinity'];
+    const [min, max] = scope ?? [Infinity, Infinity];
 
-    const isOverMin = min === '-Infinity' || min <= number;
-    const isBelowMax = max === 'Infinity' || number <= max;
+    const isOverMin = min === Infinity || min <= number;
+    const isBelowMax = max === Infinity || number <= max;
 
     return isOverMin && isBelowMax;
   };
@@ -161,7 +161,7 @@ export const useDrag = ({
     handleChangeDeltaX(moveX);
     handleChangeDeltaY(moveY);
 
-    calculateVelocity(moveX, moveY);
+    calculateVelocity(deltaX - moveX, deltaY - moveY);
     calculateDirection(moveX, moveY);
   };
 
