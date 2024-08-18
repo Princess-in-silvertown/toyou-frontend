@@ -49,7 +49,9 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -300px;
+
+  touch-action: none;
 
   background: rgba(33, 33, 33, 0.85);
 

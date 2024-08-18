@@ -36,6 +36,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+  touch-action: none;
 `;
 
 const BorderLine = styled.div`

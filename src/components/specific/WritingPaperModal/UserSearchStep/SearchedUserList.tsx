@@ -35,4 +35,5 @@ const Container = styled.div`
   margin-top: 15px;
 
   overflow: auto;
+  touch-action: none;
 `;

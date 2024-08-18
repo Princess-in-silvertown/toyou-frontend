@@ -112,7 +112,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
   }, []);
 
   return (
-    <Container style={{ height }}>
+    <Container style={{ height: height + 30 }}>
       <MultiStepForm
         steps={getSteps()}
         progressiveStartIndex={userInfo ? 0 : 1}

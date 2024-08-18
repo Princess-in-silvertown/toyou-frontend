@@ -6,6 +6,7 @@ import {
 } from 'react';
 import styled from 'styled-components';
 import cancel from '@assets/icons/cancel_gray.svg';
+import { useScrollListener } from '@hooks/useScrollListener';
 
 const KEYWORD_MAX_LENGTH = 5;
 
@@ -21,6 +22,8 @@ const KeywordInputModalContents = ({
   onDeleteKeyword,
 }: Props) => {
   const [modalKeywords, setModalKeywords] = useState(keywords);
+
+  useScrollListener(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

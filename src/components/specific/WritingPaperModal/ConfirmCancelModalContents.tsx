@@ -1,5 +1,6 @@
 import { ConfirmButton } from '@components/common/Modal';
 import { useKeydownListener } from '@hooks/useKeydownListener';
+import { useScrollListener } from '@hooks/useScrollListener';
 import styled from 'styled-components';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const ConfirmCancelModalContents = ({ handleClose, handleSubmit }: Props) => {
+  useScrollListener(false);
+
   return (
     <Container>
       <Title>경고</Title>

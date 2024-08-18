@@ -1,3 +1,4 @@
+import { useScrollListener } from '@hooks/useScrollListener';
 import React, { useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -16,6 +17,8 @@ const DefaultContainer = ({
   const handleClickBackDrop = () => {
     handleClose(modalKey);
   };
+
+  useScrollListener(false);
 
   return (
     <>
@@ -54,13 +57,15 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -500px;
 
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(0.5px);
 
   animation: 0.3s ease-in-out
     ${({ $isClosing }) => ($isClosing ? disappear : appear)};
+
+  touch-action: none;
 `;
 
 const slideInFromBottom = keyframes`  

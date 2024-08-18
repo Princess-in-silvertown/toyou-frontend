@@ -54,7 +54,7 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -30px;
 
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(0.5px);
@@ -107,4 +107,6 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   animation: 0.5s ease-out
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
   animation-fill-mode: forwards;
+
+  touch-action: none;
 `;

@@ -71,4 +71,6 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   animation: 1s ease
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
   animation-fill-mode: both;
+
+  touch-action: none;
 `;

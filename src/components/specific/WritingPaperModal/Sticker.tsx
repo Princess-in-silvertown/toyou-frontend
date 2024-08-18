@@ -152,12 +152,14 @@ const Sticker = ({
 
   const handleTouchEnd: TouchEventHandler = (e) => {
     e.stopPropagation();
+    e.preventDefault();
 
     handleEnd();
   };
 
   const handleTouchStart: TouchEventHandler = (e) => {
     e.stopPropagation();
+    e.preventDefault();
 
     if (e.touches.length === 1) {
       handleStart(e.touches[0].clientX, e.touches[0].clientY);
@@ -176,6 +178,7 @@ const Sticker = ({
 
   const handleTouchMove: TouchEventHandler = (e) => {
     e.stopPropagation();
+    e.preventDefault();
 
     if (e.touches.length === 1) {
       handleMove(e.touches[0].clientX, e.touches[0].clientY);
@@ -299,6 +302,7 @@ export default Sticker;
 
 const Container = styled.div`
   position: absolute;
+  touch-action: none;
 
   z-index: 2;
 `;
