@@ -92,6 +92,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   transform: translate(-50%, -50%);
 
   width: 90vw;
+  max-width: 500px;
   height: fit-content;
   min-height: 150px;
   max-height: 80%;

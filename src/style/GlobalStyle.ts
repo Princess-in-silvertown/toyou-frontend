@@ -3,9 +3,11 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   body {
+    max-width: 500px;
+    margin: 0 auto;
+
     font-family: 'Pretendard-Regular';
     font-display: var(100) ;
-    margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: contain;

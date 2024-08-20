@@ -24,6 +24,7 @@ const Container = styled.button<{ $canNext: boolean }>`
   justify-content: center;
 
   width: 100%;
+  max-width: 500px;
   height: 49px;
   margin: 0 auto;
   border-radius: 24.5px;

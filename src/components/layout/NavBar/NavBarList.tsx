@@ -40,6 +40,7 @@ const Container = styled.nav`
 
   width: 100%;
   height: 86px;
+  max-width: 500px;
   padding: 0 40px;
   border-radius: 20px 20px 0 0;
   box-sizing: border-box;

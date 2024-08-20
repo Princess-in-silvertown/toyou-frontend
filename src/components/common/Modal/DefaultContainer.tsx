@@ -96,6 +96,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   min-height: 200px;
 
   width: 100%;
+  max-width: 500px;
   height: fit-content;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;

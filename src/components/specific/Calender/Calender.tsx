@@ -238,7 +238,7 @@ const CalendarContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-  max-width: 450px;
+  max-width: 500px;
   min-width: 350px;
 
   font-family: Arial, sans-serif;

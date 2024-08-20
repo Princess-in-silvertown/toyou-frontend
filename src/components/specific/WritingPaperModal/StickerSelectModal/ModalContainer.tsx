@@ -83,6 +83,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   top: 0;
 
   width: 100%;
+  max-width: 500px;
   height: 100%;
 
   overflow-y: auto;
