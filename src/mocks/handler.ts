@@ -1,9 +1,14 @@
 import { delay, http, HttpResponse } from 'msw';
 import sticker from '@assets/image/birthday_sticker.svg';
 import cover from '@assets/image/happy_birthday.svg';
+import yellowCover from '@assets/image/birthday_small_yellow.svg';
+import redCover from '@assets/image/birthday_small_red.svg';
+import blueCover from '@assets/image/birthday_small_blue.svg';
+import greenCover from '@assets/image/birthday_small_green.svg';
+
 import H from '@assets/image/H.jpeg';
-import { ResData } from '@/types/api';
 import { Letters } from '@/types/letter';
+import messageCover from '@assets/image/happy_birthday.svg';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -438,12 +443,16 @@ export const handlers = [
       const url = new URL(request.url);
       const cursor = Number(url.searchParams.get('cursor')) ?? 0;
 
+      await delay(1000);
+
       const data: Letters = {
         letters: [
           {
             themeId: 1,
-            coverImageUrl: 'test',
-            content: 'dafs',
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: redCover,
+            content: '1234',
             stickers: [
               {
                 key: 1,
@@ -459,14 +468,132 @@ export const handlers = [
 
           {
             themeId: 3,
-            coverImageUrl: 'test',
+            profileImageUrl: H,
+            name: '효섭',
+            coverImageUrl: greenCover,
             content: 'dafs',
             stickers: [],
           },
 
           {
             themeId: 2,
-            coverImageUrl: 'test',
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: blueCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 0,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: yellowCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 2,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: blueCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 2,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: blueCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 0,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: yellowCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 3,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: greenCover,
+            content: 'dafs',
+            stickers: [
+              {
+                key: 1,
+                x: 0,
+                y: 500,
+                scale: 2,
+                rotate: 1,
+                side: 'front',
+                imgUrl: '1',
+              },
+            ],
+          },
+
+          {
+            themeId: 2,
+            profileImageUrl: H,
+            name: '송효섭',
+            coverImageUrl: blueCover,
             content: 'dafs',
             stickers: [
               {
@@ -483,7 +610,7 @@ export const handlers = [
         ],
       };
 
-      if (cursor == 2) {
+      if (cursor == 3) {
         return HttpResponse.json(
           {
             data,
