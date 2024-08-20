@@ -1,4 +1,6 @@
 export type ResData<T> = {
   data: T;
-  pageInfo?: {};
+  pageInfo?: {
+    nextCursor: number;
+  };
 };
