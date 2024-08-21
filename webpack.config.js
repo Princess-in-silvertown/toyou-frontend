@@ -74,6 +74,11 @@ module.exports = () => {
         template: './public/index.html',
         filename: 'index.html',
       }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'public/mockServiceWorker.js', to: 'mockServiceWorker.js' },
+        ],
+      }),
       new HtmlWebpackPlugin({
         template: './public/404.html',
         filename: '404.html',

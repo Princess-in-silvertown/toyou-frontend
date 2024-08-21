@@ -5,10 +5,13 @@ import App from './App';
 async function enableMocking() {
   // if (process.env.NODE_ENV !== 'development') return;
 
-  return;
   const { worker } = await import('./mocks/browser');
 
-  return worker.start();
+  return worker.start({
+    serviceWorker: {
+      url: '/toyou-frontend/mockServiceWorker.js',
+    },
+  });
 }
 
 enableMocking().then(() => {
