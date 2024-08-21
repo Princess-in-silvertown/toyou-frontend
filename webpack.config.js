@@ -2,19 +2,22 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // 추가
+const { server } = require('typescript');
 
 dotenv.config();
 
 module.exports = () => {
-  const mode = process.env.NODE_ENV ?? 'production';
+  const mode = 'development';
+  const publicPath = '/toyou-frontend/';
 
   return {
     mode,
     entry: './src/index.tsx',
     output: {
-      path: path.join(__dirname, '/build'),
+      path: path.join(__dirname, '/dist'),
       filename: 'bundle.js',
-      publicPath: '/',
+      publicPath: publicPath, // 'PUBLIC_URL' 사용
     },
     devServer: {
       port: 3000,
@@ -55,6 +58,7 @@ module.exports = () => {
               options: {
                 name: '[name].[ext]',
                 outputPath: 'assets/',
+                publicPath: publicPath + 'assets/', // 'PUBLIC_URL'을 사용하여 파일 경로 설정
               },
             },
           ],
@@ -68,14 +72,14 @@ module.exports = () => {
       }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
+        filename: 'index.html',
+      }),
+      new HtmlWebpackPlugin({
+        template: './public/404.html',
+        filename: '404.html',
       }),
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.API_URL': JSON.stringify(
-          mode === 'production'
-            ? process.env.API_PROD_URL
-            : process.env.API_DEV_URL
-        ),
+        'process.env.API_URL': JSON.stringify('http://localhost:3000/'),
       }),
     ],
   };

@@ -20,10 +20,6 @@ export const routeObject: RouteObject[] = [
     element: <HomePage />,
   },
   {
-    path: MY_PAGE.path,
-    element: <MyPage />,
-  },
-  {
     path: MY_CALENDER_PAGE.path,
     element: <MyCalender />,
   },
