@@ -13,6 +13,12 @@
  <img src="https://github.com/user-attachments/assets/0f034679-c51e-47d7-ac6e-64053b751ed7" width="180px">
 </p>
 
+## Deploy
+
+[TEST URL](https://princess-in-silvertown.github.io/toyou-frontend/)
+
+현재 백엔드 서버 개발이 완료되지 않아 msw를 프로덕션 환경 (깃허브 페이지)에 사용한 상태입니다.
+
 ## 기술 스택
 
 Tools | React, Typescript, Styled-Components, Webpack, Tanstack-Query, MSW
