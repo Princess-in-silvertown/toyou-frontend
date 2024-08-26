@@ -10,31 +10,13 @@ interface Props extends React.PropsWithChildren {
 const FullContainer = ({ isClosing, children }: Props) => {
   return (
     <>
+      <BackDrop />
       <Container $isClosing={isClosing}>{children}</Container>
     </>
   );
 };
 
 export default FullContainer;
-
-const appear = keyframes`  
-  from {
-    background: rgba(0, 0, 0, 0);
-  }
-  to { 
-    background: rgba(0, 0, 0, 0.5);
-  }
-`;
-
-const disappear = keyframes`  
-  from {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  to { 
-      background: rgba(0, 0, 0, 0);
-
-  }
-`;
 
 const slideInFromBottom = keyframes`  
   from {
@@ -52,6 +34,19 @@ const slideInFromUp = keyframes`
   to {
     transform: translateY(100%);
   }
+`;
+
+const BackDrop = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: transparent;
 `;
 
 const Container = styled.div<{ $isClosing?: boolean }>`

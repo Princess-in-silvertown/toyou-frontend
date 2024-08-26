@@ -26,7 +26,7 @@ const HomePage = () => {
   };
 
   const handleCloseModal = () => {
-    handleClose();
+    handleClose(KEYS.WRITE_MESSAGE, 1000);
     setIsCardSelected(false);
 
     setTimeout(() => {

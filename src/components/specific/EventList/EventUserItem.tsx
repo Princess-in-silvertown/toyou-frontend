@@ -27,7 +27,7 @@ const EventUserItem = ({
   };
 
   const handleCloseModal = () => {
-    handleClose();
+    handleClose(KEYS.WRITE_MESSAGE, 1000);
 
     setTimeout(() => {
       setIsClickPrevented(false);
@@ -36,8 +36,6 @@ const EventUserItem = ({
 
   const handleClick = () => {
     if (isClickPrevented) return;
-
-    setIsClickPrevented(true);
 
     handleOpen(
       KEYS.WRITE_MESSAGE,

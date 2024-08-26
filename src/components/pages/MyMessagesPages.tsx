@@ -147,6 +147,10 @@ const ListGrid = styled.ul`
   align-content: start;
 `;
 
+const ItemContainer = styled.li`
+  display: block;
+`;
+
 const MyMessageItem = ({
   themeId,
   coverImageUrl,
@@ -158,7 +162,7 @@ const MyMessageItem = ({
   const { R, G, B } = CARD_THEME[themeId].color;
 
   return (
-    <ItemContainer>
+    <MessageContainer>
       <Card style={{ backgroundColor: `rgb(${[R, G, B, 0.85]})` }}>
         <Cover src={coverImageUrl} />
       </Card>
@@ -166,11 +170,11 @@ const MyMessageItem = ({
         <Profile src={profileImageUrl} />
         <UserName>{name}</UserName>
       </UserContainer>
-    </ItemContainer>
+    </MessageContainer>
   );
 };
 
-const ItemContainer = styled.li`
+const MessageContainer = styled.div`
   display: block;
 `;
 
