@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Modal, ModalContainer } from '@/contexts/states/modalContext';
 
 export const useModal = (closingTime = 500) => {
@@ -11,6 +11,9 @@ export const useModal = (closingTime = 500) => {
     newNode: ReactNode,
     container?: React.FC<ModalContainer>
   ) => {
+    const preModal = modals.get(key);
+    if (!!preModal) return;
+
     const newModal = { key, isClosing: false, children: newNode, container };
 
     setModals((prev) => new Map(prev.set(key, newModal)));
@@ -82,6 +85,18 @@ export const useModal = (closingTime = 500) => {
       return newState.set(key, { ...prevModal, isClosing: true });
     });
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   return { handleOpen, handleClose, handleClear, handleUpdate, modals, isOpen };
 };
