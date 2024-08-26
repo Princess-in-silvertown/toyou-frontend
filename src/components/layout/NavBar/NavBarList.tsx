@@ -5,13 +5,13 @@ import { useNavigateBar } from '@hooks/useNavigateBar';
 import home from '@assets/icons/home.svg';
 
 const NavBarList = () => {
-  const { currentPage, navigationInfo } = useNavigateBar();
+  const { currentPath, navigationInfo } = useNavigateBar();
 
   return (
     <Container>
       {navigationInfo.map((page) => {
         const { value, name, eventCount, svg, handleClick } = page;
-        const isSelected = currentPage == page.value;
+        const isSelected = currentPath === value;
 
         return (
           <NavBarItem

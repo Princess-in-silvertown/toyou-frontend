@@ -7,6 +7,7 @@ dotenv.config();
 
 module.exports = () => {
   const mode = process.env.NODE_ENV ?? 'production';
+  const publicPath = process.env.REACT_PUBLIC_PATH ?? '/';
 
   return {
     mode,
@@ -14,7 +15,7 @@ module.exports = () => {
     output: {
       path: path.join(__dirname, '/build'),
       filename: 'bundle.js',
-      publicPath: '/',
+      publicPath,
     },
     devServer: {
       port: 3000,
@@ -71,10 +72,11 @@ module.exports = () => {
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.PUBLIC_PATH': JSON.stringify(publicPath),
         'process.env.API_URL': JSON.stringify(
           mode === 'production'
-            ? process.env.API_PROD_URL
-            : process.env.API_DEV_URL
+            ? process.env.REACT_API_PROD_URL
+            : process.env.REACT_API_DEV_URL
         ),
       }),
     ],

@@ -14,8 +14,8 @@ import { useLocation } from 'react-router-dom';
 
 export const useNavigateBar = () => {
   const location = useLocation();
-  const startPage = getCurrentPage();
-  const [currentPage, setCurrentPage] = useState(startPage);
+  const startPath = getCurrentPath();
+  const [currentPath, setCurrentPath] = useState(startPath);
 
   const { goToHomePage, goToMyCalender, goToMyMessages } = useCustomNavigate();
 
@@ -61,17 +61,20 @@ export const useNavigateBar = () => {
   }));
 
   useEffect(() => {
-    setCurrentPage(getCurrentPage());
+    setCurrentPath(getCurrentPath());
   }, [location]);
 
-  return { currentPage, navigationInfo };
+  return { currentPath, navigationInfo };
 };
 
-export const getCurrentPage = () => {
+export const getCurrentPath = () => {
   const path = window.location.pathname;
-  if (path === '/') return '';
+  const publicPath = process.env.PUBLIC_PATH ?? '/';
+  const publicPathDepth = publicPath.split('/').length - 1;
 
-  const page = path.split('/')[1];
+  if (path === publicPath) return '';
+
+  const page = path.split('/')[publicPathDepth];
   const totalPage = NAVIGATE_INFO.map((page) => String(page.value));
 
   if (!totalPage.includes(page)) return;
