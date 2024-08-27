@@ -14,8 +14,9 @@ const ConfirmCancelModalContents = ({ handleClose, handleSubmit }: Props) => {
   return (
     <Container>
       <Title>경고</Title>
-      진짜 닫을건가요? 작성한 내용이 전부 날아갈수도??? 진짜 닫을건가요? 작성한
-      내용이 전부 날아갈수도???
+      정말 창을 닫으실 건가요?
+      <br />
+      지금까지 작성한 내용이 사라질 수도 있어요!
       <ConfirmButton
         handleClose={() => handleClose()}
         handleSubmit={() => handleSubmit()}
@@ -29,13 +30,15 @@ export default ConfirmCancelModalContents;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 
   font-size: 14px;
+  text-align: center;
 `;
 
 const Title = styled.div`
   width: 100%;
+
   text-align: center;
   font-size: 18px;
   font-weight: 600;

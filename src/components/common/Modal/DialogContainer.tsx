@@ -101,7 +101,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.25) 0 0 15px;
 
-  background: white;
+  background-color: ${({ theme }) => theme.color.white};
 
   overflow-y: auto;
 

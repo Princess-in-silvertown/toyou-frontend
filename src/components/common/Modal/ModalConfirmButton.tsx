@@ -11,8 +11,10 @@ export const ModalConfirmationButton = ({
 }: Props) => {
   return (
     <ButtonContainer>
-      <Button onClick={handleClose}>취소</Button>
-      <Button onClick={handleSubmit}>확인</Button>
+      <Button style={{ background: '#9e9e9e' }} onClick={handleClose}>
+        취소
+      </Button>
+      <Button onClick={handleSubmit}>닫기</Button>
     </ButtonContainer>
   );
 };
@@ -31,8 +33,8 @@ const Button = styled.button`
   width: calc(50% - 5px);
   height: 35px;
   border-radius: 5px;
-  background-color: lightgray;
-  color: gray;
+  background-color: #cecece;
+  color: white;
 
   &:hover {
     transform: translateY(-2px);

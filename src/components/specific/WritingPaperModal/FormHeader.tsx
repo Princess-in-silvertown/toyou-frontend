@@ -41,7 +41,7 @@ const ControlButton = ({ type, handler, canNext }: ButtonProps) => {
     case 'NEXT':
       icon = (
         <ButtonText $canNext={canNext} onClick={handler}>
-          다음
+          완료
         </ButtonText>
       );
       break;
@@ -146,7 +146,7 @@ const ButtonText = styled.div<{ $canNext?: boolean }>`
 
   font-size: 16px;
   color: ${({ $canNext, theme }) =>
-    $canNext ? theme.color.gray500 : theme.color.gray300};
+    $canNext ? theme.color.red500 : theme.color.gray300};
 `;
 
 const Progressive = styled.div`
@@ -156,8 +156,8 @@ const Progressive = styled.div`
 `;
 
 const ProgressiveDot = styled.div<{ $isCurrent: boolean }>`
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 4px;
 
   background-color: ${({ $isCurrent, theme }) =>
