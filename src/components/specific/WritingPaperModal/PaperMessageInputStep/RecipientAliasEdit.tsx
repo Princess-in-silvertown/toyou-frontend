@@ -3,7 +3,6 @@ import {
   ChangeEventHandler,
   KeyboardEventHandler,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -253,6 +252,7 @@ const Input = styled.input<{ $isEditing: boolean }>`
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -1.5px;
+  background-color: transparent;
 
   animation-fill-mode: both;
 `;

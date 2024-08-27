@@ -86,11 +86,11 @@ const Textarea = styled.textarea`
   height: 100px;
   border: none;
 
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 23px;
+  font-size: 18px;
+  line-height: 21.48px;
+  color: ${({ theme }) => theme.color.gray500};
 
-  color: #616161;
+  background-color: transparent;
 
   scroll-behavior: auto;
   overflow: hidden;

@@ -145,7 +145,8 @@ const ButtonText = styled.div<{ $canNext?: boolean }>`
   height: 20px;
 
   font-size: 16px;
-  color: ${({ $canNext, theme }) => ($canNext ? theme.gray900 : theme.gray500)};
+  color: ${({ $canNext, theme }) =>
+    $canNext ? theme.color.gray500 : theme.color.gray300};
 `;
 
 const Progressive = styled.div`
@@ -160,5 +161,5 @@ const ProgressiveDot = styled.div<{ $isCurrent: boolean }>`
   border-radius: 4px;
 
   background-color: ${({ $isCurrent, theme }) =>
-    $isCurrent ? theme.red500 : theme.gray500};
+    $isCurrent ? theme.color.gray500 : theme.color.gray300};
 `;
