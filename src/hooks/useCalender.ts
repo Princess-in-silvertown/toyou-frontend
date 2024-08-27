@@ -4,7 +4,7 @@ import {
   getStartOfWeek,
   getWeekDays,
 } from '@utils/date';
-import { delay } from 'msw';
+import { delay } from '@utils/delay';
 import { useMemo, useState } from 'react';
 
 export const useCalender = () => {
