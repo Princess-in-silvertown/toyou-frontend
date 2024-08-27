@@ -6,7 +6,6 @@ import { useContext, useState } from 'react';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
-import { useScrollListener } from '@hooks/useScrollListener';
 
 interface Props {
   alias: string;

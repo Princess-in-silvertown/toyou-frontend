@@ -23,7 +23,7 @@ const KeywordInputModalContents = ({
 }: Props) => {
   const [modalKeywords, setModalKeywords] = useState(keywords);
 
-  useScrollListener(true);
+  useScrollListener(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

@@ -1,4 +1,3 @@
-import { useScrollListener } from '@hooks/useScrollListener';
 import React, { useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -17,8 +16,6 @@ const DefaultContainer = ({
   const handleClickBackDrop = () => {
     handleClose(modalKey);
   };
-
-  useScrollListener(false);
 
   return (
     <>
