@@ -643,14 +643,14 @@ const DescriptionContainer = styled.div`
   width: 162px;
   border-radius: 16px;
 
-  background-color: #f2f2f2b2;
+  background-color: #ffffffd9;
 
   transform: translateX(-50%);
   transition: opacity ease-out 0.5s;
 `;
 
 const Description = styled.div`
-  color: #212121df;
+  color: ${({ theme }) => theme.color.gray500};
   font-size: 14px;
   font-weight: 500;
   line-height: 16.71px;

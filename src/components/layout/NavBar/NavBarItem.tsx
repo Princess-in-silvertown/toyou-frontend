@@ -74,7 +74,7 @@ const EventCount = styled.div`
   color: white;
   font-size: 10px;
 
-  background-color: ${({ theme }) => theme.red500};
+  background-color: ${({ theme }) => theme.color.red500};
 
   animation: ${appear} 0.3s cubic-bezier(0.17, 0.67, 0.52, 1.25) both;
 `;
