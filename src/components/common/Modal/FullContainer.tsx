@@ -62,7 +62,7 @@ const Container = styled.div<{ $isClosing?: boolean }>`
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.25) 0 0 15px;
 
-  background: white;
+  background: ${({ theme }) => theme.color.bg};
 
   animation: 1s ease
     ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};

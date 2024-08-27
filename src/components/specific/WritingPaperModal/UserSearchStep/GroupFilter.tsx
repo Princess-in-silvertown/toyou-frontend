@@ -82,15 +82,17 @@ const SelectButton = styled.button<{ $isGroupNull: boolean }>`
   padding: 0 16px;
   border-radius: 15.5px;
 
-  color: #fcfcfc;
+  color: ${({ theme, $isGroupNull }) =>
+    $isGroupNull ? theme.color.gray400 : theme.color.white};
+
   font-size: 14px;
   font-weight: 400;
   line-height: 16.71px;
   text-align: center;
   white-space: nowrap;
 
-  background-color: ${({ $isGroupNull }) =>
-    $isGroupNull ? '#616161' : '#dd432e'};
+  background-color: ${({ theme, $isGroupNull }) =>
+    $isGroupNull ? theme.color.bg : theme.color.red500};
 `;
 
 const DownIcon = styled.img`
@@ -112,7 +114,7 @@ const ListContainer = styled.ul`
   padding: 12px;
   border-radius: 15px;
 
-  background-color: #fcfcfc;
+  background: ${({ theme }) => theme.color.white};
   box-shadow: 10px 10px 60px -16px #6161615f;
 
   z-index: 2;
@@ -123,5 +125,5 @@ const ListItem = styled.li`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
-  color: #616161;
+  color: ${({ theme }) => theme.color.gray400};
 `;

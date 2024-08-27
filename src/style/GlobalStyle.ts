@@ -5,9 +5,10 @@ const GlobalStyle = createGlobalStyle`
   body {
     max-width: 500px;
     margin: 0 auto;
-
     font-family: 'Pretendard-Regular';
-    font-display: var(100) ;
+    font-display: var(100);
+    background-color: #F2F1ED;
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior-y: contain;
