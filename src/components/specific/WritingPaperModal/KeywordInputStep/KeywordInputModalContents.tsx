@@ -121,7 +121,7 @@ const InputContainer = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
 
-  background: #e9e9e9b2;
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 const InputClearButton = styled.img`
@@ -133,7 +133,7 @@ const InputSubmitButton = styled.button`
   height: 25px;
   font-size: 14px;
   font-weight: 500;
-  color: #dd432e;
+  color: ${({ theme }) => theme.color.gray500};
 `;
 
 const Input = styled.input`
@@ -142,7 +142,7 @@ const Input = styled.input`
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.03em;
-  color: #212121;
+  color: ${({ theme }) => theme.color.gray500};
 
   background-color: transparent;
 
@@ -181,7 +181,7 @@ const KeywordContainer = styled.li`
   padding: 0 16px;
   border-radius: 16.5px;
 
-  background: #e9e9e9b2;
+  background-color: ${({ theme }) => theme.color.white};
 
   cursor: pointer;
 `;
@@ -195,5 +195,5 @@ const KeywordText = styled.div`
   font-size: 14px;
   font-weight: 500;
 
-  color: #212121;
+  color: ${({ theme }) => theme.color.red500};
 `;

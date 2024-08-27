@@ -92,7 +92,7 @@ const CountContainer = styled.div`
   top: calc(50% + 8px);
   left: 50%;
 
-  border-bottom: 1px solid #616161;
+  /* border-bottom: 1px solid #616161; */
 
   color: #616161;
   font-size: 14px;
@@ -126,8 +126,7 @@ const AddKeywordButton = styled.button`
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border: 2px solid #616161;
-  box-shadow: 0 0 0 7px white; /* 두 번째 border처럼 보이는 효과 */
+  box-shadow: 0 0 0 7px ${({ theme }) => theme.color.bg}; /* 두 번째 border처럼 보이는 효과 */
 
   background-color: white;
 
@@ -153,8 +152,8 @@ const Circle = styled.div<{ rotate: number }>`
   height: 70px;
   border-radius: 50%;
 
-  background-color: ${({ theme }) => '#E9E9E9'};
-  border: 5px solid ${({ theme }) => '#FCFCFC'};
+  background-color: ${({ theme }) => theme.color.white};
+  border: 5px solid ${({ theme }) => theme.color.bg};
 
   overflow: hidden;
 
@@ -170,6 +169,8 @@ const Text = styled.div<{ rotate: number }>`
 
   width: 100%;
   height: 100%;
+
+  color: ${({ theme }) => theme.color.red500};
 
   transform: ${({ rotate }) => `rotate(${rotate}deg) `};
   transition: all 0.5s ease-in;

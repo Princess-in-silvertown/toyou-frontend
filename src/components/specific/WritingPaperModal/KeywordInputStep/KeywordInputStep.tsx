@@ -52,7 +52,7 @@ const Title = styled.div`
   align-items: center;
 
   width: fit-content;
-  height: 48px;
+  height: 50px;
   margin: 14px auto 40px auto;
 
   text-align: center;
@@ -74,10 +74,12 @@ const NextButton = styled.button<{ $canNext: boolean }>`
   margin: 0 auto;
   border-radius: 24.5px;
 
-  color: ${({ theme }) => theme.gray0};
+  color: ${({ theme }) => theme.color.white};
   font-size: 16px;
   font-weight: 400;
 
   background-color: ${({ theme, $canNext }) =>
-    $canNext ? theme.red500 : theme.gray500};
+    $canNext ? theme.color.red500 : theme.color.gray100};
+
+  transition: 0.3s ease-in-out background-color;
 `;

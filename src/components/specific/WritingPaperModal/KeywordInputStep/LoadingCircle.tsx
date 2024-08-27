@@ -29,7 +29,7 @@ const KeywordContainer = styled.div`
 
   width: 300px;
   height: 300px;
-  margin: 20px auto;
+  margin: 10px auto;
 `;
 
 const Orbit = styled.div`
@@ -38,7 +38,7 @@ const Orbit = styled.div`
   height: 250px;
 
   border-radius: 50%;
-  border: 1px solid ${({ theme }) => theme.gray500};
+  border: 1px solid ${({ theme }) => theme.color.gray400};
 
   animation: ${spin} 1.5s ease-in-out infinite;
 `;
@@ -52,5 +52,5 @@ const Circle = styled.div`
   height: 33px;
   border-radius: 50%;
 
-  background-color: ${({ theme }) => theme.red500};
+  background-color: ${({ theme }) => theme.color.red500};
 `;
