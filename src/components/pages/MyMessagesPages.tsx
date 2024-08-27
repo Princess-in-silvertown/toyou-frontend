@@ -1,4 +1,4 @@
-import { Letter } from '@/types/letter';
+import { RollingPaper } from '@/types/paper';
 import { CARD_THEME } from '@constants/card';
 import { useMyMessageList } from '@hooks/queries/useMyMessageList';
 import { useViewport } from '@hooks/useViewport';
@@ -158,7 +158,7 @@ const MyMessageItem = ({
   stickers,
   name,
   profileImageUrl,
-}: Letter) => {
+}: RollingPaper) => {
   const { R, G, B } = CARD_THEME[themeId].color;
 
   return (

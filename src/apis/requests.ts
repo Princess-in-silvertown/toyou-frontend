@@ -4,7 +4,7 @@ import { GroupList } from '@/types/group';
 import { User } from '@/types/user';
 import { EventData, Events } from '@/types/event';
 import { Member } from '@/types/member';
-import { Letters } from '@/types/letter';
+import { RollingPapers } from '@/types/paper';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -88,5 +88,5 @@ export const requestGetMessageList = (cursor?: number) => {
     ...(cursor && { cursor: String(cursor) }),
   }).toString();
 
-  return request.get<ResData<Letters>>(`api/letters?${params}`);
+  return request.get<ResData<RollingPapers>>(`api/letters?${params}`);
 };

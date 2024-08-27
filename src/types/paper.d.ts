@@ -1,8 +1,8 @@
 import { Sticker } from './sticker';
 
-export type Letters = { letters: Letter[] };
+export type RollingPapers = { letters: Letter[] };
 
-export type Letter = {
+export type RollingPaper = {
   themeId: number;
   profileImageUrl: messageCover;
   name: string;

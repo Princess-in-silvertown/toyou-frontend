@@ -7,8 +7,8 @@ import blueCover from '@assets/image/birthday_small_blue.svg';
 import greenCover from '@assets/image/birthday_small_green.svg';
 
 import H from '@assets/image/H.jpeg';
-import { Letters } from '@/types/letter';
 import messageCover from '@assets/image/happy_birthday.svg';
+import { RollingPapers } from '@/types/paper';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -437,7 +437,7 @@ export const handlers = [
   }),
 
   http.get(
-    'http://localhost:3000/api/letters',
+    'http://localhost:3000/api/rollingpapers',
 
     async ({ request }) => {
       const url = new URL(request.url);
@@ -445,7 +445,7 @@ export const handlers = [
 
       await delay(1000);
 
-      const data: Letters = {
+      const data: RollingPapers = {
         letters: [
           {
             themeId: 1,

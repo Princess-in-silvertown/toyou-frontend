@@ -2,13 +2,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { requestGetMessageList } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
-import { Letter, Letters } from '@/types/letter';
+import { RollingPaper, RollingPapers } from '@/types/paper';
 
 export const useMyMessageList = () => {
   const query = useInfiniteQuery<
-    ResData<Letters>,
+    ResData<RollingPapers>,
     ResponseError,
-    Letter[],
+    RollingPaper[],
     string[],
     number
   >({
@@ -25,7 +25,10 @@ export const useMyMessageList = () => {
     },
 
     select: ({ pages }) =>
-      pages.reduce<Letter[]>((acc, { data }) => acc.concat(data.letters), []),
+      pages.reduce<RollingPaper[]>(
+        (acc, { data }) => acc.concat(data.letters),
+        []
+      ),
   });
 
   return query;

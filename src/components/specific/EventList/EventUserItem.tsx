@@ -29,9 +29,7 @@ const EventUserItem = ({
   const handleCloseModal = () => {
     handleClose(KEYS.WRITE_MESSAGE, 1000);
 
-    setTimeout(() => {
-      setIsClickPrevented(false);
-    }, 1000);
+    setIsClickPrevented(false);
   };
 
   const handleClick = () => {
@@ -121,12 +119,13 @@ const SendButton = styled.button`
   justify-content: center;
   align-items: center;
 
-  width: 96px;
-  height: 24px;
+  width: 100px;
+  height: 26px;
   border-radius: 13px;
   padding: 6px, 16px, 6px, 16px;
-  border: 1px solid #dd432e;
 
-  color: #dd432e;
+  color: ${({ theme }) => theme.color.gray500};
   font-size: 10px;
+
+  background-color: ${({ theme }) => theme.color.white};
 `;
