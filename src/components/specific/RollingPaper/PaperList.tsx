@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PaperItem from './PaperItem';
 import { useViewport } from '@hooks/useViewport';
 import { useRef } from 'react';
@@ -54,6 +54,16 @@ const PaperList = () => {
 };
 
 export default PaperList;
+
+const appear = keyframes`
+  from{
+    transform: scale(0);
+  }
+  
+  to{
+    transform: scale(1);
+  }
+`;
 
 const MyMessageListContainer = styled.div`
   margin-top: 7px;
@@ -111,6 +121,8 @@ const CountContainer = styled.div`
   border-radius: 9px;
 
   background-color: ${({ theme }) => theme.color.red500};
+
+  animation: ${appear} 0.3s ease-in-out;
 `;
 
 const CardIcon = styled.div`
