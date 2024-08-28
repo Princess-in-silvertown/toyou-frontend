@@ -2,7 +2,7 @@ import SwiperCard from '@components/common/SwiperCard/SwiperCard';
 import { useGetCardCover } from '@hooks/queries/useCardCover';
 import styled, { css, keyframes } from 'styled-components';
 import StickerList from '../StickerList';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
@@ -66,21 +66,10 @@ const CardEdit = ({ alias, message }: Props) => {
 
 export default CardEdit;
 
-const zoomIn = keyframes`
-  from {
-    transform: scale(0.6875);
-  }
-
-  to {
-    transform: scale(1);
-  }
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  touch-action: none;
 
   margin: 36px auto 0 auto;
 
@@ -161,6 +150,9 @@ const Alias = styled.div`
 
 const CoverImage = styled.img`
   width: 100%;
+
+  user-select: none;
+  pointer-events: none;
 `;
 
 const BackContainer = styled.div`

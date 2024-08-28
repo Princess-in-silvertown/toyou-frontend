@@ -109,6 +109,9 @@ const StickerIcon = styled.img`
 
   width: 22px;
   height: 22px;
+
+  user-select: none;
+  pointer-events: none;
 `;
 
 const AddIcon = styled.img`
@@ -118,4 +121,7 @@ const AddIcon = styled.img`
 
   width: 17px;
   height: 17px;
+
+  user-select: none;
+  pointer-events: none;
 `;

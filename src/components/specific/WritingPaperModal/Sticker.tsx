@@ -122,7 +122,6 @@ const Sticker = ({
     callback: () => void
   ) => {
     e.stopPropagation();
-    e.preventDefault();
 
     callback();
   };
@@ -152,14 +151,12 @@ const Sticker = ({
 
   const handleTouchEnd: TouchEventHandler = (e) => {
     e.stopPropagation();
-    e.preventDefault();
 
     handleEnd();
   };
 
   const handleTouchStart: TouchEventHandler = (e) => {
     e.stopPropagation();
-    e.preventDefault();
 
     if (e.touches.length === 1) {
       handleStart(e.touches[0].clientX, e.touches[0].clientY);
@@ -178,7 +175,6 @@ const Sticker = ({
 
   const handleTouchMove: TouchEventHandler = (e) => {
     e.stopPropagation();
-    e.preventDefault();
 
     if (e.touches.length === 1) {
       handleMove(e.touches[0].clientX, e.touches[0].clientY);
@@ -313,6 +309,9 @@ const Image = styled.img`
   max-width: 300px;
   height: auto;
   transform-origin: 'center center';
+
+  user-select: none;
+  pointer-events: none;
 `;
 
 const Trash = styled.div`
@@ -336,4 +335,7 @@ const TrashIcon = styled.img`
   height: 27.75px;
 
   width: 100%;
+
+  user-select: none;
+  pointer-events: none;
 `;

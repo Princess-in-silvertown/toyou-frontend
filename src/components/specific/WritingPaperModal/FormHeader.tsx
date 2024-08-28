@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import back from '@assets/icons/back.svg';
 import cancel from '@assets/icons/cancel.svg';
@@ -57,20 +57,38 @@ const FormHeader = ({
   handleClickBackButton,
   handleClickNextButton,
   handleClickCancelButton,
-  handleClickSubmitButton,
+  handleClickSubmitButton: onClickSubmit,
   progressiveLastIndex,
   progressiveStartIndex = 0,
 }: Props) => {
   progressiveLastIndex = progressiveLastIndex ?? lastIndex;
 
-  const RightButton = useMemo(() => {
+  const [canSubmit, setCanSubmit] = useState(false);
+
+  // 버튼을 연속해서 클릭하다 의도치 않게 메시지를 보내는 경우를 피하기 위해서
+  useLayoutEffect(() => {
+    const isEnable = (canNext ?? false) && index === lastIndex;
+
+    if (isEnable) {
+      setTimeout(() => setCanSubmit(true), 1500);
+    } else {
+      setCanSubmit(false);
+    }
+  }, [canNext, index]);
+
+  const handleClickSubmitButton = () => {
+    onClickSubmit();
+    setCanSubmit(false);
+  };
+
+  const RightButton = () => {
     if (canNext === undefined) return <div style={{ width: '27px' }} />;
 
     if (index === lastIndex)
       return (
         <ControlButton
           type="SUBMIT"
-          canNext={canNext}
+          canNext={canSubmit}
           handler={handleClickSubmitButton}
         />
       );
@@ -82,7 +100,7 @@ const FormHeader = ({
         handler={handleClickNextButton}
       />
     );
-  }, [index, canNext]);
+  };
 
   const LeftButton = useMemo(() => {
     if (index === 0)
@@ -108,7 +126,7 @@ const FormHeader = ({
             })}
         </Progressive>
       )}
-      {RightButton}
+      <RightButton />
     </Container>
   );
 };

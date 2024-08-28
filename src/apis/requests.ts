@@ -4,7 +4,7 @@ import { GroupList } from '@/types/group';
 import { User } from '@/types/user';
 import { EventData, Events } from '@/types/event';
 import { Member } from '@/types/member';
-import { RollingPapers } from '@/types/paper';
+import { RollingPaperForm, RollingPapers } from '@/types/paper';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -88,5 +88,14 @@ export const requestGetMessageList = (cursor?: number) => {
     ...(cursor && { cursor: String(cursor) }),
   }).toString();
 
-  return request.get<ResData<RollingPapers>>(`api/letters?${params}`);
+  return request.get<ResData<RollingPapers>>(`api/rollingpapers?${params}`);
+};
+
+export const requestPostPaper = (memberId: number, paper: RollingPaperForm) => {
+  const body = JSON.stringify(paper);
+
+  return request.post<ResData<any>>(
+    `api/groups/members/${memberId}/rollingpapers`,
+    body
+  );
 };

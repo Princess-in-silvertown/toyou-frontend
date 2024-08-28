@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import MultiStepForm from './MultiStepForm';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useKeydownListener } from '@hooks/useKeydownListener';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import DialogContainer from '@components/common/Modal/DialogContainer';
@@ -16,6 +16,8 @@ import {
 import PaperMessageInputStep from './PaperMessageInputStep/PaperMessageInputStep';
 import { useViewport } from '@hooks/useViewport';
 import { User } from '@/types/user';
+import { RollingPaperForm } from '@/types/paper';
+import { useWritePaper } from '@hooks/queries/useWritePaper';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -23,22 +25,22 @@ interface Props {
 }
 
 const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
-  const { keywords, message } = useContext(messageFormContext);
+  const {
+    alias,
+    cardTheme,
+    coverImgUrl,
+    keywords,
+    stickers,
+    message,
+    userInfo: info,
+  } = useContext(messageFormContext);
 
   const { handleChangeInfo } = useContext(messageFormDispatchContext);
 
   const { handleOpen, handleClose, handleClear } =
     useContext(modalDispatchContext);
 
-  const [isWaitSubmit, setIsWaitSubmit] = useState(false);
-
-  const waitSubmit = () => {
-    setIsWaitSubmit(true);
-  };
-
-  const canEdit = () => {
-    setIsWaitSubmit(false);
-  };
+  const { mutateAsync, isPending, isSubmitted } = useWritePaper(info.id);
 
   const handleAllClose = () => {
     closeModal();
@@ -58,20 +60,24 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
   };
 
   const handleSubmit = () => {
-    const request = async () => {
-      // 메세지 작성 요청
-
-      await closeModal();
+    const paper: RollingPaperForm = {
+      themeId: cardTheme,
+      coverImageUrl: coverImgUrl,
+      content: message,
+      stickers: [...stickers.values()],
     };
 
-    request();
+    mutateAsync(paper).then(() => {
+      setTimeout(() => handleAllClose(), 1000);
+    });
   };
 
   useKeydownListener('Escape', handleCancel);
+
   const [, height] = useViewport();
 
   const getSteps = () => {
-    const arr = [
+    const steps = [
       {
         component: <UserSearchStep />,
       },
@@ -90,19 +96,15 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
       },
       {
         component: (
-          <CardEditStep
-            isWaitSubmit={isWaitSubmit}
-            canEdit={canEdit}
-            waitSubmit={waitSubmit}
-          />
+          <CardEditStep isPendingSubmit={isPending} isSubmitted={isSubmitted} />
         ),
-        canNext: isWaitSubmit,
+        canNext: coverImgUrl.length > 1,
       },
     ];
 
-    if (userInfo) arr.shift();
+    if (userInfo) steps.shift();
 
-    return arr;
+    return steps;
   };
 
   useEffect(() => {
@@ -112,7 +114,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
   }, []);
 
   return (
-    <Container style={{ height: height + 30 }}>
+    <Container style={{ height }}>
       <MultiStepForm
         steps={getSteps()}
         progressiveStartIndex={userInfo ? 0 : 1}

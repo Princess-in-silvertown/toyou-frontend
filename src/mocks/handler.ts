@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse, passthrough } from 'msw';
 import sticker from '@assets/image/birthday_sticker.svg';
 import cover from '@assets/image/happy_birthday.svg';
 import yellowCover from '@assets/image/birthday_small_yellow.svg';
@@ -76,6 +76,14 @@ let coverApiResponseCount = 0;
 export const handlers = [
   http.get('http://localhost:3000/test', (info) => {
     return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
+  }),
+
+  http.get('http://localhost:3000/assets/*', (info) => {
+    return passthrough();
+  }),
+
+  http.get('https://fonts.cdnfonts.com/*', (info) => {
+    return passthrough();
   }),
 
   http.get('http://localhost:3000/api/members', ({ request }) => {
@@ -207,7 +215,7 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 5) {
+      if (coverApiResponseCount <= 1) {
         return HttpResponse.json(
           {
             data: {},
@@ -629,6 +637,15 @@ export const handlers = [
         },
         { status: 200 }
       );
+    }
+  ),
+
+  http.post(
+    'http://localhost:3000/api/groups/members/:memberId/rollingpapers',
+    async ({ request }) => {
+      await delay(2000);
+
+      return HttpResponse.json({ data: '' }, { status: 200 });
     }
   ),
 ];

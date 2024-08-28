@@ -39,6 +39,8 @@ const Container = styled.div`
 const Title = styled.div`
   width: 100%;
 
+  color: ${({ theme }) => theme.color.gray400};
+
   text-align: center;
   font-size: 18px;
   font-weight: 600;

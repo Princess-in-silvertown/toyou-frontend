@@ -44,8 +44,8 @@ const HomePage = () => {
     );
   };
 
-  const [, viewHeight] = useViewport();
-  const marginTop = Math.max((viewHeight - 800) / 2, 0);
+  const [, height] = useViewport();
+  const marginTop = Math.max((height - 800) / 2, 0);
 
   return (
     <Container style={{ marginTop }}>
