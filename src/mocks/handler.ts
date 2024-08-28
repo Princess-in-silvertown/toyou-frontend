@@ -633,6 +633,7 @@ export const handlers = [
           data,
           pageInfo: {
             nextCursor: cursor + 1,
+            totalCount: 36,
           },
         },
         { status: 200 }

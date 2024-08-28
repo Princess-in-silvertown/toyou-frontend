@@ -7,7 +7,7 @@ const MyMessagesPages = () => {
   return (
     <Container>
       <Title>효섭 님의 메시지함</Title>
-      <Suspense>
+      <Suspense fallback={<PaperListFallback />}>
         <PaperList />
       </Suspense>
     </Container>

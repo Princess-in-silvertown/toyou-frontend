@@ -1,14 +1,15 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { requestGetMessageList } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { RollingPaper, RollingPapers } from '@/types/paper';
+import { useEffect, useState } from 'react';
 
 export const useMyMessageList = () => {
-  const query = useInfiniteQuery<
+  const query = useSuspenseInfiniteQuery<
     ResData<RollingPapers>,
     ResponseError,
-    RollingPaper[],
+    [number, RollingPaper[]],
     string[],
     number
   >({
@@ -24,12 +25,17 @@ export const useMyMessageList = () => {
       return undefined;
     },
 
-    select: ({ pages }) =>
-      pages.reduce<RollingPaper[]>(
+    select: ({ pages }) => {
+      const totalData = pages[0].pageInfo?.totalCount ?? 0;
+
+      const data = pages.reduce<RollingPaper[]>(
         (acc, { data }) => acc.concat(data.letters),
         []
-      ),
+      );
+
+      return [totalData, data];
+    },
   });
 
-  return query;
+  return { ...query, totalCount: query.data[0], data: query.data[1] };
 };
