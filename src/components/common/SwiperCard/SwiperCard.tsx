@@ -2,6 +2,7 @@ import {
   MouseEventHandler,
   ReactNode,
   TouchEventHandler,
+  useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
@@ -12,6 +13,7 @@ interface Props {
   frontContents: ReactNode;
   frontTitle?: string;
   backTitle?: string;
+  isAutoFlip?: boolean;
   onSwipe?: (currentIndex: number) => void;
 }
 
@@ -20,6 +22,7 @@ const SwiperCard = ({
   backContents,
   frontTitle,
   backTitle,
+  isAutoFlip,
   onSwipe,
 }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -81,16 +84,24 @@ const SwiperCard = ({
     onSwipe?.(currentIndex);
   }, [currentIndex]);
 
+  useEffect(() => {
+    if (isAutoFlip && isFront) {
+      setTimeout(() => setCurrentIndex(currentIndex + 1), 500);
+    }
+  }, [isAutoFlip]);
+
   return (
     <Container>
-      <TitleContainer>
-        <FrontButton $isFront={isFront} onClick={handleClickFrontButton}>
-          {frontTitle}
-        </FrontButton>
-        <BackButton $isFront={isFront} onClick={handleClickBackButton}>
-          {backTitle}
-        </BackButton>
-      </TitleContainer>
+      {(frontTitle || backTitle) && (
+        <TitleContainer>
+          <FrontButton $isFront={isFront} onClick={handleClickFrontButton}>
+            {frontTitle}
+          </FrontButton>
+          <BackButton $isFront={isFront} onClick={handleClickBackButton}>
+            {backTitle}
+          </BackButton>
+        </TitleContainer>
+      )}
       <SwiperWrapper
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -125,7 +136,6 @@ const Container = styled.div`
 `;
 
 const SwiperWrapper = styled.div`
-  width: 100%;
   margin: 0 auto;
 `;
 
