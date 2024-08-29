@@ -1,18 +1,37 @@
+import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { RollingPaper } from '@/types/paper';
 import { CARD_THEME } from '@constants/card';
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { KEYS } from '@constants/modal';
+import PaperDetailModalContents from './PaperDetail/PaperDetailModalContents';
+import PaperListModalContainer from './PaperDetail/PaperListModalContainer';
 
-const PaperItem = ({
-  themeId,
-  coverImageUrl,
-  content,
-  name,
-  profileImageUrl,
-}: RollingPaper) => {
+interface Props extends RollingPaper {
+  index: number;
+}
+
+const PaperItem = (props: Props) => {
+  const { index, themeId, coverImageUrl, content, name, profileImageUrl } =
+    props;
+
+  const { handleClose, handleOpen } = useContext(modalDispatchContext);
+
+  const handleClickItem = () => {
+    handleOpen(
+      KEYS.PAPER_DETAIL,
+      <PaperDetailModalContents
+        clickedItemIndex={index}
+        closeModal={handleClose}
+      />,
+      PaperListModalContainer
+    );
+  };
+
   const { R, G, B } = CARD_THEME[themeId].color;
 
   return (
-    <MessageContainer>
+    <MessageContainer onClick={handleClickItem}>
       <Card style={{ backgroundColor: `rgb(${[R, G, B, 0.85]})` }}>
         <Cover src={coverImageUrl} />
       </Card>
@@ -28,6 +47,8 @@ export default PaperItem;
 
 const MessageContainer = styled.div`
   display: block;
+
+  cursor: pointer;
 `;
 
 const Card = styled.div`

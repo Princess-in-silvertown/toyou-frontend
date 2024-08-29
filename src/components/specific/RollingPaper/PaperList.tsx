@@ -42,12 +42,17 @@ const PaperList = () => {
               key={index}
               ref={index + 1 === data.length ? null : lastItemRef}
             >
-              <PaperItem {...item} />
+              <PaperItem index={index} {...item} />
             </ItemContainer>
           ))}
         </ListGrid>
-        {data && isFetchingNextPage && <ListLoading>Loading...</ListLoading>}
-        {data && !hasNextPage && <ListLast>End</ListLast>}
+        {data && isFetchingNextPage && (
+          <LoadingContainer>
+            <Spinner />
+            <ListLoading>메시지를 불러오는 중이에요</ListLoading>
+          </LoadingContainer>
+        )}
+        {data && !hasNextPage && <ListLast>메시지를 모두 불러왔어요</ListLast>}
       </ListContainer>
     </MyMessageListContainer>
   );
@@ -73,24 +78,55 @@ const ListLast = styled.div`
   display: flex;
   justify-content: center;
 
-  margin-top: 15px;
+  margin: 15px 0 25px 0;
   width: 100%;
 
-  font-size: 14px;
-  text-align: center;
-  color: #9e9e9e;
+  font-size: 12px;
+  line-height: 14.32px;
+  letter-spacing: -0.02em;
+
+  color: ${({ theme }) => theme.color.gray300};
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6.25px;
+
+  width: 100%;
+  margin: 15px 0 25px 0;
 `;
 
 const ListLoading = styled.div`
   display: flex;
   justify-content: center;
 
-  margin-top: 15px;
-  width: 100%;
+  font-size: 12px;
+  line-height: 14.32px;
+  letter-spacing: -0.02em;
 
-  font-size: 14px;
-  text-align: center;
-  color: #9e9e9e;
+  color: ${({ theme }) => theme.color.gray300};
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg); 
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Spinner = styled.div`
+  width: 13.5px;
+  height: 13.5px;
+  border: 1px solid ${({ theme }) => theme.color.red500};
+  border-top: 1px solid ${({ theme }) => theme.color.gray300};
+  border-radius: 50%;
+
+  animation: ${spin} 1s linear infinite;
 `;
 
 const MessageLengthContainer = styled.div`
@@ -106,8 +142,6 @@ const ListTitleText = styled.div`
   font-size: 16px;
   font-weight: 400;
   line-height: 27px;
-
-  color: #212121;
 `;
 
 const CountContainer = styled.div`

@@ -11,8 +11,8 @@ const PaperListFallback = () => {
       </MessageLengthContainer>
       <ListContainer style={{ height: height - 251 }}>
         <ListGrid>
-          {new Array(5).fill('').map(() => (
-            <ItemContainer>
+          {new Array(5).fill('').map((_, index) => (
+            <ItemContainer key={index}>
               <MessageContainer>
                 <Card />
                 <UserContainer>

@@ -93,7 +93,7 @@ const Textarea = styled.textarea`
   background-color: transparent;
 
   scroll-behavior: auto;
-  overflow: hidden;
+  overflow-y: auto;
 
   &:focus {
     outline: none;
