@@ -1,7 +1,7 @@
 import { User } from '@/types/user';
 import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
 import { Member } from '@/types/member';
 
@@ -18,17 +18,29 @@ const SearchedUserItem = ({
 }: Props) => {
   const { handleChangeInfo } = useContext(messageFormDispatchContext);
 
+  const imageRef = useRef<HTMLImageElement>(null);
+
   const handleClick = () => {
     handleChangeInfo({ id, name, imgUrl: imageUrl });
 
     onNext?.();
   };
 
+  const handleErrorProfileImage = () => {
+    if (imageRef.current) {
+      imageRef.current.src = profile;
+    }
+  };
+
   return (
     <Container onClick={handleClick}>
       <LeftContents>
         <LeftFirstContents>
-          <Profile src={profile} />
+          <Profile
+            ref={imageRef}
+            src={imageUrl}
+            onError={handleErrorProfileImage}
+          />
         </LeftFirstContents>
         <LeftSecondContents>
           <Name>{name}</Name>
@@ -72,7 +84,9 @@ const RightContents = styled.div`
 
 const Profile = styled.img`
   width: 48px;
-  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
 `;
 
 const Name = styled.div`
@@ -84,17 +98,4 @@ const Introduce = styled.div`
   font-weight: 400;
   font-size: 12px;
   color: #616161;
-`;
-
-const GroupName = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 60px;
-  height: 24px;
-  border-radius: 12px;
-  border: 1px solid #9e9e9e;
-
-  font-size: 10px;
 `;

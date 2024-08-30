@@ -1,9 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { requestGetEvents } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { QUERY_KEY } from '@constants/query';
 import { Day, EventData, ParsedEvent } from '@/types/event';
+import { useEffect } from 'react';
 
 export const useEvent = (year: number, month: number) => {
   const query = useQuery<ResData<EventData>, ResponseError, ParsedEvent>({
@@ -29,5 +30,5 @@ const parseEvents = (days: Day[]) => {
       eventStore[key].events = [...day.events];
     });
 
-  return eventStore;
+  return { ...eventStore };
 };

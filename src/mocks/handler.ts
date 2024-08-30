@@ -33,7 +33,7 @@ const indexedUserList: Record<number, any> = {
     name: '효섭',
     groupIds: [1, 2],
     introduction: '디폴트효섭',
-    imageUrl: '',
+    imageUrl: H,
   },
 
   2: {
@@ -41,7 +41,7 @@ const indexedUserList: Record<number, any> = {
     name: '효효섭',
     groupIds: [1],
     introduction: '효효섭이다',
-    imageUrl: '',
+    imageUrl: H,
   },
 
   3: {
@@ -49,7 +49,7 @@ const indexedUserList: Record<number, any> = {
     name: '효효효효섭',
     groupIds: [2],
     introduction: '효효효섭이다',
-    imageUrl: '',
+    imageUrl: 'error',
   },
 
   4: {
@@ -65,7 +65,7 @@ const indexedUserList: Record<number, any> = {
     name: '효섭(댄디함)',
     groupIds: [],
     introduction: '댄디한 효섭이다',
-    imageUrl: '',
+    imageUrl: H,
   },
 };
 
@@ -287,6 +287,44 @@ export const handlers = [
         },
         { status: 200 }
       );
+    }
+
+    if (month === 6) {
+      data = {
+        days: [
+          {
+            date: '2024-06-30',
+            events: [
+              {
+                memberId: 6,
+                memberName: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImgUrl: 'error',
+              },
+              {
+                memberId: 2,
+                memberName: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImgUrl: 'error',
+              },
+            ],
+          },
+          {
+            date: '2024-06-04',
+            events: [
+              {
+                memberId: 6,
+                memberName: '테스트 효섭',
+                eventType: '',
+                description: '테스트.',
+                profileImgUrl: H,
+              },
+            ],
+          },
+        ],
+      };
     }
 
     if (month === 7) {

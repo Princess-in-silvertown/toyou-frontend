@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import profile from '@assets/icons/profile.svg';
 import { Event } from '@/types/event';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
 import { KEYS } from '@constants/modal';
@@ -26,6 +26,14 @@ const EventUserItem = ({
     imgUrl: profileImgUrl,
   };
 
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const handleErrorProfileImage = () => {
+    if (imageRef.current) {
+      imageRef.current.src = profile;
+    }
+  };
+
   const handleCloseModal = () => {
     handleClose(KEYS.WRITE_MESSAGE, 1000);
 
@@ -48,7 +56,11 @@ const EventUserItem = ({
     <Container onClick={handleClick}>
       <LeftContents>
         <LeftFirstContents>
-          <Profile src={profileImgUrl ?? profile} />
+          <Profile
+            src={profileImgUrl}
+            ref={imageRef}
+            onError={handleErrorProfileImage}
+          />
         </LeftFirstContents>
         <LeftSecondContents>
           <Name>{memberName}</Name>
@@ -99,6 +111,8 @@ const Profile = styled.img`
   height: 48px;
   border-radius: 50%;
   border: none;
+
+  background-color: ${({ theme }) => theme.color.gray300};
 
   object-fit: cover;
 `;
