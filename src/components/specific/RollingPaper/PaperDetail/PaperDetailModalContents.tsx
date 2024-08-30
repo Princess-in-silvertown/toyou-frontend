@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import PaperListDetail from './PaperListDetail';
-import back from '@assets/icons/back_white.svg';
+import back from '@assets/icons/back.svg';
 import { KEYS } from '@constants/modal';
 
 interface Props {

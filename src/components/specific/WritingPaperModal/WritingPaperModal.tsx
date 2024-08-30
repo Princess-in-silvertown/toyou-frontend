@@ -18,6 +18,7 @@ import { useViewport } from '@hooks/useViewport';
 import { User } from '@/types/user';
 import { RollingPaperForm } from '@/types/paper';
 import { useWritePaper } from '@hooks/queries/useWritePaper';
+import ThemeSelectStep from './ThemeSelectStep/ThemeSelectStep';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -52,7 +53,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
     handleOpen(
       KEYS.WRITE_MESSAGE_CANCEL,
       <ConfirmCancelModalContents
-        handleClose={() => handleClose()}
+        handleClose={() => handleClose(KEYS.WRITE_MESSAGE_CANCEL)}
         handleSubmit={() => handleAllClose()}
       />,
       DialogContainer
@@ -77,9 +78,39 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
   const [, height] = useViewport();
 
   const getSteps = () => {
-    const steps = [
+    if (!userInfo) {
+      return [
+        {
+          component: <UserSearchStep />,
+        },
+        {
+          component: <PaperMessageInputStep />,
+          canNext: message.length >= 5,
+        },
+        {
+          component: (
+            <KeywordInputStep
+              canNext={keywords && keywords.length >= 1}
+              modalHeight={height}
+            />
+          ),
+          canNext: keywords && keywords.length >= 1,
+        },
+        {
+          component: (
+            <CardEditStep
+              isPendingSubmit={isPending}
+              isSubmitted={isSubmitted}
+            />
+          ),
+          canNext: coverImgUrl.length > 1,
+        },
+      ];
+    }
+
+    return [
       {
-        component: <UserSearchStep />,
+        component: <ThemeSelectStep />,
       },
       {
         component: <PaperMessageInputStep />,
@@ -101,10 +132,6 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
         canNext: coverImgUrl.length > 1,
       },
     ];
-
-    if (userInfo) steps.shift();
-
-    return steps;
   };
 
   useEffect(() => {
@@ -117,8 +144,8 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
     <Container style={{ height }}>
       <MultiStepForm
         steps={getSteps()}
-        progressiveStartIndex={userInfo ? 0 : 1}
-        progressiveLastIndex={userInfo ? 2 : 3}
+        progressiveStartIndex={1}
+        progressiveLastIndex={3}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
       />

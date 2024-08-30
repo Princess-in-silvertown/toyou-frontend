@@ -77,6 +77,8 @@ const FormHeader = ({
   }, [canNext, index]);
 
   const handleClickSubmitButton = () => {
+    if (!canSubmit) return;
+
     onClickSubmit();
     setCanSubmit(false);
   };
@@ -102,16 +104,16 @@ const FormHeader = ({
     );
   };
 
-  const LeftButton = useMemo(() => {
+  const LeftButton = () => {
     if (index === 0)
       return <ControlButton type="CANCEL" handler={handleClickCancelButton} />;
 
     return <ControlButton type="BACK" handler={handleClickBackButton} />;
-  }, [index]);
+  };
 
   return (
     <Container>
-      {LeftButton}
+      <LeftButton />
       {index >= progressiveStartIndex && index <= progressiveLastIndex && (
         <Progressive>
           {new Array(progressiveLastIndex - progressiveStartIndex + 1)

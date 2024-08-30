@@ -8,7 +8,7 @@ export const DEFAULT_USERINFO = {
   imgUrl: '',
 };
 
-export const DEFAULT_THEME = 1;
+export const DEFAULT_THEME = 0;
 
 export type MessageFormDispatch = {
   handleChangeInfo: (info: Partial<User>) => void;

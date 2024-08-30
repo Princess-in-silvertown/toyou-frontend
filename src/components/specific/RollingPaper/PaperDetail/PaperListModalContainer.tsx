@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, TouchEventHandler, useRef } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface Props extends React.PropsWithChildren {
@@ -55,10 +55,10 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
   right: 0;
   bottom: 0;
 
-  /* background: #f2f1edf2; */
-  background: #212121d9;
+  background: #f2f1edf2;
+  /* background: #212121d9; */
 
-  animation: 0.3s ease-in-out
+  animation: 0.7s ease-out
     ${({ $isClosing }) => ($isClosing ? disappear : appear)};
   animation-fill-mode: both;
 `;
@@ -66,14 +66,17 @@ const BackDrop = styled.div<{ $isClosing?: boolean }>`
 const Container = styled.div<{ $isClosing?: boolean }>`
   position: absolute;
   top: 0;
-  left: 0;
+  bottom: 0;
+  left: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 100%;
-`;
+  max-width: 500px;
 
-/* animation: 0.5s ease-out
-    ${({ $isClosing }) => ($isClosing ? slideInFromUp : slideInFromBottom)};
-  animation-fill-mode: both; */
+  transform: translateX(-50%);
+  animation: 0.7s ease-out
+    ${({ $isClosing }) => ($isClosing ? disappear : appear)};
+  animation-fill-mode: both;
+`;
