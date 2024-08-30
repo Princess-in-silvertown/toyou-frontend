@@ -1,3 +1,4 @@
+import { useDrag } from '@hooks/useDrag';
 import React, {
   Children,
   MouseEventHandler,
@@ -24,46 +25,25 @@ const Swiper = ({
   onSwipe,
 }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(startIndex ?? 0);
-  const [startX, setStartX] = useState(0);
-  const [deltaX, setDeltaX] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
-
   const maxIndex = Children.count(children) - 1;
 
-  const handleStart = (clientX: number) => {
-    setStartX(clientX);
-    setIsSwiping(true);
-  };
+  const { collected, bind } = useDrag({
+    moveXMinMax: $width
+      ? [-$width - ($gap ?? 0), $width + ($gap ?? 0)]
+      : [Infinity, Infinity],
 
-  const handleMove = (clientX: number) => {
-    if (!isSwiping) return;
-    const moveX = clientX - startX;
-    setDeltaX(moveX);
-  };
+    onEnd: ({ delta }) => {
+      const [deltaX] = delta;
 
-  const handleEnd = () => {
-    setDeltaX(0);
+      if (Math.abs(deltaX) <= 50) return;
 
-    if (Math.abs(deltaX) <= 50) return;
-
-    setIsSwiping(false);
-    if (deltaX > 0 && currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    } else if (deltaX < 0 && currentIndex < maxIndex) {
-      setCurrentIndex((prev) => prev + 1);
-    }
-  };
-
-  const handleTouchStart: TouchEventHandler = (e) =>
-    handleStart(e.touches[0].clientX);
-  const handleTouchMove: TouchEventHandler = (e) =>
-    handleMove(e.touches[0].clientX);
-  const handleTouchEnd: TouchEventHandler = () => handleEnd();
-
-  const handleMouseDown: MouseEventHandler = (e) => handleStart(e.clientX);
-  const handleMouseMove: MouseEventHandler = (e) => handleMove(e.clientX);
-  const handleMouseUp: MouseEventHandler = () => handleEnd();
-  const handleMouseLeave: MouseEventHandler = () => handleEnd();
+      if (deltaX > 0 && currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+      } else if (deltaX < 0 && currentIndex < maxIndex) {
+        setCurrentIndex((prev) => prev + 1);
+      }
+    },
+  });
 
   useLayoutEffect(() => {
     onSwipe?.(currentIndex);
@@ -84,21 +64,13 @@ const Swiper = ({
   });
 
   return (
-    <SwipeContainer
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    <SwipeContainer {...bind}>
       <Padding $padding={$padding ?? 0}>
         <SwipeWrapper
           style={{
             transform: `translateX(calc(${
               $width ? `${-currentIndex * $width}px` : `${-currentIndex * 100}%`
-            } + ${-currentIndex * ($gap ?? 0)}px + ${deltaX}px))`,
+            } + ${-currentIndex * ($gap ?? 0)}px + ${collected.deltaX}px))`,
           }}
           $gap={$gap ?? 0}
         >
