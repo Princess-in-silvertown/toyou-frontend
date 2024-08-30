@@ -3,6 +3,7 @@ import KeywordsCircle from './KeywordsCircle';
 import { Suspense, useContext } from 'react';
 import LoadingCircle from './LoadingCircle';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
+import { useViewport } from '@hooks/useViewport';
 
 interface Props {
   modalHeight?: number;
@@ -13,14 +14,11 @@ interface Props {
 const KeywordInputStep = ({ canNext, onNext, modalHeight = 600 }: Props) => {
   const { keywords, userInfo } = useContext(messageFormContext);
 
-  const handleClickNextButton = () => {
-    if (!canNext) return;
-
-    onNext?.();
-  };
+  const [, height] = useViewport();
+  const marginTop = Math.max((height - 800) / 2, 0);
 
   return (
-    <Container style={{ height: modalHeight - 60 }}>
+    <Container style={{ height: modalHeight - 60, marginTop }}>
       <Title>
         {keywords
           ? keywords.length === 0
@@ -31,9 +29,6 @@ const KeywordInputStep = ({ canNext, onNext, modalHeight = 600 }: Props) => {
       <Suspense fallback={<LoadingCircle />}>
         <KeywordsCircle />
       </Suspense>
-      <NextButton onClick={handleClickNextButton} $canNext={canNext ?? false}>
-        확인
-      </NextButton>
     </Container>
   );
 };
@@ -58,28 +53,4 @@ const Title = styled.div`
   text-align: center;
   font-size: 20px;
   white-space: pre-wrap;
-`;
-
-const NextButton = styled.button<{ $canNext: boolean }>`
-  position: fixed;
-
-  bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  max-width: 500px;
-  height: 49px;
-  margin: 0 auto;
-  border-radius: 24.5px;
-
-  color: ${({ theme }) => theme.color.white};
-  font-size: 16px;
-  font-weight: 400;
-
-  background-color: ${({ theme, $canNext }) =>
-    $canNext ? theme.color.red500 : theme.color.gray100};
-
-  transition: 0.3s ease-in-out background-color;
 `;
