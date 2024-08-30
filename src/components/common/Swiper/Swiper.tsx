@@ -1,4 +1,4 @@
-import {
+import React, {
   Children,
   MouseEventHandler,
   TouchEventHandler,
@@ -9,15 +9,26 @@ import styled from 'styled-components';
 
 interface Props extends React.PropsWithChildren {
   onSwipe?: (currentIndex: number) => void;
+  startIndex?: number;
+  $width?: number;
+  $padding?: number;
+  $gap?: number;
 }
 
-const Swiper = ({ children, onSwipe }: Props) => {
-  const maxIndex = Children.count(children) - 1;
-
-  const [currentIndex, setCurrentIndex] = useState(0);
+const Swiper = ({
+  children,
+  startIndex,
+  $width,
+  $gap,
+  $padding,
+  onSwipe,
+}: Props) => {
+  const [currentIndex, setCurrentIndex] = useState(startIndex ?? 0);
   const [startX, setStartX] = useState(0);
   const [deltaX, setDeltaX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
+
+  const maxIndex = Children.count(children) - 1;
 
   const handleStart = (clientX: number) => {
     setStartX(clientX);
@@ -58,21 +69,42 @@ const Swiper = ({ children, onSwipe }: Props) => {
     onSwipe?.(currentIndex);
   }, [currentIndex]);
 
+  const swiperChildren = Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      if (!child.props.$width || !child.props.$gap) {
+        return React.cloneElement(child, {
+          ...child.props,
+          $width,
+          $gap,
+        });
+      } else {
+        return React.cloneElement(child);
+      }
+    }
+  });
+
   return (
-    <SwipeContainer>
-      <SwipeWrapper
-        $currentIndex={currentIndex}
-        $deltaX={deltaX}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {children}
-      </SwipeWrapper>
+    <SwipeContainer
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Padding $padding={$padding ?? 0}>
+        <SwipeWrapper
+          style={{
+            transform: `translateX(calc(${
+              $width ? `${-currentIndex * $width}px` : `${-currentIndex * 100}%`
+            } + ${-currentIndex * ($gap ?? 0)}px + ${deltaX}px))`,
+          }}
+          $gap={$gap ?? 0}
+        >
+          {swiperChildren}
+        </SwipeWrapper>
+      </Padding>
     </SwipeContainer>
   );
 };
@@ -85,11 +117,14 @@ const SwipeContainer = styled.div`
   position: relative;
 `;
 
-const SwipeWrapper = styled.div<{ $currentIndex: number; $deltaX: number }>`
-  display: flex;
+const Padding = styled.div<{ $padding: number }>`
+  padding: ${({ $padding }) => `0 ${$padding}px`};
+`;
 
-  transform: ${({ $currentIndex, $deltaX }) =>
-    `translateX(calc(${-$currentIndex * 100}% + ${$deltaX}px))`};
-  transition: transform 0.3s ease;
+const SwipeWrapper = styled.ul<{ $gap: number }>`
+  display: flex;
+  gap: ${({ $gap }) => `0 ${$gap}px`};
+
+  transition: transform 0.3s ease-out;
   will-change: transform;
 `;

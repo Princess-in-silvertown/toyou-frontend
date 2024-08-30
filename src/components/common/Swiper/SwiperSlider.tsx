@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-interface Props extends React.PropsWithChildren {}
+interface Props extends React.PropsWithChildren {
+  $width?: number;
+  $gap?: number;
+}
 
-const SwiperSlider = ({ children }: Props) => {
-  return <Container>{children}</Container>;
+const SwiperSlider = ({ $width, $gap, children }: Props) => {
+  return (
+    <Container $width={$width ? `${$width}px` : '100%'}>{children}</Container>
+  );
 };
 
 export default SwiperSlider;
 
-const Container = styled.div`
-  flex: 0 0 100%;
+const Container = styled.li<{ $width: string }>`
+  flex: 0 0 ${({ $width }) => $width};
 
-  width: 100%;
-
-  background-color: #f1f1f1;
-  text-align: center;
-  line-height: 330px;
-  font-size: 24px;
+  width: ${({ $width }) => $width};
 `;
