@@ -31,8 +31,8 @@ const PaperListDetail = ({ index }: Props) => {
 
       setStates.setY(0);
 
-      const isDragDown = deltaY < -150 || (deltaY < -30 && velocity > 5);
-      const isDragUp = deltaY > 150 || (deltaY > 30 && velocity > 5);
+      const isDragDown = deltaY < -75 || (deltaY < -30 && velocity > 5);
+      const isDragUp = deltaY > 75 || (deltaY > 30 && velocity > 5);
 
       if (isDragDown && currentIndex < data.length - 1) {
         return setCurrentIndex((prev) => prev + 1);
