@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PaperItemDetail from './PaperItemDetail';
 import { useViewport } from '@hooks/useViewport';
 import { useDrag } from '@hooks/useDrag';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 interface Props {
   index: number;
@@ -14,6 +14,7 @@ const PaperListDetail = ({ index }: Props) => {
     useMyMessageList();
 
   const [, height] = useViewport();
+  const vh = useMemo(() => height, []);
 
   const [currentIndex, setCurrentIndex] = useState(index);
 
@@ -31,8 +32,8 @@ const PaperListDetail = ({ index }: Props) => {
 
       setStates.setY(0);
 
-      const isDragDown = deltaY < -75 || (deltaY < -30 && velocity > 5);
-      const isDragUp = deltaY > 75 || (deltaY > 30 && velocity > 5);
+      const isDragDown = deltaY < -75;
+      const isDragUp = deltaY > 75;
 
       if (isDragDown && currentIndex < data.length - 1) {
         return setCurrentIndex((prev) => prev + 1);
@@ -61,13 +62,13 @@ const PaperListDetail = ({ index }: Props) => {
     if (node) observerRef.current.observe(node);
   };
 
+  const y = Math.abs(collected.y) > 10 ? collected.y : 0;
+
   return (
     <Container {...bind} style={{ height }}>
       <ListContainer
         style={{
-          transform: `translateY(${
-            -currentIndex * 562 + collected.y + height / 2 - 250
-          }px)`,
+          transform: `translateY(${-currentIndex * 562 + y + vh / 2 - 250}px)`,
         }}
       >
         {data.map((paper, index) => (

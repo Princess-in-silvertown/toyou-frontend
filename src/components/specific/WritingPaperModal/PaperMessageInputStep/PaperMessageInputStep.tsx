@@ -5,6 +5,7 @@ import {
   messageFormContext,
   messageFormDispatchContext,
 } from '@/contexts/states/messageFormContext';
+import { useViewport } from '@hooks/useViewport';
 
 interface Props {
   canNext?: boolean;
@@ -18,6 +19,7 @@ const PaperMessageInputStep = ({}: Props) => {
     handleChangeMessage: onChangeMessage,
   } = useContext(messageFormDispatchContext);
 
+  const textContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pRef = useRef<HTMLParagraphElement>(null);
 
@@ -42,31 +44,42 @@ const PaperMessageInputStep = ({}: Props) => {
     };
   }, []);
 
+  const [, height] = useViewport();
+
   useEffect(() => {
     if (pRef.current && textareaRef.current) {
       pRef.current.textContent = message;
-      const newHeight = pRef.current.offsetHeight + 20;
+      const newHeight = pRef.current.offsetHeight + 30;
       textareaRef.current.style.height = `${newHeight}px`;
+
+      textContainerRef.current?.scroll(0, newHeight);
     }
   }, [message]);
 
   return (
-    <Container>
-      <RecipientAliasEdit
-        recipientName={userInfo.name}
-        recipientAlias={alias}
-        message={message}
-        onChangeAlias={handleChangeAlias}
-        onNext={handleNextAliasInput}
-      >
-        <Textarea
-          ref={textareaRef}
-          value={message}
-          onChange={handleChangeMessage}
-          placeholder="내용을 입력하세요."
-        />
+    <Container style={{ height: height - 100 }}>
+      <CalculatorContainer>
         <TextareaHeightCalculator ref={pRef} />
-      </RecipientAliasEdit>
+      </CalculatorContainer>
+      <TextareaContainer
+        ref={textContainerRef}
+        style={{ maxHeight: height - 140 }}
+      >
+        <RecipientAliasEdit
+          recipientName={userInfo.name}
+          recipientAlias={alias}
+          message={message}
+          onChangeAlias={handleChangeAlias}
+          onNext={handleNextAliasInput}
+        >
+          <Textarea
+            ref={textareaRef}
+            value={message}
+            onChange={handleChangeMessage}
+            placeholder="내용을 입력하세요."
+          />
+        </RecipientAliasEdit>
+      </TextareaContainer>
     </Container>
   );
 };
@@ -79,6 +92,7 @@ const Container = styled.div`
   gap: 20px;
 
   margin-top: 13px;
+  transform: translate(0);
 `;
 
 const Textarea = styled.textarea`
@@ -91,9 +105,8 @@ const Textarea = styled.textarea`
   color: ${({ theme }) => theme.color.gray500};
 
   background-color: transparent;
-
-  scroll-behavior: auto;
   overflow-y: auto;
+  resize: none;
 
   &:focus {
     outline: none;
@@ -104,12 +117,30 @@ const Textarea = styled.textarea`
   }
 `;
 
+const TextareaContainer = styled.div`
+  position: fixed;
+  top: 10px;
+  max-height: 400px;
+  width: 100%;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+const CalculatorContainer = styled.div`
+  position: fixed;
+  top: 0;
+  max-height: 0px;
+  width: 100%;
+
+  overflow-y: hidden;
+`;
+
 const TextareaHeightCalculator = styled.p`
-  position: absolute;
   visibility: hidden;
+  touch-action: none;
   white-space: pre-wrap;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 23px;
-  max-height: 350px;
+  width: 100%;
+  font-size: 18px;
+  line-height: 21.48px;
 `;
