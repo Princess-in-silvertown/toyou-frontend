@@ -9,13 +9,14 @@ interface Props {
 const StaticStickerList = ({ stickers, side }: Props) => {
   return (
     <Container>
-      {stickers.map((sticker) => {
+      {stickers.map((sticker, index) => {
         const { x, y, rotate, scale, imgUrl, side: _side } = sticker;
 
         if (side !== _side) return;
 
         return (
           <StickerContainer
+            key={index}
             style={{
               top: y,
               left: x,

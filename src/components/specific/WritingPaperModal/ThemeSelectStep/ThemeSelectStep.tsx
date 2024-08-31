@@ -63,7 +63,7 @@ const ThemeSelectStep = ({ onNext }: Props) => {
           onSwipe={handleChangeIndex}
         >
           {[...CARD_THEME.values()].map((theme) => (
-            <SwiperSlider>
+            <SwiperSlider key={theme.themeId}>
               <Card style={{ background: getColorString(theme.color) }} />
             </SwiperSlider>
           ))}
