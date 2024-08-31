@@ -9,5 +9,4 @@ module.exports = {
     ],
     '@babel/preset-typescript',
   ],
-  plugins: ['module:@react-three/babel'],
 };
