@@ -67,9 +67,11 @@ module.exports = () => {
         React: 'react',
         styled: 'styled-components',
       }),
+
       new HtmlWebpackPlugin({
         template: './public/index.html',
       }),
+
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PUBLIC_PATH': JSON.stringify(publicPath),
