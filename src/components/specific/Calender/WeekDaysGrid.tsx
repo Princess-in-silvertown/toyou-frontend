@@ -1,36 +1,35 @@
+import { calenderContext } from '@/contexts/states/calenderContext';
+import { ParsedEvent } from '@/types/event';
 import { useEvent } from '@hooks/queries/useEvent';
 import { compareDate, getDateTime } from '@utils/date';
+import { useContext } from 'react';
 import styled from 'styled-components';
 
 interface Props {
   days: Date[];
-  currentDate: Date;
   isMoving: boolean;
-  renderingIndex: number;
+  deltaX: number;
   renderingYear: number;
   renderingMonth: number;
-  deltaX: number;
+  renderingIndex: number;
   onChangeDay: (day: Date) => void;
 }
 
 const WeekDaysGrid = ({
   days,
-  currentDate,
   isMoving,
-  renderingYear,
-  renderingMonth,
-  renderingIndex,
   deltaX,
+  renderingMonth,
+  renderingYear,
+  renderingIndex,
   onChangeDay,
 }: Props) => {
-  const { data } = useEvent(renderingYear, renderingMonth);
+  const { currentDate, eventMap } = useContext(calenderContext)!;
 
   const isEventDay = (date: Date) => {
-    if (!data) return false;
-
+    if (!eventMap) return false;
     const key = getDateTime(date);
-
-    return (data?.[key]?.count ?? 0) >= 1;
+    return (eventMap?.[key]?.count ?? 0) >= 1;
   };
 
   return (

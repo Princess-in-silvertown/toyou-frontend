@@ -4,15 +4,26 @@ import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { QUERY_KEY } from '@constants/query';
 import { Day, EventData, ParsedEvent } from '@/types/event';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { calenderContext } from '@/contexts/states/calenderContext';
 
-export const useEvent = (year: number, month: number) => {
+export const useEvent = (
+  year: number,
+  month: number,
+  handleChangeEvent?: (event: ParsedEvent) => void
+) => {
   const query = useQuery<ResData<EventData>, ResponseError, ParsedEvent>({
     queryKey: [QUERY_KEY.events, year, month, 'GET'],
     queryFn: () => requestGetEvents(year, month),
     select: (json) => parseEvents(json.data?.days),
     staleTime: Infinity,
   });
+
+  useEffect(() => {
+    if (query.data) {
+      handleChangeEvent?.(query.data);
+    }
+  }, [query.data]);
 
   return query;
 };

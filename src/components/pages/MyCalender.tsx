@@ -1,3 +1,4 @@
+import { CalenderProvider } from '@/contexts/providers/CalenderProvider';
 import { Events } from '@/types/event';
 import Calendar from '@components/specific/Calender/Calender';
 import EventUserItem from '@components/specific/EventList/EventUserItem';
@@ -13,7 +14,9 @@ const MyCalender = () => {
 
   return (
     <Container>
-      <Calendar onChangeEventList={handleChangeEventList} />
+      <CalenderProvider>
+        <Calendar onChangeEventList={handleChangeEventList} />
+      </CalenderProvider>
       <BorderLine />
       <EventContainer>
         <EventHeader>

@@ -1,15 +1,16 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import CalenderHeader from './CalenderHeader';
 import MonthDaysGrid from './MonthDaysGrid';
 import WeekDaysGrid from './WeekDaysGrid';
 import { useCalender } from '@hooks/useCalender';
 import DaysOfWeek from './DaysOfWeek';
-import { useEvent } from '@hooks/queries/useEvent';
 import { Events } from '@/types/event';
 import { useDrag } from '@hooks/useDrag';
 import { getDateTime } from '@utils/date';
 import { useViewport } from '@hooks/useViewport';
+import { calenderContext } from '@/contexts/states/calenderContext';
+import { useEvent } from '@hooks/queries/useEvent';
 
 interface Props {
   onChangeEventList?: (events?: Events) => void;
@@ -21,14 +22,13 @@ const Calendar = ({ onChangeEventList }: Props) => {
   const {
     monthDaysList,
     weekDaysList,
-    currentRow,
     rowCount,
     isMoving,
     isResizing,
     isWeekView,
-    renderingIndex,
     renderingYear,
     renderingMonth,
+    renderingIndex,
     renderingWeekDate,
     currentDate,
     viewWeek,
@@ -39,7 +39,7 @@ const Calendar = ({ onChangeEventList }: Props) => {
     handlePrevWeek,
     changeCurrentDate,
     changeRenderingDate,
-  } = useCalender();
+  } = useContext(calenderContext)!;
 
   const [windowWidth] = useViewport();
 
@@ -171,7 +171,6 @@ const Calendar = ({ onChangeEventList }: Props) => {
                     renderingYear={date.getFullYear()}
                     renderingMonth={date.getMonth()}
                     renderingIndex={renderingIndex}
-                    currentDate={currentDate}
                     deltaX={collected.x}
                     isMoving={isMoving}
                     onChangeDay={handleClickWeekViewDay}
@@ -198,11 +197,7 @@ const Calendar = ({ onChangeEventList }: Props) => {
                   renderingMonth={date.getMonth()}
                   renderingIndex={renderingIndex}
                   deltaX={collected.x}
-                  deltaY={collected.y}
-                  currentDate={currentDate}
-                  isWeekView={isWeekView}
                   isMoving={isMoving}
-                  currentRow={currentRow}
                   onChangeDay={handleClickMonthViewDay}
                 />
               );

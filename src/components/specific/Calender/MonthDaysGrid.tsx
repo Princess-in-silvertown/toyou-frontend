@@ -1,39 +1,35 @@
+import { calenderContext } from '@/contexts/states/calenderContext';
+import { ParsedEvent } from '@/types/event';
 import { useEvent } from '@hooks/queries/useEvent';
 import { compareDate, getDateTime } from '@utils/date';
+import { useContext } from 'react';
 import styled from 'styled-components';
 
 interface Props {
   days: Date[];
-  currentDate: Date;
-  isWeekView: boolean;
   isMoving: boolean;
-  currentRow: number;
+  deltaX: number;
   renderingYear: number;
   renderingMonth: number;
   renderingIndex: number;
-  deltaX: number;
-  deltaY: number;
   onChangeDay: (day: Date) => void;
 }
 
 const MonthDaysGrid = ({
   days,
-  currentDate,
-  isWeekView,
   isMoving,
-  currentRow,
-  renderingYear,
-  renderingMonth,
-  renderingIndex,
   deltaX,
-  deltaY,
+  renderingMonth,
+  renderingYear,
+  renderingIndex,
   onChangeDay,
 }: Props) => {
-  const { data } = useEvent(renderingYear, renderingMonth);
+  const { isWeekView, currentRow, currentDate, eventMap } =
+    useContext(calenderContext)!;
 
   const isEventDay = (date: Date) => {
     const key = getDateTime(date);
-    return (data?.[key]?.count ?? 0) >= 1;
+    return (eventMap?.[key]?.count ?? 0) >= 1;
   };
 
   const isRenderingMonth = (date: Date) => {

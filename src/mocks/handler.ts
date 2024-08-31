@@ -498,7 +498,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: redCover,
-            content: '1234',
+            content: '안녕 효섭아',
             stickers: [
               {
                 key: 1,
@@ -527,7 +527,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: blueCover,
-            content: 'dafs',
+            content: '안녕 송효효섭아',
             stickers: [
               {
                 key: 1,
@@ -546,7 +546,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: yellowCover,
-            content: 'dafs',
+            content: '안녕 효섭아',
             stickers: [
               {
                 key: 1,
@@ -565,7 +565,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: blueCover,
-            content: 'dafs',
+            content: '안녕 효섭아아아',
             stickers: [
               {
                 key: 1,
@@ -584,7 +584,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: blueCover,
-            content: 'dafs',
+            content: '안녕 효섭아 반가워',
             stickers: [
               {
                 key: 1,
@@ -603,7 +603,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: yellowCover,
-            content: 'dafs',
+            content: '테스트',
             stickers: [
               {
                 key: 1,
@@ -622,7 +622,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: greenCover,
-            content: 'dafs',
+            content: '안녕',
             stickers: [
               {
                 key: 1,
@@ -641,7 +641,7 @@ export const handlers = [
             profileImageUrl: H,
             name: '송효섭',
             coverImageUrl: blueCover,
-            content: 'dafs',
+            content: '안녕',
             stickers: [
               {
                 key: 1,
@@ -660,8 +660,10 @@ export const handlers = [
       if (cursor == 3) {
         return HttpResponse.json(
           {
-            data,
-            pageInfo: {},
+            data: { letters: data.letters.slice(4) },
+            pageInfo: {
+              totalCount: 36,
+            },
           },
           { status: 200 }
         );
