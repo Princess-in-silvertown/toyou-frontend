@@ -22,7 +22,7 @@ const GroupFilter = ({ group, onChangeGroup }: Props) => {
   const notShowGroupList = () => {
     setTimeout(() => {
       setIsVisible(false);
-    }, 0);
+    }, 50);
   };
 
   const handleCloseFilterList: ReactEventHandler = (e) => {
@@ -103,7 +103,7 @@ const CloseIcon = styled.img`
   width: 9px;
 `;
 
-const ListContainer = styled.ul`
+const ListContainer = styled.div`
   position: absolute;
   top: 45px;
   display: flex;
@@ -120,10 +120,12 @@ const ListContainer = styled.ul`
   z-index: 2;
 `;
 
-const ListItem = styled.li`
+const ListItem = styled.button`
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
   color: ${({ theme }) => theme.color.gray400};
+
+  cursor: pointer;
 `;
