@@ -5,6 +5,8 @@ import LoadingCardSpinner from './LoadingCardSpinner';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { useViewport } from '@hooks/useViewport';
 import letterImage from '@assets/image/love_letter.png';
+import { useImagePreLoad } from '@hooks/useImagePreLoad';
+import letter from '@assets/image/love_letter.png';
 
 interface Props {
   isPendingSubmit: boolean;
@@ -13,6 +15,8 @@ interface Props {
 
 const CardEditStep = ({ isPendingSubmit, isSubmitted }: Props) => {
   const { alias, message } = useContext(messageFormContext);
+
+  useImagePreLoad(letter);
 
   const [, height] = useViewport();
   const marginTop = Math.max((height - 800) / 2, 0);
