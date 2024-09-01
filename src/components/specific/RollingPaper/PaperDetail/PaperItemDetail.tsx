@@ -170,7 +170,7 @@ const BackContainer = styled.div`
 const CardMessageContainer = styled.div`
   width: 100%;
   height: 378px;
-  overflow: scroll;
+  overflow-y: auto;
 `;
 
 const Message = styled.div`

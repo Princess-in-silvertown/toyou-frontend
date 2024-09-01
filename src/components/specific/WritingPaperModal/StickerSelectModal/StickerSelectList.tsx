@@ -55,7 +55,7 @@ const StickerList = styled.div`
   padding-bottom: 30px;
   box-sizing: border-box;
 
-  overflow: scroll;
+  overflow-y: auto;
 `;
 
 const StickerItem = styled.div`
@@ -70,7 +70,7 @@ const StickerItem = styled.div`
   background-color: white;
   margin: 0 auto;
 
-  overflow: hidden;
+  overflow-y: hidden;
 `;
 
 const StickerImage = styled.img`
