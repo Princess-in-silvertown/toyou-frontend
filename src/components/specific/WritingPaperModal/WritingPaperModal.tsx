@@ -85,7 +85,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
         },
         {
           component: <PaperMessageInputStep />,
-          canNext: message.length >= 5,
+          canNext: message.length >= 1,
         },
         {
           component: (
@@ -114,7 +114,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
       },
       {
         component: <PaperMessageInputStep />,
-        canNext: message.length >= 5,
+        canNext: message.length >= 1,
       },
       {
         component: (
