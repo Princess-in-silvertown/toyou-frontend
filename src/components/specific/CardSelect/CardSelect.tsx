@@ -599,6 +599,8 @@ const CardContainer = styled.div`
 
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 const TitleContainer = styled.div`

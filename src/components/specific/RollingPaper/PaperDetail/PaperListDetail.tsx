@@ -19,7 +19,7 @@ const PaperListDetail = ({ index }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(index);
 
   const { collected, bind } = useDrag({
-    moveYMinMax: [-500, 500],
+    moveYMinMax: [-587, 587],
 
     onMove: ({ delta, setStates }) => {
       const [, deltaY] = delta;

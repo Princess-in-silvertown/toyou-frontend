@@ -91,6 +91,8 @@ const CardContainer = styled.div<{ $color: string; $subColor: string }>`
   background-color: ${({ $color }) => $color};
 
   overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
 
   &::before {
     content: '';

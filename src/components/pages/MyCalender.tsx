@@ -39,7 +39,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
-  touch-action: none;
+
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 const BorderLine = styled.div`
