@@ -286,10 +286,17 @@ export const handlers = [
             events: [
               {
                 memberId: 6,
-                memberName: '이미지 깨짐',
+                memberName: '오늘',
                 eventType: '',
-                description: '깨짐.',
-                profileImgUrl: 'error',
+                description: '',
+                profileImgUrl: '',
+              },
+              {
+                memberId: 3,
+                memberName: '오늘',
+                eventType: '',
+                description: '',
+                profileImgUrl: '',
               },
             ],
           },
@@ -469,6 +476,30 @@ export const handlers = [
         ],
       };
     }
+
+    const today = new Date();
+    const dateTime = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    data.days.push({
+      date: dateTime,
+      events: [
+        {
+          memberId: 2,
+          memberName: '송효섭',
+          eventType: '',
+          description: '오늘의 이벤트입니다.',
+          profileImgUrl: H,
+        },
+        {
+          memberId: 4,
+          memberName: '오늘의 이벤트',
+          eventType: '',
+          description: '오늘의 이벤트입니다.',
+          profileImgUrl: sticker,
+        },
+      ],
+    });
 
     return HttpResponse.json(
       {
@@ -657,7 +688,7 @@ export const handlers = [
           {
             data: { letters: data.letters.slice(4) },
             pageInfo: {
-              totalCount: 36,
+              totalCount: 32,
             },
           },
           { status: 200 }
@@ -669,7 +700,7 @@ export const handlers = [
           data,
           pageInfo: {
             nextCursor: cursor + 1,
-            totalCount: 36,
+            totalCount: 32,
           },
         },
         { status: 200 }
