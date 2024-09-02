@@ -80,11 +80,11 @@ const ConfirmButton = styled.button`
   margin: 0 auto;
   border-radius: 24.5px;
 
-  color: ${({ theme }) => theme.gray0};
+  color: ${({ theme }) => theme.color.white};
   font-size: 16px;
   font-weight: 400;
 
-  background-color: ${({ theme }) => theme.red500};
+  background-color: ${({ theme }) => theme.color.red500};
 
   z-index: 2;
 `;
