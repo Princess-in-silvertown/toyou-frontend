@@ -7,8 +7,8 @@ import blueCover from '@assets/image/birthday_small_blue.svg';
 import greenCover from '@assets/image/birthday_small_green.svg';
 
 import H from '@assets/image/H.jpeg';
-import messageCover from '@assets/image/happy_birthday.svg';
 import { RollingPapers } from '@/types/paper';
+import { ResData } from '@/types/api';
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -185,7 +185,7 @@ export const handlers = [
 
     return HttpResponse.json(
       {
-        data: ['피곤', '배고픔'],
+        data: ['반가움', '그리움'],
         pageInfo: {},
       },
       { status: 200 }
@@ -197,12 +197,19 @@ export const handlers = [
     async ({ request }) => {
       coverApiResponseCount += 1;
 
-      if (coverApiResponseCount <= 1) {
-        return HttpResponse.json({}, { status: 400 });
+      if (coverApiResponseCount <= 4) {
+        return HttpResponse.json(
+          {
+            data: {},
+            code: '',
+          },
+          { status: 202 }
+        );
       }
 
       return HttpResponse.json(
         {
+          code: 'SUCCESS',
           data: { imgUrl: cover },
         },
         { status: 200 }
@@ -218,14 +225,16 @@ export const handlers = [
       if (coverApiResponseCount <= 1) {
         return HttpResponse.json(
           {
+            code: '',
             data: {},
           },
-          { status: 400 }
+          { status: 202 }
         );
       }
 
       return HttpResponse.json(
         {
+          code: 'SUCCESS',
           data: [
             ...new Array(5).fill({ imgUrl: sticker }),
             {
@@ -507,7 +516,25 @@ export const handlers = [
                 scale: 2,
                 rotate: 1,
                 side: 'front',
-                imgUrl: '1',
+                imgUrl: sticker,
+              },
+              {
+                key: 4,
+                x: 100,
+                y: 100,
+                scale: 2,
+                rotate: 21,
+                side: 'front',
+                imgUrl: sticker,
+              },
+              {
+                key: 2,
+                x: 100,
+                y: 340,
+                scale: 1.54,
+                rotate: -90,
+                side: 'front',
+                imgUrl: sticker,
               },
             ],
           },
@@ -519,7 +546,17 @@ export const handlers = [
             coverImageUrl: greenCover,
             content:
               '매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용',
-            stickers: [],
+            stickers: [
+              {
+                key: 2,
+                x: 250,
+                y: 350,
+                scale: 1.54,
+                rotate: -40,
+                side: 'back',
+                imgUrl: sticker,
+              },
+            ],
           },
 
           {
@@ -531,12 +568,12 @@ export const handlers = [
             stickers: [
               {
                 key: 1,
-                x: 0,
-                y: 500,
-                scale: 2,
-                rotate: 1,
+                x: 20,
+                y: 100,
+                scale: 1.4,
+                rotate: 123,
                 side: 'front',
-                imgUrl: '1',
+                imgUrl: sticker,
               },
             ],
           },
@@ -550,12 +587,12 @@ export const handlers = [
             stickers: [
               {
                 key: 1,
-                x: 0,
-                y: 500,
-                scale: 2,
-                rotate: 1,
-                side: 'front',
-                imgUrl: '1',
+                x: 200,
+                y: 200,
+                scale: 0.3,
+                rotate: 304,
+                side: 'back',
+                imgUrl: sticker,
               },
             ],
           },
@@ -569,12 +606,12 @@ export const handlers = [
             stickers: [
               {
                 key: 1,
-                x: 0,
-                y: 500,
+                x: 120,
+                y: 100,
                 scale: 2,
-                rotate: 1,
+                rotate: 41,
                 side: 'front',
-                imgUrl: '1',
+                imgUrl: sticker,
               },
             ],
           },
@@ -585,17 +622,7 @@ export const handlers = [
             name: '송효섭',
             coverImageUrl: blueCover,
             content: '안녕 효섭아 반가워',
-            stickers: [
-              {
-                key: 1,
-                x: 0,
-                y: 500,
-                scale: 2,
-                rotate: 1,
-                side: 'front',
-                imgUrl: '1',
-              },
-            ],
+            stickers: [],
           },
 
           {
@@ -607,12 +634,12 @@ export const handlers = [
             stickers: [
               {
                 key: 1,
-                x: 0,
-                y: 500,
+                x: 300,
+                y: 400,
                 scale: 2,
                 rotate: 1,
                 side: 'front',
-                imgUrl: '1',
+                imgUrl: 'error',
               },
             ],
           },
@@ -626,12 +653,12 @@ export const handlers = [
             stickers: [
               {
                 key: 1,
-                x: 0,
-                y: 500,
-                scale: 2,
+                x: 400,
+                y: 300,
+                scale: 1.5,
                 rotate: 1,
-                side: 'front',
-                imgUrl: '1',
+                side: 'back',
+                imgUrl: sticker,
               },
             ],
           },
@@ -642,17 +669,7 @@ export const handlers = [
             name: '송효섭',
             coverImageUrl: blueCover,
             content: '안녕',
-            stickers: [
-              {
-                key: 1,
-                x: 0,
-                y: 500,
-                scale: 2,
-                rotate: 1,
-                side: 'front',
-                imgUrl: '1',
-              },
-            ],
+            stickers: [],
           },
         ],
       };

@@ -5,6 +5,7 @@ import { User } from '@/types/user';
 import { EventData, Events } from '@/types/event';
 import { Member } from '@/types/member';
 import { RollingPaperForm, RollingPapers } from '@/types/paper';
+import ResponseError from './responseError';
 
 export const requestGetTest = () => {
   return request.get<any>('test');
@@ -42,9 +43,14 @@ export const requestGetKeywords = (message: string) => {
 };
 
 export const requestGetCover = (groupId: number) => {
-  return request.get<ResData<{ imgUrl: string }>>(
-    `api/groups/${groupId}/cover`
-  );
+  return request
+    .get<ResData<{ imgUrl: string }>>(`api/groups/${groupId}/cover`)
+    .then((res) => {
+      if (res.code !== 'SUCCESS') {
+        throw new ResponseError({ statusCode: 202, errorCode: res.code });
+      }
+      return res;
+    });
 };
 
 export const requestPostCover = (groupId: number) => {
@@ -52,9 +58,15 @@ export const requestPostCover = (groupId: number) => {
 };
 
 export const requestGetSticker = (groupId: number) => {
-  return request.get<ResData<{ imgUrl: string }[]>>(
-    `api/groups/${groupId}/sticker`
-  );
+  return request
+    .get<ResData<{ imgUrl: string }[]>>(`api/groups/${groupId}/sticker`)
+    .then((res) => {
+      if (res.code !== 'SUCCESS') {
+        throw new ResponseError({ statusCode: 202, errorCode: res.code });
+      }
+
+      return res;
+    });
 };
 
 export const requestGetEvents = (year: number, monthIndex: number) => {
