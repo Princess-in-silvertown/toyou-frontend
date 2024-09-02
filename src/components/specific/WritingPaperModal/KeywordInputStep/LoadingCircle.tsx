@@ -1,6 +1,10 @@
+import { useImagePreLoad } from '@hooks/useImagePreLoad';
 import styled, { keyframes } from 'styled-components';
+import plus from '@assets/icons/plus.svg';
 
 const LoadingCircle = () => {
+  useImagePreLoad([plus]);
+
   return (
     <KeywordContainer>
       <Orbit>

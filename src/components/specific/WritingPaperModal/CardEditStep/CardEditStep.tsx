@@ -16,7 +16,7 @@ interface Props {
 const CardEditStep = ({ isPendingSubmit, isSubmitted }: Props) => {
   const { alias, message } = useContext(messageFormContext);
 
-  useImagePreLoad(letter);
+  useImagePreLoad([letter]);
 
   const [, height] = useViewport();
   const marginTop = Math.max((height - 800) / 2, 0);

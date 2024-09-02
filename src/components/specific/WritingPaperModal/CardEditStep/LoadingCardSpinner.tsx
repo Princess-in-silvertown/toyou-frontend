@@ -3,10 +3,16 @@ import { CardColor } from '@/types/card';
 import { CARD_THEME } from '@constants/card';
 import { useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useImagePreLoad } from '@hooks/useImagePreLoad';
+import add from '@assets/icons/add-sticker.svg';
+import del from '@assets/icons/delete-sticker.svg';
+import sticker from '@assets/icons/sticker.svg';
 
 const LoadingCardSpinner = () => {
   const { cardTheme } = useContext(messageFormContext);
   const { color, subColor } = CARD_THEME[cardTheme];
+
+  useImagePreLoad([add, del, sticker]);
 
   const getColorString = (color: Readonly<CardColor>) => {
     return `rgba(${color.R}, ${color.G}, ${color.B}, ${color.A})`;
