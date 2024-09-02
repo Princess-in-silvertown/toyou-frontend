@@ -298,15 +298,15 @@ export const handlers = [
       );
     }
 
-    if (month === 6) {
+    if (month === 7) {
       data = {
         days: [
           {
-            date: '2024-06-30',
+            date: '2024-07-30',
             events: [
               {
                 memberId: 6,
-                memberName: '이미지 깨짐',
+                memberName: '이미지 에러 테스트',
                 eventType: '',
                 description: '깨짐.',
                 profileImgUrl: 'error',
@@ -316,12 +316,12 @@ export const handlers = [
                 memberName: '이미지 깨짐',
                 eventType: '',
                 description: '깨짐.',
-                profileImgUrl: 'error',
+                profileImgUrl: sticker,
               },
             ],
           },
           {
-            date: '2024-06-04',
+            date: '2024-07-04',
             events: [
               {
                 memberId: 6,
@@ -336,11 +336,11 @@ export const handlers = [
       };
     }
 
-    if (month === 7) {
+    if (month === 8) {
       data = {
         days: [
           {
-            date: '2024-07-30',
+            date: '2024-08-30',
             events: [
               {
                 memberId: 6,
@@ -355,11 +355,11 @@ export const handlers = [
       };
     }
 
-    if (month === 8) {
+    if (month === 9) {
       data = {
         days: [
           {
-            date: '2024-08-11',
+            date: '2024-09-11',
             events: [
               {
                 memberId: 22,
@@ -420,7 +420,7 @@ export const handlers = [
           },
 
           {
-            date: '2024-08-24',
+            date: '2024-09-24',
             events: [
               {
                 memberId: 3,
@@ -434,7 +434,7 @@ export const handlers = [
           },
 
           {
-            date: '2024-08-05',
+            date: '2024-09-05',
             events: [
               {
                 memberId: 4,
@@ -450,11 +450,11 @@ export const handlers = [
       };
     }
 
-    if (month === 9) {
+    if (month === 10) {
       data = {
         days: [
           {
-            date: '2024-09-01',
+            date: '2024-10-02',
             events: [
               {
                 memberId: 4,
@@ -463,18 +463,6 @@ export const handlers = [
                 description: '콘서트 당일입니다.',
                 profileImgUrl:
                   'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
-              },
-            ],
-          },
-          {
-            date: '2024-09-02',
-            events: [
-              {
-                memberId: 6,
-                memberName: '이미지 깨짐',
-                eventType: '',
-                description: '깨짐.',
-                profileImgUrl: 'error',
               },
             ],
           },
@@ -610,7 +598,7 @@ export const handlers = [
                 y: 100,
                 scale: 2,
                 rotate: 41,
-                side: 'front',
+                side: 'back',
                 imgUrl: sticker,
               },
             ],
@@ -631,17 +619,7 @@ export const handlers = [
             name: '송효섭',
             coverImageUrl: yellowCover,
             content: '테스트',
-            stickers: [
-              {
-                key: 1,
-                x: 300,
-                y: 400,
-                scale: 2,
-                rotate: 1,
-                side: 'front',
-                imgUrl: 'error',
-              },
-            ],
+            stickers: [],
           },
 
           {
@@ -664,10 +642,10 @@ export const handlers = [
           },
 
           {
-            themeId: 2,
+            themeId: 0,
             profileImageUrl: H,
             name: '송효섭',
-            coverImageUrl: blueCover,
+            coverImageUrl: yellowCover,
             content: '안녕',
             stickers: [],
           },
