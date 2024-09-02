@@ -209,7 +209,7 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
 
     setIsSwiping(false);
 
-    if (deltaY <= -100) {
+    if (deltaY <= -50) {
       setY(-500);
       setCurrentIndex((prev) => prev + 1);
       setIsTouchPrevented(true);
@@ -574,8 +574,11 @@ const Container = styled.div`
   gap: 22px;
 
   width: 100%;
+  min-height: 500px;
 
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 const SwiperWrapper = styled.div`
