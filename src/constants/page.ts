@@ -1,6 +1,6 @@
 export const HOME_PAGE = {
-  path: '',
-  value: '',
+  path: '/',
+  value: '/',
   name: '홈',
 } as const;
 

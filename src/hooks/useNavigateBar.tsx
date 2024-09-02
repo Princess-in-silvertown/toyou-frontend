@@ -72,7 +72,7 @@ export const getCurrentPath = () => {
   const publicPath = process.env.PUBLIC_PATH ?? '/';
   const publicPathDepth = publicPath.split('/').length - 1;
 
-  if (path === publicPath) return '';
+  if (path === publicPath) return '/';
 
   const page = path.split('/')[publicPathDepth];
   const totalPage = NAVIGATE_INFO.map((page) => String(page.value));
