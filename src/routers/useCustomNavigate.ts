@@ -16,7 +16,7 @@ export const useCustomNavigate = () => {
   };
 
   const goToHomePage = () => {
-    navigate(`${HOME_PAGE.path}`);
+    navigate(`/${HOME_PAGE.path}`);
   };
 
   const goToMyMessages = () => {

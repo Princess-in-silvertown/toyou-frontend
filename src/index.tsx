@@ -7,7 +7,11 @@ async function enableMocking() {
 
   const { worker } = await import('./mocks/browser');
 
-  return worker.start();
+  return worker.start({
+    serviceWorker: {
+      url: (process.env.PUBLIC_PATH ?? '/') + 'mockServiceWorker.js',
+    },
+  });
 }
 
 enableMocking().then(() => {
