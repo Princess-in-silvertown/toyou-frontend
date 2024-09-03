@@ -82,6 +82,14 @@ export const handlers = [
     return passthrough();
   }),
 
+  http.get('http://localhost:3000/toyou-frontend/assets/*', (info) => {
+    return passthrough();
+  }),
+
+  http.get('/toyou-frontend/assets/*', (info) => {
+    return passthrough();
+  }),
+
   http.get('https://fonts.cdnfonts.com/*', (info) => {
     return passthrough();
   }),
