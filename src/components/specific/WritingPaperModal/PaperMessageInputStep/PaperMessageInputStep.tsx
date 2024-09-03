@@ -102,6 +102,7 @@ const Textarea = styled.textarea`
 
   font-size: 18px;
   line-height: 21.48px;
+  word-spacing: -3px;
   color: ${({ theme }) => theme.color.gray500};
 
   background-color: transparent;
