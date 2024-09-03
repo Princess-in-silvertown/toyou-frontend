@@ -96,7 +96,7 @@ const EventMarker = styled.div`
 
   width: 5px;
   height: 5px;
-  border-radius: 2px;
+  border-radius: 50%;
 
   background: #dd432e;
 `;
