@@ -10,6 +10,7 @@ export const useStickerEdit = () => {
 
     setStickers((prev) => {
       const newState = new Map(prev);
+      newState.delete(key); // 최근 편집한 스티커가 맨 위에 오도록
       newState.set(key, { ...prevNode, ...newSticker });
       return newState;
     });
