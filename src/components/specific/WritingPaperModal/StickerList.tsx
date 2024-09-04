@@ -70,8 +70,8 @@ const StickerList = ({ side }: Props) => {
       })}
       {isStickerButtonEnable && (
         <AddStickerButton onClick={handleClickStickerEditButton}>
-          <StickerIcon src={stickerIcon} />
-          <AddIcon src={addIcon} />
+          <StickerIcon src={stickerIcon} alt="스티커추가" />
+          <AddIcon src={addIcon} alt="+" />
         </AddStickerButton>
       )}
     </Container>

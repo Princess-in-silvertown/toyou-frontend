@@ -42,7 +42,7 @@ const KeywordsCircle = () => {
       <Orbit>
         <CircleContainer>
           <AddKeywordButton onClick={handleClickButton}>
-            <PlusIcon src={plus} />
+            <PlusIcon src={plus} alt="추가" />
           </AddKeywordButton>
         </CircleContainer>
         {keywords?.map((keyword, index) => {

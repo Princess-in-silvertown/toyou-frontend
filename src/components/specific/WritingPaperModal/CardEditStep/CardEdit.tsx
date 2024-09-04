@@ -35,7 +35,7 @@ const CardEdit = ({ alias, message }: Props) => {
             $subColor={getSubColorString(subColor)}
           >
             <CardCoverContainer>
-              <CoverImage src={data.imgUrl} />
+              <CoverImage src={data.imgUrl} alt="커버이미지" />
               <StickerList side="front" />
             </CardCoverContainer>
           </CardContainer>

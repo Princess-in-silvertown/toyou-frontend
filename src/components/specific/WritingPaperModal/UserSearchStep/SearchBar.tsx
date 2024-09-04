@@ -20,7 +20,7 @@ const SearchBar = ({ input, group, onChangeGroup, onChangeInput }: Props) => {
 
   return (
     <InputContainer>
-      <InputSearchButton src={search} />
+      <InputSearchButton src={search} alt="검색" />
       <Input value={input} placeholder="검색" onChange={handleChangeInput} />
       <GroupFilter group={group} onChangeGroup={onChangeGroup} />
     </InputContainer>

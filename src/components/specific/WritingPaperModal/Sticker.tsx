@@ -20,6 +20,8 @@ interface Props {
   defaultScale?: number;
   onDragStart?: () => void;
   onDragEnd?: () => void;
+  maxScale?: number;
+  minScale?: number;
 }
 
 const Sticker = ({
@@ -31,6 +33,8 @@ const Sticker = ({
   defaultY = 0,
   defaultRotate = 0,
   defaultScale = 1,
+  maxScale = 10,
+  minScale = 0.5,
   onDragStart,
   onDragEnd,
 }: Props) => {
@@ -188,7 +192,7 @@ const Sticker = ({
         const newScale = scale * (distance / startDistance);
         const newRotation = rotate + (angle - startAngle);
 
-        setScale(newScale);
+        if (minScale <= newScale && newScale <= maxScale) setScale(newScale);
         setRotate(newRotation);
         setStartDistance(distance);
         setStartAngle(angle);
@@ -215,6 +219,7 @@ const Sticker = ({
       left: x,
       transform: `scale(${scale}) rotate(${rotate}deg) `,
       transition: isPinching ? 'none' : 'transform 0.3s ease',
+      zIndex: isSwiping ? 3 : 2,
     };
 
     const trashRect = trashRef.current?.getBoundingClientRect();
@@ -269,7 +274,7 @@ const Sticker = ({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <Image src={imgUrl} onLoad={handleLoad} />
+        <Image src={imgUrl} alt="스티커이미지" onLoad={handleLoad} />
       </Container>
       <div ref={originRef} style={{ position: 'absolute', top: 0, left: 0 }} />
     </>
@@ -288,7 +293,7 @@ const TrashCan = forwardRef<HTMLDivElement, { isPending: boolean }>(
           transform: 'translate(-50%, 0)' + (isPending ? 'scale(1.29)' : ''),
         }}
       >
-        <TrashIcon src={trash} />
+        <TrashIcon src={trash} alt="삭제" />
       </Trash>
     );
   }
@@ -311,6 +316,7 @@ const Image = styled.img`
   transform-origin: 'center center';
 
   user-select: none;
+  -webkit-user-select: none;
   pointer-events: none;
 `;
 

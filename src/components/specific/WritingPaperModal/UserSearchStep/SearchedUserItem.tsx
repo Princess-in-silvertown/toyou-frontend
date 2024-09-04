@@ -39,6 +39,7 @@ const SearchedUserItem = ({
           <Profile
             ref={imageRef}
             src={imageUrl}
+            alt="프로필"
             onError={handleErrorProfileImage}
           />
         </LeftFirstContents>

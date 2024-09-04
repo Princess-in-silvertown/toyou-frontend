@@ -26,10 +26,10 @@ const ControlButton = ({ type, handler, canNext }: ButtonProps) => {
 
   switch (type) {
     case 'BACK':
-      icon = <Icon src={back} onClick={handler} />;
+      icon = <Icon src={back} alt="뒤로가기" onClick={handler} />;
       break;
     case 'CANCEL':
-      icon = <Icon src={cancel} onClick={handler} />;
+      icon = <Icon src={cancel} alt="닫기" onClick={handler} />;
       break;
     case 'SUBMIT':
       icon = (

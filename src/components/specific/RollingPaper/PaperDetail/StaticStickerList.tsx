@@ -23,7 +23,7 @@ const StaticStickerList = ({ stickers, side }: Props) => {
               transform: `scale(${scale}) rotate(${rotate}deg) `,
             }}
           >
-            <Image src={imgUrl} />
+            <Image src={imgUrl} alt="스티커이미지" />
           </StickerContainer>
         );
       })}

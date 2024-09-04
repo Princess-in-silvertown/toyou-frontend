@@ -67,7 +67,11 @@ const KeywordInputModalContents = ({
     <Container>
       <Title>메세지 키워드 추가하기</Title>
       <InputContainer>
-        <InputClearButton src={cancel} onClick={handleClearInput} />
+        <InputClearButton
+          src={cancel}
+          alt="초기화"
+          onClick={handleClearInput}
+        />
         {modalKeywords.length < KEYWORD_MAX_LENGTH ? (
           <Input
             ref={inputRef}
@@ -87,7 +91,7 @@ const KeywordInputModalContents = ({
             onClick={() => deleteKeyword(keyword)}
           >
             <KeywordText>{keyword}</KeywordText>
-            <KeywordDeleteButton src={cancel} />
+            <KeywordDeleteButton src={cancel} alt="삭제" />
           </KeywordContainer>
         ))}
       </KeywordList>

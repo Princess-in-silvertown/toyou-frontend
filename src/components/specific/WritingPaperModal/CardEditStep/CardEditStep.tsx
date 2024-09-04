@@ -26,9 +26,9 @@ const CardEditStep = ({ isPendingSubmit, isSubmitted }: Props) => {
       {isSubmitted || isPendingSubmit ? (
         <ResultContainer>
           {isPendingSubmit ? (
-            <MovingLetterImage src={letterImage} />
+            <MovingLetterImage src={letterImage} alt="로딩이미지" />
           ) : (
-            <LetterImage src={letterImage} />
+            <LetterImage src={letterImage} alt="완료이미지" />
           )}
           <ResultText>
             {isPendingSubmit

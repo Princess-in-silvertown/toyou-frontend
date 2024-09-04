@@ -29,7 +29,7 @@ const StickerSelectList = ({ cardSide, closeModal, onAddSticker }: Props) => {
             key={index}
             onClick={() => selectSticker(sticker.imgUrl)}
           >
-            <StickerImage src={sticker.imgUrl}></StickerImage>
+            <StickerImage src={sticker.imgUrl} alt="취소" />
           </StickerItem>
         ))}
       </StickerList>

@@ -16,11 +16,7 @@ const PaperDetailModalContents = ({ clickedItemIndex, closeModal }: Props) => {
   return (
     <Container>
       <PaperListDetail index={clickedItemIndex} />
-      <BackButton
-        alt="back-button"
-        src={back}
-        onClick={handleClickBackButton}
-      />
+      <BackButton alt="뒤로가기" src={back} onClick={handleClickBackButton} />
     </Container>
   );
 };

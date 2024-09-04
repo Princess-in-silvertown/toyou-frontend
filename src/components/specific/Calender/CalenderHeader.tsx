@@ -35,10 +35,10 @@ const CalenderHeader = ({
       <ButtonContainer>
         <HeaderDate>{`${renderingYear}년 ${renderingMonth + 1}월`}</HeaderDate>
         <Button onClick={isWeekView ? handlePrevWeek : handlePrevMonth}>
-          <Icon src={leftArrow} />
+          <Icon alt="이전" src={leftArrow} />
         </Button>
         <Button onClick={isWeekView ? handleNextWeek : handleNextMonth}>
-          <Icon src={rightArrow} />
+          <Icon alt="다음" src={rightArrow} />
         </Button>
       </ButtonContainer>
       <ButtonContainer>

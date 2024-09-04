@@ -58,6 +58,7 @@ const EventUserItem = ({
         <LeftFirstContents>
           <Profile
             src={profileImgUrl}
+            alt="프로필"
             ref={imageRef}
             onError={handleErrorProfileImage}
           />

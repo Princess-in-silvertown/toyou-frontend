@@ -38,7 +38,7 @@ const PaperItemDetail = ({
             $subColor={getSubColorString(subColor)}
           >
             <CardCoverContainer>
-              <CoverImage src={coverImageUrl} />
+              <CoverImage src={coverImageUrl} alt="커버이미지" />
               <StaticStickerList side="front" stickers={stickers} />
             </CardCoverContainer>
           </CardContainer>
@@ -64,7 +64,7 @@ const PaperItemDetail = ({
       <ProfileContainer>
         <From>From.</From>
         <UserContainer>
-          <ProfileImage src={profileImageUrl} />
+          <ProfileImage src={profileImageUrl} alt="프로필" />
           <Name>{name}</Name>
         </UserContainer>
       </ProfileContainer>
