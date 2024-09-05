@@ -248,7 +248,6 @@ const Input = styled.input<{ $isEditing: boolean }>`
   margin-bottom: ${({ $isEditing }) => ($isEditing ? '1px' : '0')};
   max-width: 300px;
 
-  font-family: 'Montserrat';
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -1.5px;
@@ -263,7 +262,6 @@ const InputWidthCalculator = styled.span`
   white-space: nowrap;
   font-size: 22px;
   font-weight: 400;
-  font-family: 'Montserrat';
 `;
 
 const ContentsContainer = styled.div<{ $isEditing: boolean }>`
