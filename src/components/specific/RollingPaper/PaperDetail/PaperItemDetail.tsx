@@ -4,6 +4,9 @@ import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
 import { RollingPaper } from '@/types/paper';
 import StaticStickerList from './StaticStickerList';
+import Swiper from '@components/common/Swiper/Swiper';
+import SwiperSlider from '@components/common/Swiper/SwiperSlider';
+import { useViewport } from '@hooks/useViewport';
 
 interface Props extends RollingPaper {
   isCurrent?: boolean;
@@ -28,39 +31,89 @@ const PaperItemDetail = ({
     return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.55})`;
   };
 
+  const isSafari = () => {
+    const userAgent = navigator.userAgent;
+    return (
+      userAgent.includes('Safari') &&
+      !userAgent.includes('Chrome') &&
+      !userAgent.includes('Edge') &&
+      !userAgent.includes('Whale')
+    );
+  };
+
+  const [width] = useViewport();
   return (
     <Container>
-      <SwiperCard
-        isAutoFlip={isCurrent}
-        frontContents={
-          <CardContainer
-            $color={getColorString(color)}
-            $subColor={getSubColorString(subColor)}
-          >
-            <CardCoverContainer>
-              <CoverImage src={coverImageUrl} alt="커버이미지" />
-              <StaticStickerList side="front" stickers={stickers} />
-            </CardCoverContainer>
-          </CardContainer>
-        }
-        backContents={
-          <CardContainer
-            $color={getColorString(color)}
-            $subColor={getSubColorString(subColor)}
-          >
-            <BackContainer>
-              <CardMessageContainer>
-                <AliasContainer>
-                  <To>To.</To>
-                  <Alias>{name}</Alias>
-                </AliasContainer>
-                <Message>{content}</Message>
-                <StaticStickerList side="back" stickers={stickers} />
-              </CardMessageContainer>
-            </BackContainer>
-          </CardContainer>
-        }
-      />
+      {isSafari() && (
+        <Swiper
+          $padding={Math.min(width, 500) / 2 - 160}
+          $gap={20}
+          $width={325}
+          isAutoSkipFirst={isCurrent}
+        >
+          <SwiperSlider>
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <CardCoverContainer>
+                <CoverImage src={coverImageUrl} alt="커버이미지" />
+                <StaticStickerList side="front" stickers={stickers} />
+              </CardCoverContainer>
+            </CardContainer>
+          </SwiperSlider>
+          <SwiperSlider>
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <BackContainer>
+                <CardMessageContainer>
+                  <AliasContainer>
+                    <To>To.</To>
+                    <Alias>{name}</Alias>
+                  </AliasContainer>
+                  <Message>{content}</Message>
+                  <StaticStickerList side="back" stickers={stickers} />
+                </CardMessageContainer>
+              </BackContainer>
+            </CardContainer>
+          </SwiperSlider>
+        </Swiper>
+      )}
+      {!isSafari() && (
+        <SwiperCard
+          isAutoFlip={isCurrent}
+          frontContents={
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <CardCoverContainer>
+                <CoverImage src={coverImageUrl} alt="커버이미지" />
+                <StaticStickerList side="front" stickers={stickers} />
+              </CardCoverContainer>
+            </CardContainer>
+          }
+          backContents={
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <BackContainer>
+                <CardMessageContainer>
+                  <AliasContainer>
+                    <To>To.</To>
+                    <Alias>{name}</Alias>
+                  </AliasContainer>
+                  <Message>{content}</Message>
+                  <StaticStickerList side="back" stickers={stickers} />
+                </CardMessageContainer>
+              </BackContainer>
+            </CardContainer>
+          }
+        />
+      )}
       <ProfileContainer>
         <From>From.</From>
         <UserContainer>
@@ -145,7 +198,6 @@ const Alias = styled.div`
   max-width: 100%;
   margin-bottom: 2px;
 
-  font-family: 'Montserrat';
   font-size: 24px;
   font-weight: 500;
   letter-spacing: -1.5px;

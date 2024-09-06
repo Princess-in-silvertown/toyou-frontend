@@ -3,11 +3,9 @@ import {
   messageFormDispatchContext,
 } from '@/contexts/states/messageFormContext';
 import { CardColor } from '@/types/card';
-import { Group } from '@/types/group';
 import ProgressiveDots from '@components/common/Progressive/ProgressiveDots';
 import Swiper from '@components/common/Swiper/Swiper';
 import SwiperSlider from '@components/common/Swiper/SwiperSlider';
-import NextIcon from '@components/specific/CardSelect/UpIcon';
 import { CARD_THEME } from '@constants/card';
 import { useViewport } from '@hooks/useViewport';
 import { useContext, useEffect, useState } from 'react';

@@ -66,7 +66,7 @@ const Sticker = ({
 
     setIsPendingDeletion(true);
 
-    window.navigator.vibrate(50);
+    window?.navigator?.vibrate(50);
   };
 
   const handleStart = (clientX: number, clientY: number) => {

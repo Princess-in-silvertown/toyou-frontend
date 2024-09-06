@@ -14,7 +14,10 @@ const SwiperSlider = ({ $width, $gap, children }: Props) => {
 export default SwiperSlider;
 
 const Container = styled.li<{ $width: string }>`
+  position: relative;
   flex: 0 0 ${({ $width }) => $width};
 
   width: ${({ $width }) => $width};
+
+  transform: translateX(0);
 `;

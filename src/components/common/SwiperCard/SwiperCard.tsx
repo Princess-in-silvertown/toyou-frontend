@@ -146,6 +146,7 @@ const CardContainer = styled.div`
   margin: 0 auto;
 
   transform-style: preserve-3d;
+  transform: will-change;
   transition: transform 0.3s;
 
   & > * {

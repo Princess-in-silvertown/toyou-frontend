@@ -6,6 +6,9 @@ import { useContext, useEffect, useState } from 'react';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
+import Swiper from '@components/common/Swiper/Swiper';
+import { useViewport } from '@hooks/useViewport';
+import SwiperSlider from '@components/common/Swiper/SwiperSlider';
 
 interface Props {
   alias: string;
@@ -26,40 +29,91 @@ const CardEdit = ({ alias, message }: Props) => {
     return `rgba(${color.R}, ${color.G}, ${color.B}, ${0.45})`;
   };
 
+  const isSafari = () => {
+    const userAgent = navigator.userAgent;
+    return (
+      userAgent.includes('Safari') &&
+      !userAgent.includes('Chrome') &&
+      !userAgent.includes('Edge') &&
+      !userAgent.includes('Whale')
+    );
+  };
+
+  const [width] = useViewport();
+
   return (
     <Container>
-      <SwiperCard
-        frontContents={
-          <CardContainer
-            $color={getColorString(color)}
-            $subColor={getSubColorString(subColor)}
-          >
-            <CardCoverContainer>
-              <CoverImage src={data.imgUrl} alt="커버이미지" />
-              <StickerList side="front" />
-            </CardCoverContainer>
-          </CardContainer>
-        }
-        backContents={
-          <CardContainer
-            $color={getColorString(color)}
-            $subColor={getSubColorString(subColor)}
-          >
-            <BackContainer>
-              <CardMessageContainer>
-                <AliasContainer>
-                  <To>To.</To>
-                  <Alias>{alias}</Alias>
-                </AliasContainer>
-                <Message>{message}</Message>
-                <StickerList side="back" />
-              </CardMessageContainer>
-            </BackContainer>
-          </CardContainer>
-        }
-        frontTitle="메시지 커버"
-        backTitle="메시지 내용"
-      />
+      {isSafari() && (
+        <Swiper
+          $padding={Math.min(width, 500) / 2 - 192}
+          $gap={16}
+          $width={320}
+          titles={['메시지 커버', '메시지 내용']}
+        >
+          <SwiperSlider>
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <CardCoverContainer>
+                <CoverImage src={data.imgUrl} alt="커버이미지" />
+                <StickerList side="front" />
+              </CardCoverContainer>
+            </CardContainer>
+          </SwiperSlider>
+          <SwiperSlider>
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <BackContainer>
+                <CardMessageContainer>
+                  <AliasContainer>
+                    <To>To.</To>
+                    <Alias>{alias}</Alias>
+                  </AliasContainer>
+                  <Message>{message}</Message>
+                  <StickerList side="back" />
+                </CardMessageContainer>
+              </BackContainer>
+            </CardContainer>
+          </SwiperSlider>
+        </Swiper>
+      )}
+      {!isSafari() && (
+        <SwiperCard
+          frontContents={
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <CardCoverContainer>
+                <CoverImage src={data.imgUrl} alt="커버이미지" />
+                <StickerList side="front" />
+              </CardCoverContainer>
+            </CardContainer>
+          }
+          backContents={
+            <CardContainer
+              $color={getColorString(color)}
+              $subColor={getSubColorString(subColor)}
+            >
+              <BackContainer>
+                <CardMessageContainer>
+                  <AliasContainer>
+                    <To>To.</To>
+                    <Alias>{alias}</Alias>
+                  </AliasContainer>
+                  <Message>{message}</Message>
+                  <StickerList side="back" />
+                </CardMessageContainer>
+              </BackContainer>
+            </CardContainer>
+          }
+          frontTitle="메시지 커버"
+          backTitle="메시지 내용"
+        />
+      )}
     </Container>
   );
 };
@@ -70,6 +124,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 
   margin: 36px auto 0 auto;
 
@@ -143,7 +198,6 @@ const Alias = styled.div`
   max-width: 100%;
   margin-bottom: 2px;
 
-  font-family: 'Montserrat';
   font-size: 24px;
   font-weight: 500;
   letter-spacing: -1.5px;
