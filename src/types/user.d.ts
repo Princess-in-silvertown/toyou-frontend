@@ -1,7 +1,9 @@
 export type User = {
   id: number;
   name: string;
-  imgUrl: string;
+  imageUrl: string;
+  birthday: string;
+  introduction: string;
 };
 
 export type UserList = User[];

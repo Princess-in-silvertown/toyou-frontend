@@ -21,7 +21,7 @@ const SearchedUserItem = ({
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleClick = () => {
-    handleChangeInfo({ id, name, imgUrl: imageUrl });
+    handleChangeInfo({ id, name, imageUrl });
 
     onNext?.();
   };

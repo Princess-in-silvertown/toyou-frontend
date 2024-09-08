@@ -23,7 +23,9 @@ const EventUserItem = ({
   const userInfo: User = {
     id: memberId,
     name: memberName,
-    imgUrl: profileImgUrl,
+    imageUrl: profileImgUrl,
+    birthday: '',
+    introduction: '',
   };
 
   const imageRef = useRef<HTMLImageElement>(null);

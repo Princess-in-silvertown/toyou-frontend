@@ -16,7 +16,7 @@ const UserProfile = () => {
   const { data: user } = useUserProfile(Number(userId));
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
 
-  const { id, imgUrl, name } = user ?? {};
+  const { id, imageUrl, name } = user ?? {};
 
   const handleClickWritingButton = () => {
     handleOpen(

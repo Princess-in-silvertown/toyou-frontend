@@ -5,7 +5,9 @@ import { createContext } from 'react';
 export const DEFAULT_USERINFO = {
   id: -1,
   name: '',
-  imgUrl: '',
+  imageUrl: '',
+  birthday: '',
+  introduction: '',
 };
 
 export const DEFAULT_THEME = 0;
