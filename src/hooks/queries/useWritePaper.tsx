@@ -7,7 +7,7 @@ export const useWritePaper = (memberId: number) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: (data: RollingPaperForm) => requestPostPaper(memberId, data),
+    mutationFn: (data: RollingPaperForm) => requestPostPaper(data),
     onSuccess: () => {
       setIsSubmitted(true);
     },

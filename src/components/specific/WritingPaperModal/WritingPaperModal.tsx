@@ -65,6 +65,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
       themeId: cardTheme,
       coverImageUrl: coverImgUrl,
       content: message,
+      title: alias,
       stickers: [...stickers.values()],
     };
 

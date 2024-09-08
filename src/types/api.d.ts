@@ -2,7 +2,9 @@ export type ResData<T> = {
   code: string;
   data: T;
   pageInfo?: {
-    nextCursor: number;
-    totalCount?: number;
+    nextCursorId: number;
+    pageElements: number;
+    totalElements: number;
+    hasNext: boolean;
   };
 };

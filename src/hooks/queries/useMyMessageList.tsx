@@ -3,7 +3,6 @@ import { requestGetMessageList } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { RollingPaper, RollingPapers } from '@/types/paper';
-import { useEffect, useState } from 'react';
 
 export const useMyMessageList = () => {
   const query = useSuspenseInfiniteQuery<
@@ -20,13 +19,14 @@ export const useMyMessageList = () => {
     initialPageParam: 0,
 
     getNextPageParam: (nextPage) => {
-      if (nextPage) return nextPage.pageInfo?.nextCursor;
+      if (nextPage.pageInfo && nextPage.pageInfo.hasNext)
+        return nextPage.pageInfo?.nextCursorId;
 
       return undefined;
     },
 
     select: ({ pages }) => {
-      const totalData = pages[0].pageInfo?.totalCount ?? 0;
+      const totalData = pages[0].pageInfo?.totalElements ?? 0;
 
       const data = pages.reduce<RollingPaper[]>(
         (acc, { data }) => acc.concat(data.letters),

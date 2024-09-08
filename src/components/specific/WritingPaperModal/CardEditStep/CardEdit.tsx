@@ -196,7 +196,7 @@ const To = styled.div`
 
 const Alias = styled.div`
   max-width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 7px;
 
   font-size: 24px;
   font-weight: 500;

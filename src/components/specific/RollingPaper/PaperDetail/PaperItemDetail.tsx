@@ -15,6 +15,7 @@ interface Props extends RollingPaper {
 const PaperItemDetail = ({
   isCurrent,
   themeId,
+  title,
   name,
   profileImageUrl,
   coverImageUrl,
@@ -71,7 +72,7 @@ const PaperItemDetail = ({
                 <CardMessageContainer>
                   <AliasContainer>
                     <To>To.</To>
-                    <Alias>{name}</Alias>
+                    <Alias>{title}</Alias>
                   </AliasContainer>
                   <Message>{content}</Message>
                   <StaticStickerList side="back" stickers={stickers} />
@@ -104,7 +105,7 @@ const PaperItemDetail = ({
                 <CardMessageContainer>
                   <AliasContainer>
                     <To>To.</To>
-                    <Alias>{name}</Alias>
+                    <Alias>{title}</Alias>
                   </AliasContainer>
                   <Message>{content}</Message>
                   <StaticStickerList side="back" stickers={stickers} />
@@ -195,8 +196,11 @@ const To = styled.div`
 `;
 
 const Alias = styled.div`
+  display: flex;
+  align-items: center;
+
   max-width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 7px;
 
   font-size: 24px;
   font-weight: 500;

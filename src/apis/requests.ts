@@ -103,11 +103,8 @@ export const requestGetMessageList = (cursor?: number) => {
   return request.get<ResData<RollingPapers>>(`api/rollingpapers?${params}`);
 };
 
-export const requestPostPaper = (memberId: number, paper: RollingPaperForm) => {
+export const requestPostPaper = (paper: RollingPaperForm) => {
   const body = JSON.stringify(paper);
 
-  return request.post<ResData<any>>(
-    `api/groups/members/${memberId}/rollingpapers`,
-    body
-  );
+  return request.post<ResData<any>>(`api/rollingpapers`, body);
 };
