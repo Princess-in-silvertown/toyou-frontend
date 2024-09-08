@@ -11,19 +11,14 @@ import { User } from '@/types/user';
 
 interface Props extends Event {}
 
-const EventUserItem = ({
-  memberId,
-  memberName,
-  description,
-  profileImgUrl,
-}: Props) => {
+const EventUserItem = ({ id, name, description, profileImageUrl }: Props) => {
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
   const [isClickPrevented, setIsClickPrevented] = useState(false);
 
   const userInfo: User = {
-    id: memberId,
-    name: memberName,
-    imageUrl: profileImgUrl,
+    id,
+    name,
+    imageUrl: profileImageUrl,
     birthday: '',
     introduction: '',
   };
@@ -59,14 +54,14 @@ const EventUserItem = ({
       <LeftContents>
         <LeftFirstContents>
           <Profile
-            src={profileImgUrl}
+            src={profileImageUrl}
             alt="프로필"
             ref={imageRef}
             onError={handleErrorProfileImage}
           />
         </LeftFirstContents>
         <LeftSecondContents>
-          <Name>{memberName}</Name>
+          <Name>{name}</Name>
           <Introduce>{description}</Introduce>
         </LeftSecondContents>
       </LeftContents>

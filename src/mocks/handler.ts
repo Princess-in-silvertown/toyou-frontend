@@ -340,18 +340,18 @@ export const handlers = [
             data: {
               events: [
                 {
-                  memberId: 6,
-                  memberName: '오늘',
+                  id: 6,
+                  name: '오늘',
                   eventType: '',
                   description: '',
-                  profileImgUrl: '',
+                  profileImageUrl: '',
                 },
                 {
-                  memberId: 3,
-                  memberName: '오늘',
+                  id: 3,
+                  name: '오늘',
                   eventType: '',
                   description: '',
-                  profileImgUrl: '',
+                  profileImageUrl: '',
                 },
               ],
             },
@@ -367,18 +367,18 @@ export const handlers = [
               date: '2024-07-30',
               events: [
                 {
-                  memberId: 6,
-                  memberName: '이미지 에러 테스트',
+                  id: 6,
+                  name: '이미지 에러 테스트',
                   eventType: '',
                   description: '깨짐.',
-                  profileImgUrl: 'error',
+                  profileImageUrl: 'error',
                 },
                 {
-                  memberId: 2,
-                  memberName: '이미지 깨짐',
+                  id: 2,
+                  name: '이미지 깨짐',
                   eventType: '',
                   description: '깨짐.',
-                  profileImgUrl: sticker,
+                  profileImageUrl: sticker,
                 },
               ],
             },
@@ -386,11 +386,11 @@ export const handlers = [
               date: '2024-07-04',
               events: [
                 {
-                  memberId: 6,
-                  memberName: '테스트 효섭',
+                  id: 6,
+                  name: '테스트 효섭',
                   eventType: '',
                   description: '테스트.',
-                  profileImgUrl: H,
+                  profileImageUrl: H,
                 },
               ],
             },
@@ -405,11 +405,11 @@ export const handlers = [
               date: '2024-08-30',
               events: [
                 {
-                  memberId: 6,
-                  memberName: '이미지 깨짐',
+                  id: 6,
+                  name: '이미지 깨짐',
                   eventType: '',
                   description: '깨짐.',
-                  profileImgUrl: 'error',
+                  profileImageUrl: 'error',
                 },
               ],
             },
@@ -424,58 +424,58 @@ export const handlers = [
               date: '2024-09-11',
               events: [
                 {
-                  memberId: 22,
-                  memberName: '트루효섭',
+                  id: 22,
+                  name: '트루효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl: H,
+                  profileImageUrl: H,
                 },
                 {
-                  memberId: 1,
-                  memberName: '시크효섭',
+                  id: 1,
+                  name: '시크효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://mblogthumb-phinf.pstatic.net/MjAyMTA0MzBfMjMg/MDAxNjE5NzY2MDc3Njc1.QTn3NuadrIe8IarOOZAN61-7C06Ce_E1693wilcYrLMg.b4cO2kVaUx0wD9BGXQ5ux7DjT-e6qW8fXQT23Hjc6vQg.JPEG.paran-paran/%EC%9E%A5%EB%8F%99%EA%B1%B4_10.jpg?type=w800',
                 },
                 {
-                  memberId: 2,
-                  memberName: '댄디효섭',
+                  id: 2,
+                  name: '댄디효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://i.namu.wiki/i/bCmE_8XrnEYeEKlbme2ZS8rsG6dcB1vGD-UJtxvGncvXuYL9fiBqL8Fk_6cQ58EKJYTyyw9mA0LWK3yIaRYQow.webp',
                 },
                 {
-                  memberId: 12,
-                  memberName: '앙칼진효섭',
+                  id: 12,
+                  name: '앙칼진효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
                 },
                 {
-                  memberId: 142,
-                  memberName: '앙칼진효섭',
+                  id: 142,
+                  name: '앙칼진효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
                 },
                 {
-                  memberId: 122,
-                  memberName: '앙칼진효섭',
+                  id: 122,
+                  name: '앙칼진효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
                 },
                 {
-                  memberId: 1222,
-                  memberName: '앙칼진효섭',
+                  id: 1222,
+                  name: '앙칼진효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
                 },
               ],
@@ -485,11 +485,11 @@ export const handlers = [
               date: '2024-09-24',
               events: [
                 {
-                  memberId: 3,
-                  memberName: '간지효섭',
+                  id: 3,
+                  name: '간지효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://i.namu.wiki/i/xifChGswbLh8qg2qQyJADGr-9IKZ4DES71zkmTs5sN-zMpZQq60trPR2XR9gr7kjMjsDX1y5zE6EAL0nWruGkg.webp',
                 },
               ],
@@ -499,11 +499,11 @@ export const handlers = [
               date: '2024-09-05',
               events: [
                 {
-                  memberId: 4,
-                  memberName: '최애의 효섭',
+                  id: 4,
+                  name: '최애의 효섭',
                   eventType: '',
                   description: '오늘 생일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
                 },
               ],
@@ -519,11 +519,11 @@ export const handlers = [
               date: '2024-10-02',
               events: [
                 {
-                  memberId: 4,
-                  memberName: '최애의 효섭',
+                  id: 4,
+                  name: '최애의 효섭',
                   eventType: '',
                   description: '콘서트 당일입니다.',
-                  profileImgUrl:
+                  profileImageUrl:
                     'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
                 },
               ],
@@ -540,18 +540,18 @@ export const handlers = [
         date: dateTime,
         events: [
           {
-            memberId: 2,
-            memberName: '송효섭',
+            id: 2,
+            name: '송효섭',
             eventType: '',
             description: '오늘의 이벤트입니다.',
-            profileImgUrl: H,
+            profileImageUrl: H,
           },
           {
-            memberId: 4,
-            memberName: '오늘의 이벤트',
+            id: 4,
+            name: '오늘의 이벤트',
             eventType: '',
             description: '오늘의 이벤트입니다.',
-            profileImgUrl: sticker,
+            profileImageUrl: sticker,
           },
         ],
       });
@@ -776,7 +776,7 @@ export const handlers = [
   ),
 
   http.post(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/members/:memberId/rollingpapers',
+    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/members/:id/rollingpapers',
     async ({ request }) => {
       await delay(2000);
 

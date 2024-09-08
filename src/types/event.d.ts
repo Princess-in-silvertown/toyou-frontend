@@ -10,10 +10,10 @@ export type Day = {
 export type Events = Event[];
 
 export type Event = {
-  memberId: number;
-  memberName: string;
+  id: number;
+  name: string;
   eventType: string;
-  profileImgUrl: string;
+  profileImageUrl: string;
   description: string;
 };
 

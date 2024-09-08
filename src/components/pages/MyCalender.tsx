@@ -25,7 +25,7 @@ const MyCalender = () => {
         </EventHeader>
         <EventMemberList>
           {eventList.map((item) => {
-            return <EventUserItem key={item.memberId} {...item} />;
+            return <EventUserItem key={item.id} {...item} />;
           })}
         </EventMemberList>
       </EventContainer>
