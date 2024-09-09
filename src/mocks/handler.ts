@@ -5,10 +5,10 @@ import yellowCover from '@assets/image/birthday_small_yellow.svg';
 import redCover from '@assets/image/birthday_small_red.svg';
 import blueCover from '@assets/image/birthday_small_blue.svg';
 import greenCover from '@assets/image/birthday_small_green.svg';
-
 import H from '@assets/image/H.jpeg';
 import { RollingPapers } from '@/types/paper';
-import { ResData } from '@/types/api';
+
+const API_URL = process.env.API_URL;
 
 const indexedGroupList: Record<number, any> = {
   1: {
@@ -74,500 +74,442 @@ var myGroupIDList: number[] = [1, 2, 3];
 let coverApiResponseCount = 0;
 
 export const handlers = [
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/test',
-    (info) => {
-      return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
-    }
-  ),
+  http.get(`${API_URL}test`, (info) => {
+    return HttpResponse.json({ id: 'c7b3d8e0' }, { status: 222 });
+  }),
 
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/assets/*',
-    (info) => {
-      return passthrough();
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/toyou-frontend/assets/*',
-    (info) => {
-      return passthrough();
-    }
-  ),
-
-  http.get('/toyou-frontend/assets/*', (info) => {
+  http.get(`${API_URL}assets/*`, (info) => {
     return passthrough();
   }),
 
-  http.get('https://fonts.cdnfonts.com/*', (info) => {
+  http.get(`${API_URL}toyou-frontend/assets/*`, (info) => {
     return passthrough();
   }),
 
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/members',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const groupId = Number(url.searchParams.get('groupId'));
-      const search = url.searchParams.get('search');
+  http.get(`/toyou-frontend/assets/*`, (info) => {
+    return passthrough();
+  }),
 
-      const inGroupList = groupId
-        ? Object.values(indexedUserList).filter((item) =>
-            item.groupIds.includes(groupId)
-          )
-        : Object.values(indexedUserList);
+  http.get(`https://fonts.cdnfonts.com/*`, (info) => {
+    return passthrough();
+  }),
 
-      const searchedList = search
-        ? inGroupList.filter((item) => item.name.includes(search))
-        : inGroupList;
+  http.get(`${API_URL}api/members`, ({ request }) => {
+    const url = new URL(request.url);
+    const groupId = Number(url.searchParams.get('groupId'));
+    const search = url.searchParams.get('search');
 
-      const data = searchedList.map((item) => {
-        return { groupId, ...item };
-      });
+    const inGroupList = groupId
+      ? Object.values(indexedUserList).filter((item) =>
+          item.groupIds.includes(groupId)
+        )
+      : Object.values(indexedUserList);
 
+    const searchedList = search
+      ? inGroupList.filter((item) => item.name.includes(search))
+      : inGroupList;
+
+    const data = searchedList.map((item) => {
+      return { groupId, ...item };
+    });
+
+    return HttpResponse.json(
+      {
+        data: data,
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get(`${API_URL}api/groups`, async () => {
+    return HttpResponse.json(
+      {
+        data: { groups: myGroupIDList.map((id) => indexedGroupList[id]) },
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.post(`${API_URL}api/group/me`, async ({ request }) => {
+    const data = (await request.json()) as { groupId: number };
+    const id = Number(data?.groupId);
+
+    if (isNaN(id)) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    myGroupIDList.push(id);
+
+    return HttpResponse.json({ data: { message: 'success' } }, { status: 201 });
+  }),
+
+  http.get(`${API_URL}api/users`, ({ request }) => {
+    const url = new URL(request.url);
+    const groupId = Number(url.searchParams.get('groupId'));
+
+    if (isNaN(groupId)) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    const userIds: number[] = indexedGroupList[groupId]?.userIds ?? [];
+
+    return HttpResponse.json(
+      {
+        data: userIds.map((id) => indexedUserList[id]),
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get(`${API_URL}api/user`, ({ request }) => {
+    const url = new URL(request.url);
+    const userId = Number(url.searchParams.get('userId'));
+
+    if (isNaN(userId)) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    return HttpResponse.json(
+      {
+        data: indexedUserList[userId],
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get(`${API_URL}api/keywords`, async ({ request }) => {
+    const url = new URL(request.url);
+    const message = url.searchParams.get('message');
+
+    if (!message) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    await delay(3000);
+
+    return HttpResponse.json(
+      {
+        data: ['반가움', '그리움'],
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get(`${API_URL}api/groups/:groupId/cover`, async ({ request }) => {
+    coverApiResponseCount += 1;
+
+    if (coverApiResponseCount <= 4) {
       return HttpResponse.json(
         {
-          data: data,
-          pageInfo: {},
+          data: {},
+          code: '',
         },
-        { status: 200 }
+        { status: 202 }
       );
     }
-  ),
 
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups',
-    async () => {
+    return HttpResponse.json(
+      {
+        code: 'SUCCESS',
+        data: { imgUrl: cover },
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.get(`${API_URL}api/groups/:groupId/sticker`, async ({ request }) => {
+    coverApiResponseCount += 1;
+
+    if (coverApiResponseCount <= 1) {
       return HttpResponse.json(
         {
-          data: { groups: myGroupIDList.map((id) => indexedGroupList[id]) },
-          pageInfo: {},
+          code: '',
+          data: {},
         },
-        { status: 200 }
+        { status: 202 }
       );
     }
-  ),
 
-  http.post(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/group/me',
-    async ({ request }) => {
-      const data = (await request.json()) as { groupId: number };
-      const id = Number(data?.groupId);
-
-      if (isNaN(id)) {
-        return HttpResponse.json(
-          { data: { message: 'fail' } },
-          { status: 403 }
-        );
-      }
-
-      myGroupIDList.push(id);
-
-      return HttpResponse.json(
-        { data: { message: 'success' } },
-        { status: 201 }
-      );
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/users',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const groupId = Number(url.searchParams.get('groupId'));
-
-      if (isNaN(groupId)) {
-        return HttpResponse.json(
-          { data: { message: 'fail' } },
-          { status: 403 }
-        );
-      }
-
-      const userIds: number[] = indexedGroupList[groupId]?.userIds ?? [];
-
-      return HttpResponse.json(
-        {
-          data: userIds.map((id) => indexedUserList[id]),
-          pageInfo: {},
-        },
-        { status: 200 }
-      );
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/user',
-    ({ request }) => {
-      const url = new URL(request.url);
-      const userId = Number(url.searchParams.get('userId'));
-
-      if (isNaN(userId)) {
-        return HttpResponse.json(
-          { data: { message: 'fail' } },
-          { status: 403 }
-        );
-      }
-
-      return HttpResponse.json(
-        {
-          data: indexedUserList[userId],
-          pageInfo: {},
-        },
-        { status: 200 }
-      );
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/keywords',
-    async ({ request }) => {
-      const url = new URL(request.url);
-      const message = url.searchParams.get('message');
-
-      if (!message) {
-        return HttpResponse.json(
-          { data: { message: 'fail' } },
-          { status: 403 }
-        );
-      }
-
-      await delay(3000);
-
-      return HttpResponse.json(
-        {
-          data: ['반가움', '그리움'],
-          pageInfo: {},
-        },
-        { status: 200 }
-      );
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/:groupId/cover',
-    async ({ request }) => {
-      coverApiResponseCount += 1;
-
-      if (coverApiResponseCount <= 4) {
-        return HttpResponse.json(
+    return HttpResponse.json(
+      {
+        code: 'SUCCESS',
+        data: [
+          ...new Array(5).fill({ imgUrl: sticker }),
           {
-            data: {},
-            code: '',
-          },
-          { status: 202 }
-        );
-      }
-
-      return HttpResponse.json(
-        {
-          code: 'SUCCESS',
-          data: { imgUrl: cover },
-        },
-        { status: 200 }
-      );
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/:groupId/sticker',
-    async ({ request }) => {
-      coverApiResponseCount += 1;
-
-      if (coverApiResponseCount <= 1) {
-        return HttpResponse.json(
-          {
-            code: '',
-            data: {},
-          },
-          { status: 202 }
-        );
-      }
-
-      return HttpResponse.json(
-        {
-          code: 'SUCCESS',
-          data: [
-            ...new Array(5).fill({ imgUrl: sticker }),
-            {
-              imgUrl:
-                'https://media.tenor.com/ar6xI838JiEAAAAi/cat-meme-cat.gif',
-            },
-            {
-              imgUrl:
-                'https://i.namu.wiki/i/016r0DjGVQ3em4bhgYxGZJ7VI2y30qFt6KfItWLYFREHNxPl1KBaGY60tXGr9K5qFsgE-U3BHtw5UVbeaWTWwg.gif',
-            },
-            {
-              imgUrl:
-                'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1nT8l0.img?w=373&h=359&m=6',
-            },
-          ],
-        },
-        { status: 200 }
-      );
-    }
-  ),
-
-  http.post(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/:groupId/cover',
-    async ({ request }) => {
-      return HttpResponse.json({}, { status: 200 });
-    }
-  ),
-
-  http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/events',
-    async ({ request }) => {
-      const url = new URL(request.url);
-      const date = url.searchParams.get('date');
-
-      await delay(1000);
-
-      if (!date) {
-        return HttpResponse.json(
-          { data: { message: 'fail' } },
-          { status: 403 }
-        );
-      }
-
-      let data;
-
-      data = { days: [] };
-
-      const [year, month, day] = date.split('-').map((num) => Number(num));
-
-      if (day) {
-        return HttpResponse.json(
-          {
-            data: {
-              events: [
-                {
-                  id: 6,
-                  name: '오늘',
-                  eventType: '',
-                  description: '',
-                  profileImageUrl: '',
-                },
-                {
-                  id: 3,
-                  name: '오늘',
-                  eventType: '',
-                  description: '',
-                  profileImageUrl: '',
-                },
-              ],
-            },
-          },
-          { status: 200 }
-        );
-      }
-
-      if (month === 7) {
-        data = {
-          days: [
-            {
-              date: '2024-07-30',
-              events: [
-                {
-                  id: 6,
-                  name: '이미지 에러 테스트',
-                  eventType: '',
-                  description: '깨짐.',
-                  profileImageUrl: 'error',
-                },
-                {
-                  id: 2,
-                  name: '이미지 깨짐',
-                  eventType: '',
-                  description: '깨짐.',
-                  profileImageUrl: sticker,
-                },
-              ],
-            },
-            {
-              date: '2024-07-04',
-              events: [
-                {
-                  id: 6,
-                  name: '테스트 효섭',
-                  eventType: '',
-                  description: '테스트.',
-                  profileImageUrl: H,
-                },
-              ],
-            },
-          ],
-        };
-      }
-
-      if (month === 8) {
-        data = {
-          days: [
-            {
-              date: '2024-08-30',
-              events: [
-                {
-                  id: 6,
-                  name: '이미지 깨짐',
-                  eventType: '',
-                  description: '깨짐.',
-                  profileImageUrl: 'error',
-                },
-              ],
-            },
-          ],
-        };
-      }
-
-      if (month === 9) {
-        data = {
-          days: [
-            {
-              date: '2024-09-11',
-              events: [
-                {
-                  id: 22,
-                  name: '트루효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl: H,
-                },
-                {
-                  id: 1,
-                  name: '시크효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://mblogthumb-phinf.pstatic.net/MjAyMTA0MzBfMjMg/MDAxNjE5NzY2MDc3Njc1.QTn3NuadrIe8IarOOZAN61-7C06Ce_E1693wilcYrLMg.b4cO2kVaUx0wD9BGXQ5ux7DjT-e6qW8fXQT23Hjc6vQg.JPEG.paran-paran/%EC%9E%A5%EB%8F%99%EA%B1%B4_10.jpg?type=w800',
-                },
-                {
-                  id: 2,
-                  name: '댄디효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://i.namu.wiki/i/bCmE_8XrnEYeEKlbme2ZS8rsG6dcB1vGD-UJtxvGncvXuYL9fiBqL8Fk_6cQ58EKJYTyyw9mA0LWK3yIaRYQow.webp',
-                },
-                {
-                  id: 12,
-                  name: '앙칼진효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-                },
-                {
-                  id: 142,
-                  name: '앙칼진효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-                },
-                {
-                  id: 122,
-                  name: '앙칼진효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-                },
-                {
-                  id: 1222,
-                  name: '앙칼진효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
-                },
-              ],
-            },
-
-            {
-              date: '2024-09-24',
-              events: [
-                {
-                  id: 3,
-                  name: '간지효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://i.namu.wiki/i/xifChGswbLh8qg2qQyJADGr-9IKZ4DES71zkmTs5sN-zMpZQq60trPR2XR9gr7kjMjsDX1y5zE6EAL0nWruGkg.webp',
-                },
-              ],
-            },
-
-            {
-              date: '2024-09-05',
-              events: [
-                {
-                  id: 4,
-                  name: '최애의 효섭',
-                  eventType: '',
-                  description: '오늘 생일입니다.',
-                  profileImageUrl:
-                    'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
-                },
-              ],
-            },
-          ],
-        };
-      }
-
-      if (month === 10) {
-        data = {
-          days: [
-            {
-              date: '2024-10-02',
-              events: [
-                {
-                  id: 4,
-                  name: '최애의 효섭',
-                  eventType: '',
-                  description: '콘서트 당일입니다.',
-                  profileImageUrl:
-                    'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
-                },
-              ],
-            },
-          ],
-        };
-      }
-
-      const today = new Date();
-      const dateTime = `${today.getFullYear()}-${String(
-        today.getMonth() + 1
-      ).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      data.days.push({
-        date: dateTime,
-        events: [
-          {
-            id: 2,
-            name: '송효섭',
-            eventType: '',
-            description: '오늘의 이벤트입니다.',
-            profileImageUrl: H,
+            imgUrl: 'https://media.tenor.com/ar6xI838JiEAAAAi/cat-meme-cat.gif',
           },
           {
-            id: 4,
-            name: '오늘의 이벤트',
-            eventType: '',
-            description: '오늘의 이벤트입니다.',
-            profileImageUrl: sticker,
+            imgUrl:
+              'https://i.namu.wiki/i/016r0DjGVQ3em4bhgYxGZJ7VI2y30qFt6KfItWLYFREHNxPl1KBaGY60tXGr9K5qFsgE-U3BHtw5UVbeaWTWwg.gif',
+          },
+          {
+            imgUrl:
+              'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1nT8l0.img?w=373&h=359&m=6',
           },
         ],
-      });
+      },
+      { status: 200 }
+    );
+  }),
 
+  http.post(`${API_URL}api/groups/:groupId/cover`, async ({ request }) => {
+    return HttpResponse.json({}, { status: 200 });
+  }),
+
+  http.get(`${API_URL}api/events`, async ({ request }) => {
+    const url = new URL(request.url);
+    const date = url.searchParams.get('date');
+
+    await delay(1000);
+
+    if (!date) {
+      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
+    }
+
+    let data;
+
+    data = { days: [] };
+
+    const [year, month, day] = date.split('-').map((num) => Number(num));
+
+    if (day) {
       return HttpResponse.json(
         {
-          data,
-          pageInfo: {},
+          data: {
+            events: [
+              {
+                id: 6,
+                name: '오늘',
+                eventType: '',
+                description: '',
+                profileImageUrl: '',
+              },
+              {
+                id: 3,
+                name: '오늘',
+                eventType: '',
+                description: '',
+                profileImageUrl: '',
+              },
+            ],
+          },
         },
         { status: 200 }
       );
     }
-  ),
+
+    if (month === 7) {
+      data = {
+        days: [
+          {
+            date: '2024-07-30',
+            events: [
+              {
+                id: 6,
+                name: '이미지 에러 테스트',
+                eventType: '',
+                description: '깨짐.',
+                profileImageUrl: 'error',
+              },
+              {
+                id: 2,
+                name: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImageUrl: sticker,
+              },
+            ],
+          },
+          {
+            date: '2024-07-04',
+            events: [
+              {
+                id: 6,
+                name: '테스트 효섭',
+                eventType: '',
+                description: '테스트.',
+                profileImageUrl: H,
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (month === 8) {
+      data = {
+        days: [
+          {
+            date: '2024-08-30',
+            events: [
+              {
+                id: 6,
+                name: '이미지 깨짐',
+                eventType: '',
+                description: '깨짐.',
+                profileImageUrl: 'error',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (month === 9) {
+      data = {
+        days: [
+          {
+            date: '2024-09-11',
+            events: [
+              {
+                id: 22,
+                name: '트루효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl: H,
+              },
+              {
+                id: 1,
+                name: '시크효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://mblogthumb-phinf.pstatic.net/MjAyMTA0MzBfMjMg/MDAxNjE5NzY2MDc3Njc1.QTn3NuadrIe8IarOOZAN61-7C06Ce_E1693wilcYrLMg.b4cO2kVaUx0wD9BGXQ5ux7DjT-e6qW8fXQT23Hjc6vQg.JPEG.paran-paran/%EC%9E%A5%EB%8F%99%EA%B1%B4_10.jpg?type=w800',
+              },
+              {
+                id: 2,
+                name: '댄디효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://i.namu.wiki/i/bCmE_8XrnEYeEKlbme2ZS8rsG6dcB1vGD-UJtxvGncvXuYL9fiBqL8Fk_6cQ58EKJYTyyw9mA0LWK3yIaRYQow.webp',
+              },
+              {
+                id: 12,
+                name: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+              {
+                id: 142,
+                name: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+              {
+                id: 122,
+                name: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+              {
+                id: 1222,
+                name: '앙칼진효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://health.chosun.com/site/data/img_dir/2023/07/17/2023071701753_0.jpg',
+              },
+            ],
+          },
+
+          {
+            date: '2024-09-24',
+            events: [
+              {
+                id: 3,
+                name: '간지효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://i.namu.wiki/i/xifChGswbLh8qg2qQyJADGr-9IKZ4DES71zkmTs5sN-zMpZQq60trPR2XR9gr7kjMjsDX1y5zE6EAL0nWruGkg.webp',
+              },
+            ],
+          },
+
+          {
+            date: '2024-09-05',
+            events: [
+              {
+                id: 4,
+                name: '최애의 효섭',
+                eventType: '',
+                description: '오늘 생일입니다.',
+                profileImageUrl:
+                  'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    if (month === 10) {
+      data = {
+        days: [
+          {
+            date: '2024-10-02',
+            events: [
+              {
+                id: 4,
+                name: '최애의 효섭',
+                eventType: '',
+                description: '콘서트 당일입니다.',
+                profileImageUrl:
+                  'https://i.namu.wiki/i/kDxN8Y1I3QnwN_7WmesRlM5L-p54NzRD1fCxyKAm5JB0NsE2Kg562c5gfGH6vKIB0LQIVrMaehxTxwlDVa91cA.webp',
+              },
+            ],
+          },
+        ],
+      };
+    }
+
+    const today = new Date();
+    const dateTime = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    data.days.push({
+      date: dateTime,
+      events: [
+        {
+          id: 2,
+          name: '송효섭',
+          eventType: '',
+          description: '오늘의 이벤트입니다.',
+          profileImageUrl: H,
+        },
+        {
+          id: 4,
+          name: '오늘의 이벤트',
+          eventType: '',
+          description: '오늘의 이벤트입니다.',
+          profileImageUrl: sticker,
+        },
+      ],
+    });
+
+    return HttpResponse.json(
+      {
+        data,
+        pageInfo: {},
+      },
+      { status: 200 }
+    );
+  }),
 
   http.get(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/rollingpapers',
+    `${API_URL}api/rollingpapers`,
 
     async ({ request }) => {
       const url = new URL(request.url);
@@ -775,12 +717,9 @@ export const handlers = [
     }
   ),
 
-  http.post(
-    'https://princess-in-silvertown.github.io/toyou-frontend/api/groups/members/:id/rollingpapers',
-    async ({ request }) => {
-      await delay(2000);
+  http.post(`${API_URL}api/rollingpapers`, async ({ request }) => {
+    await delay(2000);
 
-      return HttpResponse.json({ data: '' }, { status: 200 });
-    }
-  ),
+    return HttpResponse.json({ data: '' }, { status: 200 });
+  }),
 ];

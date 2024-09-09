@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 dotenv.config();
 
 module.exports = () => {
-  const mode = 'development';
+  const mode = process.env.NODE_ENV;
   const publicPath = process.env.REACT_PUBLIC_PATH ?? '/';
 
   return {

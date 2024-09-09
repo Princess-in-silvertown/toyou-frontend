@@ -96,8 +96,11 @@ export const requestGetEventToday = () => {
 };
 
 export const requestGetMessageList = (cursor?: number) => {
+  const LIMIT = '9';
+
   const params = new URLSearchParams({
     ...(cursor && { cursor: String(cursor) }),
+    limit: LIMIT,
   }).toString();
 
   return request.get<ResData<RollingPapers>>(`api/rollingpapers?${params}`);
@@ -107,4 +110,8 @@ export const requestPostPaper = (paper: RollingPaperForm) => {
   const body = JSON.stringify(paper);
 
   return request.post<ResData<any>>(`api/rollingpapers`, body);
+};
+
+export const requestGetMyInfo = () => {
+  return request.get<ResData<User>>(`api/me`);
 };
