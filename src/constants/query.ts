@@ -8,4 +8,5 @@ export const QUERY_KEY = {
   sticker: 'sticker',
   events: 'events',
   event: 'event',
+  myInfo: 'myInfo',
 } as const;
