@@ -27,7 +27,7 @@ export const requestGetMemberList = (search: string, groupId?: number) => {
     ...(search.length > 0 && { search }),
   }).toString();
 
-  return request.get<ResData<Member[]>>(`api/members?${params}`);
+  return request.get<ResData<Member[]>>(`api/users?${params}`);
 };
 
 export const requestGetUserProfile = (userId: number) => {
@@ -39,7 +39,9 @@ export const requestGetUserProfile = (userId: number) => {
 };
 
 export const requestGetKeywords = (message: string) => {
-  return request.get<ResData<string[]>>(`api/keywords?message=${message}`);
+  const body = JSON.stringify({ content: message });
+
+  return request.post<ResData<string[]>>(`api/generate-keywords`, body);
 };
 
 export const requestGetCover = (groupId: number) => {
@@ -95,11 +97,11 @@ export const requestGetEventToday = () => {
   );
 };
 
-export const requestGetMessageList = (cursor?: number) => {
+export const requestGetMessageList = (cursorId?: number) => {
   const LIMIT = '9';
 
   const params = new URLSearchParams({
-    ...(cursor && { cursor: String(cursor) }),
+    ...(cursorId && { cursorId: String(cursorId) }),
     limit: LIMIT,
   }).toString();
 
