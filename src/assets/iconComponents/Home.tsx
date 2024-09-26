@@ -2,17 +2,31 @@ const DEFAULT_COLOR = '#212121';
 
 const Home = ({ color = DEFAULT_COLOR }) => (
   <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
+    width="17"
+    height="19"
+    viewBox="0 0 17 19"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
-      fill={color}
+    <rect
+      x="1.03332"
+      y="5.0398"
+      width="8.4"
+      height="13.4"
+      rx="1.2"
+      transform="rotate(-20.9709 1.03332 5.0398)"
+      stroke={color}
+      strokeWidth="1.6"
+    />
+    <rect
+      x="7.8"
+      y="0.8"
+      width="8.4"
+      height="13.4"
+      rx="1.2"
+      fill="white"
+      stroke={color}
+      strokeWidth="1.6"
     />
   </svg>
 );
