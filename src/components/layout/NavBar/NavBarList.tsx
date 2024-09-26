@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import NavBarItem from './NavBarItem';
 import { useNavigateBar } from '@hooks/useNavigateBar';
 
-import home from '@assets/icons/home.svg';
-
 const NavBarList = () => {
   const { currentPath, navigationInfo } = useNavigateBar();
 
@@ -48,5 +46,3 @@ const Container = styled.nav`
 
   background-color: #fcfcfc;
 `;
-
-const test = styled(home)``;

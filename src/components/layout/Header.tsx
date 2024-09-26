@@ -1,13 +1,26 @@
 import styled from 'styled-components';
-import logo from '@assets/logo/header.svg';
+import logo from '@assets/logo/small_logo.png';
 import { useCustomNavigate } from '@/routers/useCustomNavigate';
+import { useMyInfo } from '@hooks/queries/useMyInfo';
+import { useEffect } from 'react';
 
 const Header = () => {
-  const { goToHomePage } = useCustomNavigate();
+  const { goToHomePage, goToEditMyInfo, goToMyPage } = useCustomNavigate();
+
+  const { data } = useMyInfo();
+
+  useEffect(() => {
+    if (data && !data.groups) {
+      goToEditMyInfo();
+
+      return;
+    }
+  }, [data]);
 
   return (
     <Container>
-      <Logo onClick={goToHomePage}>Toyou</Logo>
+      <Logo src={logo} onClick={goToHomePage} />
+      <Profile src={data?.imageUrl} onClick={goToMyPage} />
     </Container>
   );
 };
@@ -19,15 +32,24 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   border: none;
+  box-sizing: border-box;
   padding: 0 25px;
 
+  width: 100%;
   height: 55px;
 `;
 
-const Logo = styled.div`
-  font-size: 14px;
-  line-height: 16.71px;
-  letter-spacing: -0.02em;
+const Logo = styled.img`
+  width: 43px;
+  height: 18.78px;
+
+  cursor: pointer;
+`;
+
+const Profile = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 
   cursor: pointer;
 `;

@@ -292,5 +292,30 @@ export const handlers = [
     await delay(2000);
 
     return HttpResponse.json({ data: '' }, { status: 200 });
+
+  http.get(`${API_URL}api/me`, async ({ request }) => {
+    return HttpResponse.json({ data: myInfo }, { status: 200 });
+  }),
+
+  http.put(`${API_URL}api/me`, async ({ request }) => {
+    return HttpResponse.json({}, { status: 201 });
+  }),
+
+  http.post(`${API_URL}api/auth/login`, async ({ request }) => {
+    return HttpResponse.json({ data: {} }, { status: 200 });
+  }),
+
+  http.post(`${API_URL}api/schools/search`, async ({ request }) => {
+    const url = new URL(request.url);
+    const search = url.searchParams.get('search');
+
+    const searchedList = search
+      ? schools.schools.filter((item) => item.name.includes(search))
+      : schools.schools;
+
+    return HttpResponse.json(
+      { data: { schools: searchedList } },
+      { status: 200 }
+    );
   }),
 ];

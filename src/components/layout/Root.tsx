@@ -6,10 +6,10 @@ import { NavBar } from './NavBar';
 const Root = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Outlet />
-      <Footer />
-      <NavBar />
+      {/* <Footer />
+      <NavBar /> */}
     </>
   );
 };

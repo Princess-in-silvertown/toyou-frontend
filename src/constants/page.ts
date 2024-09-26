@@ -39,6 +39,11 @@ export const LOGIN_REDIRECTION_PAGE = {
   name: '리다이렉션',
 } as const;
 
+export const MY_INFO_EDIT_PAGE = {
+  path: 'my-info/edit',
+  value: 'edit-my-info',
+  name: '내정보수정',
+} as const;
 
 export const USER_PROFILE_PAGE = {
   path: 'user/:userId',
