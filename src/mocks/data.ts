@@ -441,3 +441,48 @@ export const mockOctoberEventList = {
 };
 
 export const coverData = { imgUrl: cover };
+
+export const schools = {
+  schools: [
+    {
+      id: 1,
+      name: '경희대학교',
+      address: '',
+      homepageUrl: '',
+    },
+    {
+      id: 2,
+      name: '경희고등학교',
+      address: '',
+      homepageUrl: '',
+    },
+    {
+      id: 3,
+      name: '경희중학교',
+      address: '',
+      homepageUrl: '',
+    },
+    {
+      id: 4,
+      name: '경희초등학교',
+      address: '',
+      homepageUrl: '',
+    },
+    {
+      id: 5,
+      name: '효섭이와함께춤을',
+      address: '',
+      homepageUrl: '',
+    },
+  ],
+};
+
+export const myInfo = {
+  id: 1,
+  name: '효섭',
+  imageUrl: H,
+  groups: [
+    { id: 1, name: '경희대학교' },
+    { id: 2, name: '경희고등학교' },
+  ],
+};

@@ -11,6 +11,7 @@ export const useTodayEvent = () => {
     queryFn: () => requestGetEventToday(),
     select: (json) => json.data.events,
     staleTime: Infinity,
+    throwOnError: true,
   });
 
   return query;

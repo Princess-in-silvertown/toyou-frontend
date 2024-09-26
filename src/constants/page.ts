@@ -27,6 +27,13 @@ export const SEARCHING_USER_PAGE = {
   value: 'users',
   name: '찾기/사용자',
 } as const;
+
+export const ONBOARDING_PAGE = {
+  path: 'onboarding',
+  value: 'onboarding',
+  name: '온보딩',
+} as const;
+
 export const LOGIN_PAGE = {
   path: 'login',
   value: 'login',

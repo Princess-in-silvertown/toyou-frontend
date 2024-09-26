@@ -1,15 +1,20 @@
 import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
+import { useCustomNavigate } from '@/routers/useCustomNavigate';
 import FullContainer from '@components/common/Modal/FullContainer';
 import CardSelect from '@components/specific/CardSelect/CardSelect';
 import WritingPaperModal from '@components/specific/WritingPaperModal/WritingPaperModal';
 import { KEYS } from '@constants/modal';
+import { useMyInfo } from '@hooks/queries/useMyInfo';
 import { useViewport } from '@hooks/useViewport';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { json } from 'stream/consumers';
 import styled from 'styled-components';
 
 const HomePage = () => {
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
+
+  const { goToOnBoardingPage } = useCustomNavigate();
 
   const [isCardSelected, setIsCardSelected] = useState(false);
   const [isDraggable, setIsDraggable] = useState(true);
@@ -46,6 +51,16 @@ const HomePage = () => {
 
   const [, height] = useViewport();
   const marginTop = Math.max((height - 800) / 2, 0);
+
+  useEffect(() => {
+    const data = localStorage.getItem('INFO');
+
+    if (!data) {
+      goToOnBoardingPage();
+
+      return;
+    }
+  }, []);
 
   return (
     <Container style={{ marginTop }}>
