@@ -1,3 +1,5 @@
+import { ResData } from '@/types/api';
+import { request } from './request';
 import { isResponseError } from './responseError';
 
 export const makeAuthorizedRequest = async <T>(
@@ -32,7 +34,8 @@ const refetchOnAuthError = async <T>(
     return await fetcher(path, { headers, body, method });
   } catch (error) {
     // Access Token Error
-    if (isResponseError(error) && error?.fetchedToken && retries > 0) {
+    if (isResponseError(error) && error.statusCode === 401 && retries > 0) {
+      //reissue.then(...)
       const token = error.fetchedToken ?? '';
       const headers = createHeader(token, body);
 
@@ -72,4 +75,21 @@ export const getRefreshToken = () => {
 
 export const setRefreshToken = (token: string) => {
   return sessionStorage.setItem('REFRESH_TOKEN', token);
+};
+
+export const requestLogin = (code: string) => {
+  const body = JSON.stringify({
+    provider: 'KAKAO',
+    authorizationCode: code,
+  });
+
+  return request.post<ResData<any>>(`api/auth/login`, body).then((res) => {
+    const accessToken = res.data.token?.accessToken;
+    const refreshToken = res.data.token?.refreshToken;
+
+    refreshToken && setRefreshToken(refreshToken);
+    accessToken && setAccessToken(accessToken);
+
+    return res;
+  });
 };
