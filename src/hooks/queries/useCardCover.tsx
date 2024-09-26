@@ -7,14 +7,14 @@ import { queryClient } from '@/contexts/providers/QueryClientProvider';
 import { useContext, useEffect } from 'react';
 import { messageFormDispatchContext } from '@/contexts/states/messageFormContext';
 
-export const useGetCardCover = (groupId: number) => {
+export const useGetCardCover = () => {
   const query = useSuspenseQuery<
     ResData<{ imgUrl: string }>,
     ResponseError,
     { imgUrl: string }
   >({
     queryKey: [QUERY_KEY.cover, 'GET'],
-    queryFn: () => requestGetCover(groupId),
+    queryFn: () => requestGetCover(),
     select: (json) => json.data,
     retry: (failureCount, error) => {
       // 에러코드 검사 예정
@@ -36,9 +36,9 @@ export const useGetCardCover = (groupId: number) => {
   return query;
 };
 
-export const usePostCardCover = (groupId: number) => {
+export const usePostCardCover = () => {
   const mutation = useMutation({
-    mutationFn: () => requestPostCover(groupId),
+    mutationFn: () => requestPostCover(),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.cover, 'GET'],

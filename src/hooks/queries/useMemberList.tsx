@@ -10,6 +10,7 @@ export const useMemberList = (keyword: string, groupId?: number) => {
     queryKey: [QUERY_KEY.userList, 'GET', keyword, groupId],
     queryFn: () => requestGetMemberList(keyword, groupId),
     select: (json) => json?.data,
+    throwOnError: true,
   });
 
   return query;

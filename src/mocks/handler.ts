@@ -12,6 +12,8 @@ import {
   mockSeptemberEventListData,
   mockStickerData,
   mockTodayEventList,
+  myInfo,
+  schools,
 } from './data';
 
 let coverApiResponseCount = 1;
@@ -37,7 +39,7 @@ export const handlers = [
     return passthrough();
   }),
 
-  http.get(`${API_URL}api/members`, ({ request }) => {
+  http.get(`${API_URL}api/users`, ({ request }) => {
     const url = new URL(request.url);
     const groupId = Number(url.searchParams.get('groupId'));
     const search = url.searchParams.get('search');
@@ -68,14 +70,16 @@ export const handlers = [
   http.get(`${API_URL}api/groups`, async () => {
     return HttpResponse.json(
       {
-        data: { groups: mockMyGroupIDList.map((id) => mockMyGroupIDList[id]) },
+        data: {
+          groups: mockMyGroupIDList.map((id) => mockIndexedGroupList[id]),
+        },
         pageInfo: {},
       },
       { status: 200 }
     );
   }),
 
-  http.post(`${API_URL}api/group/me`, async ({ request }) => {
+  http.post(`${API_URL}api/groups`, async ({ request }) => {
     const data = (await request.json()) as { groupId: number };
     const id = Number(data?.groupId);
 
@@ -124,14 +128,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/keywords`, async ({ request }) => {
-    const url = new URL(request.url);
-    const message = url.searchParams.get('message');
-
-    if (!message) {
-      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
-    }
-
+  http.post(`${API_URL}api/generate-keywords`, async ({ request }) => {
     await delay(3000);
 
     return HttpResponse.json(
@@ -143,7 +140,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/groups/:groupId/cover`, async ({ request }) => {
+  http.get(`${API_URL}api/cover`, async ({ request }) => {
     coverApiResponseCount += 1;
 
     if (coverApiResponseCount <= 4) {
@@ -165,9 +162,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/groups/:groupId/sticker`, async ({ request }) => {
-    coverApiResponseCount = 1;
-
+  http.get(`${API_URL}api/stickers`, async ({ request }) => {
     if (coverApiResponseCount <= 1) {
       return HttpResponse.json(
         {
@@ -187,27 +182,16 @@ export const handlers = [
     );
   }),
 
-  http.post(`${API_URL}api/groups/:groupId/cover`, async ({ request }) => {
+  http.post(`${API_URL}api/covers`, async ({ request }) => {
     return HttpResponse.json({}, { status: 200 });
   }),
 
   http.get(`${API_URL}api/events`, async ({ request }) => {
     const url = new URL(request.url);
+    const yearmonth = url.searchParams.get('yearmonth');
     const date = url.searchParams.get('date');
 
-    await delay(1000);
-
-    if (!date) {
-      return HttpResponse.json({ data: { message: 'fail' } }, { status: 403 });
-    }
-
-    let data;
-
-    data = { days: [] };
-
-    const [_, month, day] = date.split('-').map((num) => Number(num));
-
-    if (day) {
+    if (date) {
       return HttpResponse.json(
         {
           data: {
@@ -217,6 +201,14 @@ export const handlers = [
         { status: 200 }
       );
     }
+
+    await delay(1000);
+
+    let data;
+
+    data = { days: [] };
+
+    const [_, month, day] = yearmonth!.split('-').map((num) => Number(num));
 
     if (month === 7) {
       data = mockJulyEventList;
@@ -257,7 +249,7 @@ export const handlers = [
 
     async ({ request }) => {
       const url = new URL(request.url);
-      const cursor = Number(url.searchParams.get('cursor')) ?? 0;
+      const cursor = Number(url.searchParams.get('cursorId')) ?? 0;
 
       await delay(1000);
 
@@ -288,10 +280,14 @@ export const handlers = [
     }
   ),
 
-  http.post(`${API_URL}api/rollingpapers`, async ({ request }) => {
-    await delay(2000);
+  http.post(
+    `${API_URL}api/users/:userId/rollingpapers`,
+    async ({ request }) => {
+      await delay(2000);
 
-    return HttpResponse.json({ data: '' }, { status: 200 });
+      return HttpResponse.json({ data: '' }, { status: 200 });
+    }
+  ),
 
   http.get(`${API_URL}api/me`, async ({ request }) => {
     return HttpResponse.json({ data: myInfo }, { status: 200 });

@@ -5,6 +5,7 @@ export type Member = {
   id: number;
   groupId: number;
   name: string;
+  birthday: string;
   introduction: string;
   imageUrl: string;
 };

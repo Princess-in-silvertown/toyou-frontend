@@ -1,6 +1,6 @@
-import { useCardSticker } from '@hooks/queries/useCardSticker';
+import { useGetCardSticker } from '@hooks/queries/useCardSticker';
 import { useViewportHeight } from '@hooks/useViewportHeight';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface Props {
   cardSide: 'front' | 'back';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const StickerSelectList = ({ cardSide, closeModal, onAddSticker }: Props) => {
-  const { data } = useCardSticker(1);
+  const { data } = useGetCardSticker();
 
   const viewportHeight = useViewportHeight() ?? 0;
 

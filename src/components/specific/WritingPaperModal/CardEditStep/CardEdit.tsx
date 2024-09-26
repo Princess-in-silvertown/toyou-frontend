@@ -1,8 +1,8 @@
 import SwiperCard from '@components/common/SwiperCard/SwiperCard';
 import { useGetCardCover } from '@hooks/queries/useCardCover';
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 import StickerList from '../StickerList';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { messageFormContext } from '@/contexts/states/messageFormContext';
 import { CARD_THEME } from '@constants/card';
 import { CardColor } from '@/types/card';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const CardEdit = ({ alias, message }: Props) => {
-  const { data } = useGetCardCover(1);
+  const { data } = useGetCardCover();
 
   const { cardTheme } = useContext(messageFormContext);
   const { color, subColor } = CARD_THEME[cardTheme];

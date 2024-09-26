@@ -1,7 +1,7 @@
 import { ResData } from '@/types/api';
 import { request } from './request';
-import { GroupList } from '@/types/group';
-import { User } from '@/types/user';
+import { Group, GroupList } from '@/types/group';
+import { Info, User } from '@/types/user';
 import { EventData, Events } from '@/types/event';
 import { Member } from '@/types/member';
 import { RollingPaperForm, RollingPapers } from '@/types/paper';
@@ -11,12 +11,22 @@ export const requestGetTest = () => {
   return request.get<any>('test');
 };
 
-export const requestGetGroupList = (memberId: number) => {
-  return request.post<ResData<GroupList>>(`api/groups?memberId=${memberId}`);
+export const requestGetGroupList = (search: string) => {
+  const params = new URLSearchParams({
+    ...(search.length > 0 && { search }),
+  }).toString();
+
+  return request.post<ResData<{ schools: Group[] }>>(
+    `api/schools/search?${params}`
+  );
 };
 
 export const requestGetMyGroupList = () => {
   return request.get<ResData<GroupList>>('api/groups');
+};
+
+export const requestPostMyGroupList = (memberId: number) => {
+  return request.post<ResData<GroupList>>(`api/groups/${memberId}/resigter`);
 };
 
 export const requestGetMemberList = (search: string, groupId?: number) => {
@@ -44,24 +54,22 @@ export const requestGetKeywords = (message: string) => {
   return request.post<ResData<string[]>>(`api/generate-keywords`, body);
 };
 
-export const requestGetCover = (groupId: number) => {
-  return request
-    .get<ResData<{ imgUrl: string }>>(`api/groups/${groupId}/cover`)
-    .then((res) => {
-      if (res.code !== 'SUCCESS') {
-        throw new ResponseError({ statusCode: 202, errorCode: res.code });
-      }
-      return res;
-    });
+export const requestGetCover = () => {
+  return request.get<ResData<{ imgUrl: string }>>(`api/cover`).then((res) => {
+    if (res.code !== 'SUCCESS') {
+      throw new ResponseError({ statusCode: 202, errorCode: res.code });
+    }
+    return res;
+  });
 };
 
-export const requestPostCover = (groupId: number) => {
-  return request.post<ResData<any>>(`api/groups/${groupId}/cover`);
+export const requestPostCover = () => {
+  return request.post<ResData<any>>(`api/cover`);
 };
 
-export const requestGetSticker = (groupId: number) => {
+export const requestGetSticker = () => {
   return request
-    .get<ResData<{ imgUrl: string }[]>>(`api/groups/${groupId}/sticker`)
+    .get<ResData<{ imgUrl: string }[]>>(`api/stickers`)
     .then((res) => {
       if (res.code !== 'SUCCESS') {
         throw new ResponseError({ statusCode: 202, errorCode: res.code });
@@ -80,7 +88,7 @@ export const requestGetEvents = (year: number, monthIndex: number) => {
 
   const dateTime = `${yearString}-${monthString}`;
 
-  return request.get<ResData<EventData>>(`api/events?date=${dateTime}`);
+  return request.get<ResData<EventData>>(`api/events?yearmonth=${dateTime}`);
 };
 
 export const requestGetEventToday = () => {
@@ -98,7 +106,7 @@ export const requestGetEventToday = () => {
 };
 
 export const requestGetMessageList = (cursorId?: number) => {
-  const LIMIT = '9';
+  const LIMIT = String(9);
 
   const params = new URLSearchParams({
     ...(cursorId && { cursorId: String(cursorId) }),
@@ -108,12 +116,18 @@ export const requestGetMessageList = (cursorId?: number) => {
   return request.get<ResData<RollingPapers>>(`api/rollingpapers?${params}`);
 };
 
-export const requestPostPaper = (paper: RollingPaperForm) => {
+export const requestPostPaper = (userId: number, paper: RollingPaperForm) => {
   const body = JSON.stringify(paper);
 
-  return request.post<ResData<any>>(`api/rollingpapers`, body);
+  return request.post<ResData<any>>(`api/users/${userId}/rollingpapers`, body);
 };
 
 export const requestGetMyInfo = () => {
-  return request.get<ResData<User>>(`api/me`);
+  return request.get<ResData<Info>>(`api/me`);
+};
+
+export const requestPutMyInfo = (newInfo: Info) => {
+  const body = JSON.stringify(newInfo);
+
+  return request.put<ResData<Info>>(`api/me`, body);
 };

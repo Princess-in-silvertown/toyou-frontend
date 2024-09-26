@@ -1,12 +1,15 @@
 import PaperList from '@components/specific/RollingPaper/PaperList';
 import PaperListFallback from '@components/specific/RollingPaper/PaperListFallback';
+import { useMyInfo } from '@hooks/queries/useMyInfo';
 import { Suspense } from 'react';
 import styled from 'styled-components';
 
 const MyMessagesPages = () => {
+  const { data } = useMyInfo();
+
   return (
     <Container>
-      <Title>효섭 님의 메시지함</Title>
+      <Title>{data?.name} 님의 메시지함</Title>
       <Suspense fallback={<PaperListFallback />}>
         <PaperList />
       </Suspense>

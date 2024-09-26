@@ -5,12 +5,14 @@ import { ResData } from '@/types/api';
 import { Group, GroupList } from '@/types/group';
 import { QUERY_KEY } from '@constants/query';
 
-export const useGroupList = (memberId: number) => {
-  const query = useQuery<ResData<GroupList>, ResponseError, Group[]>({
-    queryKey: [QUERY_KEY.groupList, 'GET'],
-    queryFn: () => requestGetGroupList(memberId),
-    select: (json) => json.data.groups,
-  });
+export const useGroupList = (search: string) => {
+  const query = useQuery<ResData<{ schools: Group[] }>, ResponseError, Group[]>(
+    {
+      queryKey: [QUERY_KEY.groupList, search, 'GET'],
+      queryFn: () => requestGetGroupList(search),
+      select: (json) => json.data.schools,
+    }
+  );
 
   return query;
 };
