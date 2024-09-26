@@ -27,6 +27,18 @@ export const SEARCHING_USER_PAGE = {
   value: 'users',
   name: '찾기/사용자',
 } as const;
+export const LOGIN_PAGE = {
+  path: 'login',
+  value: 'login',
+  name: '로그인',
+} as const;
+
+export const LOGIN_REDIRECTION_PAGE = {
+  path: 'oauth/kakao/redirection',
+  value: 'redirection',
+  name: '리다이렉션',
+} as const;
+
 
 export const USER_PROFILE_PAGE = {
   path: 'user/:userId',
