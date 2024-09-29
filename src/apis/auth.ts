@@ -11,7 +11,7 @@ export const makeAuthorizedRequest = async <T>(
   const token = getAccessToken();
   const headers = createHeader(token, body);
 
-  return refetchOnAuthError<T>(path, method, fetcher, headers);
+  return refetchOnAuthError<T>(path, method, fetcher, headers, body);
 };
 
 const createHeader = (token: string, body?: BodyInit) => {
@@ -83,7 +83,7 @@ export const requestLogin = (code: string) => {
     authorizationCode: code,
   });
 
-  return request.post<ResData<any>>(`api/auth/login`, body).then((res) => {
+  return request.post<ResData<any>>(`auth/login`, body).then((res) => {
     const accessToken = res.data.token?.accessToken;
     const refreshToken = res.data.token?.refreshToken;
 
