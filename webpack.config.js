@@ -9,6 +9,7 @@ dotenv.config();
 module.exports = () => {
   const mode = process.env.NODE_ENV;
   const publicPath = process.env.REACT_PUBLIC_PATH ?? '/';
+  const loginPath = process.env.REACT_KAKAO_OAUTH ?? '/';
 
   return {
     mode,
@@ -85,6 +86,7 @@ module.exports = () => {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PUBLIC_PATH': JSON.stringify(publicPath),
+        'process.env.KAKAO_OAUTH': JSON.stringify(loginPath),
         'process.env.API_URL': JSON.stringify(
           mode === 'production'
             ? process.env.REACT_API_PROD_URL
