@@ -19,17 +19,17 @@ export const useMyMessageList = () => {
     initialPageParam: 0,
 
     getNextPageParam: (nextPage) => {
-      if (nextPage.pageInfo && nextPage.pageInfo.hasNext)
-        return nextPage.pageInfo?.nextCursorId;
+      if (nextPage.data.cursorPageInfo.hasNext)
+        return nextPage.data.cursorPageInfo.nextCursorId;
 
       return undefined;
     },
 
     select: ({ pages }) => {
-      const totalData = pages[0].pageInfo?.totalElements ?? 0;
+      const totalData = pages[0].data.cursorPageInfo.numberOfElements ?? 0;
 
       const data = pages.reduce<RollingPaper[]>(
-        (acc, { data }) => acc.concat(data.letters),
+        (acc, { data }) => acc.concat(data.contents),
         []
       );
 

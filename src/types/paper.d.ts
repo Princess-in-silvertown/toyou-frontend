@@ -1,6 +1,13 @@
-import { Sticker } from './sticker';
+import { Sticker, StickerForm } from './sticker';
 
-export type RollingPapers = { letters: RollingPaper[] };
+export type RollingPapers = {
+  contents: RollingPaper[];
+  cursorPageInfo: {
+    nextCursorId: number;
+    numberOfElements: number;
+    hasNext: number;
+  };
+};
 
 export type RollingPaper = {
   themeId: number;
@@ -13,9 +20,10 @@ export type RollingPaper = {
 };
 
 export type RollingPaperForm = {
+  groupId: number;
   themeId: number;
   title: string;
   coverImageUrl: string;
   content: string;
-  stickers: Sticker[];
+  stickers: StickerForm[];
 };
