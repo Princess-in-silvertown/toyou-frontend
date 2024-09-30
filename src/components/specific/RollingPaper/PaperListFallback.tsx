@@ -14,6 +14,8 @@ const PaperListFallback = () => {
           {new Array(5).fill('').map((_, index) => (
             <ItemContainer key={index}>
               <MessageContainer>
+                src/components/layout/NavBar/NavBarItem.tsx
+                src/components/layout/NavBar/NavBarList.tsx
                 <Card />
                 <UserContainer>
                   <Profile />

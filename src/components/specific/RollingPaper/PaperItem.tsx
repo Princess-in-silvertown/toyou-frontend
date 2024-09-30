@@ -6,16 +6,18 @@ import styled from 'styled-components';
 import { KEYS } from '@constants/modal';
 import PaperDetailModalContents from './PaperDetail/PaperDetailModalContents';
 import PaperListModalContainer from './PaperDetail/PaperListModalContainer';
+import { useCustomNavigate } from '@/routers/useCustomNavigate';
 
 interface Props extends RollingPaper {
   index: number;
 }
 
 const PaperItem = (props: Props) => {
-  const { index, themeId, coverImageUrl, content, name, profileImageUrl } =
-    props;
+  const { index, themeId, coverImageUrl, name, profileImageUrl } = props;
 
   const { handleClose, handleOpen } = useContext(modalDispatchContext);
+
+  const { goToHomePage, goToMyCalender } = useCustomNavigate();
 
   const handleClickItem = () => {
     handleOpen(
@@ -23,6 +25,8 @@ const PaperItem = (props: Props) => {
       <PaperDetailModalContents
         clickedItemIndex={index}
         closeModal={handleClose}
+        goToCalenderPage={goToMyCalender}
+        goToHomePage={goToHomePage}
       />,
       PaperListModalContainer
     );
