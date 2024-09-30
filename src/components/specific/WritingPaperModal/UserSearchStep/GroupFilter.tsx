@@ -105,7 +105,7 @@ const CloseIcon = styled.img`
 
 const ListContainer = styled.div`
   position: absolute;
-  top: 45px;
+  top: 40px;
   display: flex;
   flex-direction: column;
   gap: 12px;

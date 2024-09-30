@@ -50,7 +50,7 @@ const HomePage = () => {
   };
 
   const [, height] = useViewport();
-  const marginTop = Math.max((height - 800) / 2, 0);
+  const marginTop = Math.max((height - 800) / 2, 10);
 
   useEffect(() => {
     const data = localStorage.getItem('INFO');

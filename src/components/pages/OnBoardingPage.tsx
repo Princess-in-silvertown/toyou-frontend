@@ -58,13 +58,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 35px;
+  justify-content: center;
+  gap: 60px;
 
-  margin-top: 58px;
   padding: 0 25px;
+  height: calc(100vh - 150px);
+  margin-top: 40px;
 
   @media (max-height: 670px) {
-    gap: 15px;
+    gap: 40px;
   }
 `;
 
@@ -73,12 +75,6 @@ const SliderContainer = styled.div`
   flex-direction: column;
   align-items: left;
   gap: 8px;
-
-  margin-top: 50px;
-
-  @media (max-height: 670px) {
-    margin-top: 20px;
-  }
 `;
 
 const Title = styled.div`
@@ -107,6 +103,8 @@ const SubTitle = styled.div`
 `;
 
 const Image = styled.img`
+  flex-shrink: 0;
+  flex-grow: 0;
   width: 320px;
   height: 320px;
 

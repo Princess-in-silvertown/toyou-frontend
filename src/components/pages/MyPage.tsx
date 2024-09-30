@@ -132,6 +132,10 @@ const Input = styled.div`
 
   color: ${({ theme }) => theme.color.gray300};
   background-color: transparent;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const BackButton = styled.img`
@@ -147,7 +151,7 @@ const GroupList = styled.ul`
   gap: 14px 16px;
 
   width: 100%;
-  margin-top: 28px;
+  margin-top: 20px;
 `;
 
 const GroupContainer = styled.li`
@@ -163,11 +167,6 @@ const GroupContainer = styled.li`
   background-color: ${({ theme }) => theme.color.white};
 
   cursor: pointer;
-`;
-
-const GroupDeleteButton = styled.img`
-  width: 8px;
-  height: 8px;
 `;
 
 const GroupText = styled.div`

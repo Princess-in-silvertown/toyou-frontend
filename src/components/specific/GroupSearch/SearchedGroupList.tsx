@@ -17,9 +17,9 @@ const SearchedGroupList = ({ groups, input, handleAddGroup }: Props) => {
 
   const [, viewHeight] = useViewport();
 
-  const filteredData = data?.filter(
-    (item) => groups.findIndex((group) => item.id === group.id) === -1
-  );
+  const filteredData = data
+    ?.slice(0, 100)
+    .filter((item) => groups.findIndex((group) => item.id === group.id) === -1);
 
   return (
     <Container style={{ height: viewHeight - 200 }}>
