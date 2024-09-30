@@ -7,15 +7,17 @@ import { useEffect } from 'react';
 const Header = () => {
   const { goToHomePage, goToEditMyInfo, goToMyPage } = useCustomNavigate();
 
-  const { data } = useMyInfo();
+  const { data, isRefetching } = useMyInfo();
 
   useEffect(() => {
-    if (data && !data.groups) {
+    if (isRefetching) return;
+
+    if (data && (!data.groups || data.groups?.length === 0)) {
       goToEditMyInfo();
 
       return;
     }
-  }, [data]);
+  }, [data, isRefetching]);
 
   return (
     <Container>
