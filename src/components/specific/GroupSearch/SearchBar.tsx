@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import search from '@assets/icons/search.svg';
-import back from '@assets/icons/back.svg';
+import back from '@assets/icons/cancel_gray.svg';
 import { ChangeEventHandler } from 'react';
 
 interface Props {
@@ -29,7 +29,7 @@ const SearchBar = ({
       <InputSearchButton
         src={isOpen ? back : search}
         alt="검색"
-        onClick={onCancel}
+        onClick={isOpen ? onCancel : onFocus}
       />
       <Input
         value={input}
