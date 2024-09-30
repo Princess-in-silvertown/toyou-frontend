@@ -20,7 +20,7 @@ export const parseResponse = async (response: Response) => {
       throw new ResponseError({ statusCode, errorCode, fetchedToken });
     }
 
-    return json;
+    return json ?? {};
   } catch (error) {
     if (isResponseError(error)) throw error;
 
