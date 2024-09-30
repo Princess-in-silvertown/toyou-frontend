@@ -10,7 +10,7 @@ const LoginPage = () => {
     window.location.href =
       process.env.NODE_ENV === 'development'
         ? '/oauth/kakao/redirection?code=test'
-        : '/server...';
+        : process.env.KAKAO_OAUTH ?? '';
   };
 
   return (
@@ -33,7 +33,7 @@ const LoginContainer = styled.div`
   flex-direction: column;
   gap: 50px;
 
-  height: calc(100vh - 150px);
+  height: 100vh;
   padding: 0 25px;
 
   overflow-y: hidden;
@@ -46,12 +46,6 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const LoginBoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const LoginButton = styled.a`
   display: flex;
   justify-content: center;
@@ -60,6 +54,7 @@ const LoginButton = styled.a`
 
   width: 100%;
   height: 60px;
+  margin-bottom: 0px;
   border-radius: 7px;
 
   background: #fee500;
