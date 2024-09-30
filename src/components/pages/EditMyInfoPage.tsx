@@ -7,13 +7,15 @@ import back from '@assets/icons/back.svg';
 import styled from 'styled-components';
 import { Info } from '@/types/user';
 
+const INTRODUCTION_MAX_LENGTH = 20;
+
 const EditMyInfoPage = () => {
   const { data } = useSuspenseMyInfo();
   const { mutateAsync } = usePutMyInfo();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [groups, setGroups] = useState<Group[]>(data.groups ?? []);
-  const [introduction, setIntroduction] = useState(data.introduction);
+  const [introduction, setIntroduction] = useState(data.introduction ?? '');
 
   const { goToBack, goToHomePage } = useCustomNavigate();
 
@@ -55,6 +57,9 @@ const EditMyInfoPage = () => {
   const handleChangeIntroduction: ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
+    if (e.target.value.length > INTRODUCTION_MAX_LENGTH)
+      e.target.value = e.target.value.substr(0, INTRODUCTION_MAX_LENGTH);
+
     setIntroduction(e.target.value);
   };
 
@@ -99,13 +104,14 @@ const EditMyInfoPage = () => {
           <ProfileImage src={data?.imageUrl} />
           <InputContainer>
             <Input
-              maxLength={30}
-              placeholder="한줄소개 입력"
+              maxLength={INTRODUCTION_MAX_LENGTH}
+              placeholder="한줄로 자신을 소개해주세요!"
               value={introduction}
               onChange={handleChangeIntroduction}
               tabIndex={-1}
             />
           </InputContainer>
+          <TextLength>{`${introduction?.length}/20`}</TextLength>
         </FormItemContainer>
       </FormListContainer>
       {currentIndex === 0 && (
@@ -153,6 +159,8 @@ const ContainerHeader = styled.div`
 const FormListContainer = styled.div`
   display: flex;
   gap: 50px;
+
+  overflow: hidden;
 `;
 
 const Empty = styled.div`
@@ -167,6 +175,18 @@ const FormItemContainer = styled.div`
 
   transition: transform 0.3s ease-out;
   will-change: transform;
+`;
+
+const TextLength = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+
+  box-sizing: border-box;
+  padding: 6px 8px;
+  width: 100%;
+
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.gray300};
 `;
 
 const NextButton = styled.div<{ $canNext: boolean }>`
