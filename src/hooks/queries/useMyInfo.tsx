@@ -1,3 +1,4 @@
+import { queryClient } from '@/contexts/providers/QueryClientProvider';
 import { ResData } from '@/types/api';
 import { Info, User } from '@/types/user';
 import { requestGetMyInfo, requestPutMyInfo } from '@apis/requests';
@@ -30,6 +31,9 @@ export const useSuspenseMyInfo = () => {
 export const usePutMyInfo = () => {
   const mutation = useMutation({
     mutationFn: (newInfo: Info) => requestPutMyInfo(newInfo),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.myInfo, 'GET'] });
+    },
   });
 
   return mutation;

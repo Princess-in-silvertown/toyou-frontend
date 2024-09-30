@@ -6,13 +6,11 @@ import { Group, GroupList } from '@/types/group';
 import { QUERY_KEY } from '@constants/query';
 
 export const useGroupList = (search: string) => {
-  const query = useQuery<ResData<{ schools: Group[] }>, ResponseError, Group[]>(
-    {
-      queryKey: [QUERY_KEY.groupList, search, 'GET'],
-      queryFn: () => requestGetGroupList(search),
-      select: (json) => json.data.schools,
-    }
-  );
+  const query = useQuery<ResData<GroupList>, ResponseError, Group[]>({
+    queryKey: [QUERY_KEY.groupList, search, 'GET'],
+    queryFn: () => requestGetGroupList(search),
+    select: (json) => json.data.groups,
+  });
 
   return query;
 };

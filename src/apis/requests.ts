@@ -11,22 +11,20 @@ export const requestGetTest = () => {
   return request.get<any>('test');
 };
 
-export const requestGetGroupList = (search: string) => {
+export const requestGetGroupList = (keyword: string) => {
   const params = new URLSearchParams({
-    ...(search.length > 0 && { search }),
+    keyword,
   }).toString();
 
-  return request.post<ResData<{ schools: Group[] }>>(
-    `api/schools/search?${params}`
-  );
+  return request.get<ResData<GroupList>>(`groups?${params}`);
 };
 
 export const requestGetMyGroupList = () => {
-  return request.get<ResData<GroupList>>('api/groups');
+  return request.get<ResData<GroupList>>('groups');
 };
 
 export const requestPostMyGroupList = (memberId: number) => {
-  return request.post<ResData<GroupList>>(`api/groups/${memberId}/resigter`);
+  return request.post<ResData<GroupList>>(`groups/${memberId}/resigter`);
 };
 
 export const requestGetMemberList = (search: string, groupId?: number) => {
@@ -34,10 +32,10 @@ export const requestGetMemberList = (search: string, groupId?: number) => {
 
   const params = new URLSearchParams({
     ...(stringId && { groupId: stringId }),
-    ...(search.length > 0 && { search }),
+    search,
   }).toString();
 
-  return request.get<ResData<Member[]>>(`api/users?${params}`);
+  return request.get<ResData<Member[]>>(`users?${params}`);
 };
 
 export const requestGetUserProfile = (userId: number) => {
@@ -45,17 +43,17 @@ export const requestGetUserProfile = (userId: number) => {
     ...(userId && { userId: String(userId) }),
   }).toString();
 
-  return request.get<ResData<User>>(`api/user?${params}`);
+  return request.get<ResData<User>>(`user?${params}`);
 };
 
 export const requestGetKeywords = (message: string) => {
   const body = JSON.stringify({ content: message });
 
-  return request.post<ResData<string[]>>(`api/generate-keywords`, body);
+  return request.post<ResData<string[]>>(`generate-keywords`, body);
 };
 
 export const requestGetCover = () => {
-  return request.get<ResData<{ imgUrl: string }>>(`api/cover`).then((res) => {
+  return request.get<ResData<{ imgUrl: string }>>(`cover`).then((res) => {
     if (res.code !== 'SUCCESS') {
       throw new ResponseError({ statusCode: 202, errorCode: res.code });
     }
@@ -64,19 +62,17 @@ export const requestGetCover = () => {
 };
 
 export const requestPostCover = () => {
-  return request.post<ResData<any>>(`api/cover`);
+  return request.post<ResData<any>>(`cover`);
 };
 
 export const requestGetSticker = () => {
-  return request
-    .get<ResData<{ imgUrl: string }[]>>(`api/stickers`)
-    .then((res) => {
-      if (res.code !== 'SUCCESS') {
-        throw new ResponseError({ statusCode: 202, errorCode: res.code });
-      }
+  return request.get<ResData<{ imgUrl: string }[]>>(`stickers`).then((res) => {
+    if (res.code !== 'SUCCESS') {
+      throw new ResponseError({ statusCode: 202, errorCode: res.code });
+    }
 
-      return res;
-    });
+    return res;
+  });
 };
 
 export const requestGetEvents = (year: number, monthIndex: number) => {
@@ -88,7 +84,7 @@ export const requestGetEvents = (year: number, monthIndex: number) => {
 
   const dateTime = `${yearString}-${monthString}`;
 
-  return request.get<ResData<EventData>>(`api/events?yearmonth=${dateTime}`);
+  return request.get<ResData<EventData>>(`events?yearmonth=${dateTime}`);
 };
 
 export const requestGetEventToday = () => {
@@ -100,9 +96,7 @@ export const requestGetEventToday = () => {
 
   const dateTime = `${year}-${month}-${day}`;
 
-  return request.get<ResData<{ events: Events }>>(
-    `api/events?date=${dateTime}`
-  );
+  return request.get<ResData<EventData>>(`events?date=${dateTime}`);
 };
 
 export const requestGetMessageList = (cursorId?: number) => {
@@ -113,21 +107,21 @@ export const requestGetMessageList = (cursorId?: number) => {
     limit: LIMIT,
   }).toString();
 
-  return request.get<ResData<RollingPapers>>(`api/rollingpapers?${params}`);
+  return request.get<ResData<RollingPapers>>(`rollingpapers?${params}`);
 };
 
 export const requestPostPaper = (userId: number, paper: RollingPaperForm) => {
   const body = JSON.stringify(paper);
 
-  return request.post<ResData<any>>(`api/users/${userId}/rollingpapers`, body);
+  return request.post<ResData<any>>(`users/${userId}/rollingpapers`, body);
 };
 
 export const requestGetMyInfo = () => {
-  return request.get<ResData<Info>>(`api/me`);
+  return request.get<ResData<Info>>(`me`);
 };
 
 export const requestPutMyInfo = (newInfo: Info) => {
   const body = JSON.stringify(newInfo);
 
-  return request.put<ResData<Info>>(`api/me`, body);
+  return request.put<ResData<Info>>(`users`, body);
 };
