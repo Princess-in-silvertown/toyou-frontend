@@ -17,7 +17,7 @@ const SearchedUserList = ({ groupId, input, onNext }: Props) => {
   const [, viewHeight] = useViewport();
 
   return (
-    <Container style={{ height: viewHeight - 200 }}>
+    <Container style={{ height: viewHeight - 220 }}>
       {data?.map((item) => (
         <SearchedUserItem key={item.id} onNext={onNext} {...item} />
       ))}
@@ -35,5 +35,4 @@ const Container = styled.div`
   margin-top: 15px;
 
   overflow: auto;
-  touch-action: none;
 `;

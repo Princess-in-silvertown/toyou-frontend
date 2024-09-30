@@ -22,7 +22,7 @@ const SearchedGroupList = ({ groups, input, handleAddGroup }: Props) => {
     .filter((item) => groups.findIndex((group) => item.id === group.id) === -1);
 
   return (
-    <Container style={{ height: viewHeight - 200 }}>
+    <Container style={{ height: viewHeight - 280 }}>
       {filteredData?.map((item) => (
         <SearchedGroupItem
           handleAddGroup={handleAddGroup}
@@ -44,5 +44,4 @@ const Container = styled.div`
   margin-top: 30px;
 
   overflow: auto;
-  touch-action: none;
 `;
