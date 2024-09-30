@@ -104,7 +104,6 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
               isSubmitted={isSubmitted}
             />
           ),
-          canNext: coverImgUrl.length > 1,
         },
       ];
     }

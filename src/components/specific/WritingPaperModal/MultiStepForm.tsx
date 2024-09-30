@@ -79,6 +79,7 @@ const MultiStepForm = ({
         return React.cloneElement(child, {
           ...child.props,
           onNext: () => handleClickNextButton(),
+          onSubmit: () => handleClickSubmitButton(),
         });
       } else {
         return React.cloneElement(child);

@@ -11,18 +11,19 @@ import letter from '@assets/image/love_letter.png';
 interface Props {
   isPendingSubmit: boolean;
   isSubmitted: boolean;
+  onSubmit?: () => void;
 }
 
-const CardEditStep = ({ isPendingSubmit, isSubmitted }: Props) => {
+const CardEditStep = ({ onSubmit, isPendingSubmit, isSubmitted }: Props) => {
   const { alias, message } = useContext(messageFormContext);
 
   useImagePreLoad([letter]);
 
   const [, height] = useViewport();
-  const marginTop = Math.max((height - 800) / 2, 0);
+  const paddingTop = Math.max((height - 800) / 2, 0);
 
   return (
-    <Container style={{ marginTop }}>
+    <Container style={{ paddingTop }}>
       {isSubmitted || isPendingSubmit ? (
         <ResultContainer>
           {isPendingSubmit ? (
@@ -39,6 +40,7 @@ const CardEditStep = ({ isPendingSubmit, isSubmitted }: Props) => {
       ) : (
         <Suspense fallback={<LoadingCardSpinner />}>
           <CardEdit alias={alias} message={message} />
+          <NextButton onClick={onSubmit}>제출하기</NextButton>
         </Suspense>
       )}
     </Container>
@@ -50,8 +52,10 @@ export default CardEditStep;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 20px;
+  justify-content: space-between;
+
+  height: calc(100vh - 55px);
+  box-sizing: border-box;
 `;
 
 const bounce = keyframes`
@@ -72,11 +76,11 @@ const bounce = keyframes`
 const ResultContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 20px;
 
-  height: 500px;
+  height: calc(100vh - 240px);
   width: 100%;
 `;
 
@@ -99,4 +103,23 @@ const MovingLetterImage = styled.img`
 const LetterImage = styled.img`
   width: 154px;
   height: 154px;
+`;
+
+const NextButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: calc(100%);
+  height: 50px;
+  margin-bottom: 30px;
+  border-radius: 25px;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: white;
+
+  background-color: ${({ theme }) => theme.color.red500};
 `;

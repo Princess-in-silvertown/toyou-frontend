@@ -14,7 +14,7 @@ const PaperListDetail = ({ index }: Props) => {
     useMyMessageList();
 
   const [, height] = useViewport();
-  const vh = useMemo(() => height, []);
+  const vh = useMemo(() => height - 100, []);
 
   const [currentIndex, setCurrentIndex] = useState(index);
 

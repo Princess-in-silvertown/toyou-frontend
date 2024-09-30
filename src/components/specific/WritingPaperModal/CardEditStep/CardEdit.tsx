@@ -126,10 +126,10 @@ const Container = styled.div`
   gap: 20px;
   width: 100%;
 
-  margin: 36px auto 0 auto;
+  margin: 24px auto 0 auto;
 
   @media (max-height: 670px) {
-    margin: 20px auto 0 auto;
+    margin: 0px auto 0 auto;
   }
 `;
 
