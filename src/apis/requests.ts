@@ -91,7 +91,7 @@ export const requestGetEventToday = () => {
   const date = new Date();
 
   const year = date.getFullYear();
-  const month = `${date.getMonth()}`.padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
   const day = `${date.getDate()}`.padStart(2, '0');
 
   const dateTime = `${year}-${month}-${day}`;
