@@ -39,7 +39,7 @@ export const handlers = [
     return passthrough();
   }),
 
-  http.get(`${API_URL}api/users`, ({ request }) => {
+  http.get(`${API_URL}users`, ({ request }) => {
     const url = new URL(request.url);
     const groupId = Number(url.searchParams.get('groupId'));
     const search = url.searchParams.get('search');
@@ -67,7 +67,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/groups`, async () => {
+  http.get(`${API_URL}groups`, async () => {
     return HttpResponse.json(
       {
         data: {
@@ -79,7 +79,7 @@ export const handlers = [
     );
   }),
 
-  http.post(`${API_URL}api/groups`, async ({ request }) => {
+  http.post(`${API_URL}groups`, async ({ request }) => {
     const data = (await request.json()) as { groupId: number };
     const id = Number(data?.groupId);
 
@@ -92,7 +92,7 @@ export const handlers = [
     return HttpResponse.json({ data: { message: 'success' } }, { status: 201 });
   }),
 
-  http.get(`${API_URL}api/users`, ({ request }) => {
+  http.get(`${API_URL}users`, ({ request }) => {
     const url = new URL(request.url);
     const groupId = Number(url.searchParams.get('groupId'));
 
@@ -111,7 +111,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/user`, ({ request }) => {
+  http.get(`${API_URL}user`, ({ request }) => {
     const url = new URL(request.url);
     const userId = Number(url.searchParams.get('userId'));
 
@@ -128,19 +128,17 @@ export const handlers = [
     );
   }),
 
-  http.post(`${API_URL}api/generate-keywords`, async ({ request }) => {
-    await delay(3000);
-
+  http.post(`${API_URL}generate-keywords`, async ({ request }) => {
     return HttpResponse.json(
       {
-        data: ['반가움', '그리움'],
+        data: { keywords: ['반가움', '그리움'] },
         pageInfo: {},
       },
       { status: 200 }
     );
   }),
 
-  http.get(`${API_URL}api/cover`, async ({ request }) => {
+  http.get(`${API_URL}cover`, async ({ request }) => {
     coverApiResponseCount += 1;
 
     if (coverApiResponseCount <= 4) {
@@ -162,16 +160,14 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_URL}api/stickers`, async ({ request }) => {
-    if (coverApiResponseCount <= 1) {
-      return HttpResponse.json(
-        {
-          code: '',
-          data: {},
-        },
-        { status: 202 }
-      );
-    }
+  http.get(`${API_URL}generate-stickers`, async ({ request }) => {
+    await delay(2000);
+    return HttpResponse.json(
+      {
+        code: 'asdf',
+      },
+      { status: 500 }
+    );
 
     return HttpResponse.json(
       {
@@ -182,11 +178,11 @@ export const handlers = [
     );
   }),
 
-  http.post(`${API_URL}api/covers`, async ({ request }) => {
+  http.post(`${API_URL}covers`, async ({ request }) => {
     return HttpResponse.json({}, { status: 200 });
   }),
 
-  http.get(`${API_URL}api/events`, async ({ request }) => {
+  http.get(`${API_URL}events`, async ({ request }) => {
     const url = new URL(request.url);
     const yearmonth = url.searchParams.get('yearmonth');
     const date = url.searchParams.get('date');
@@ -195,7 +191,11 @@ export const handlers = [
       return HttpResponse.json(
         {
           data: {
-            events: mockTodayEventList,
+            days: [
+              {
+                events: mockTodayEventList,
+              },
+            ],
           },
         },
         { status: 200 }
@@ -245,21 +245,28 @@ export const handlers = [
   }),
 
   http.get(
-    `${API_URL}api/rollingpapers`,
+    `${API_URL}rollingpapers`,
 
     async ({ request }) => {
       const url = new URL(request.url);
-      const cursor = Number(url.searchParams.get('cursorId')) ?? 0;
+      const cursor = Number(url.searchParams.get('cursor')) ?? 0;
 
       await delay(1000);
 
+      // cursorPageInfo: {
+      //   nextCursorId: number;
+      //   numberOfElements: number;
+      //   hasNext: number;
+      // }
       if (cursor == 3) {
         return HttpResponse.json(
           {
-            data: { letters: mockMyMessageList.letters.slice(4) },
-            pageInfo: {
-              totalCount: 32,
-              hasNext: false,
+            data: {
+              contents: mockMyMessageList.slice(4),
+              cursorPageInfo: {
+                numberOfElements: 32,
+                hasNext: false,
+              },
             },
           },
           { status: 200 }
@@ -268,11 +275,13 @@ export const handlers = [
 
       return HttpResponse.json(
         {
-          data: mockMyMessageList,
-          pageInfo: {
-            nextCursorId: cursor + 1,
-            totalElements: 32,
-            hasNext: true,
+          data: {
+            contents: mockMyMessageList,
+            cursorPageInfo: {
+              nextCursorId: cursor + 1,
+              numberOfElements: 32,
+              hasNext: true,
+            },
           },
         },
         { status: 200 }
@@ -280,38 +289,33 @@ export const handlers = [
     }
   ),
 
-  http.post(
-    `${API_URL}api/users/:userId/rollingpapers`,
-    async ({ request }) => {
-      await delay(2000);
+  http.post(`${API_URL}users/:userId/rollingpapers`, async ({ request }) => {
+    await delay(2000);
 
-      return HttpResponse.json({ data: '' }, { status: 200 });
-    }
-  ),
+    return HttpResponse.json({ data: '' }, { status: 200 });
+  }),
 
-  http.get(`${API_URL}api/me`, async ({ request }) => {
+  http.get(`${API_URL}me`, async ({ request }) => {
     return HttpResponse.json({ data: myInfo }, { status: 200 });
   }),
 
-  http.put(`${API_URL}api/me`, async ({ request }) => {
+  http.put(`${API_URL}users`, async ({ request }) => {
     return HttpResponse.json({}, { status: 201 });
   }),
 
-  http.post(`${API_URL}api/auth/login`, async ({ request }) => {
+  http.post(`${API_URL}auth/login`, async ({ request }) => {
     return HttpResponse.json({ data: {} }, { status: 200 });
   }),
 
-  http.post(`${API_URL}api/schools/search`, async ({ request }) => {
+  http.get(`${API_URL}schools/search`, async ({ request }) => {
     const url = new URL(request.url);
     const search = url.searchParams.get('search');
 
-    const searchedList = search
-      ? schools.schools.filter((item) => item.name.includes(search))
-      : schools.schools;
+    const searchedList =
+      search && search.length > 0
+        ? schools.filter((item) => item.name.includes(search))
+        : schools;
 
-    return HttpResponse.json(
-      { data: { schools: searchedList } },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: searchedList }, { status: 200 });
   }),
 ];
