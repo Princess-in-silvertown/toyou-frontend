@@ -14,14 +14,18 @@ const SearchedUserItem = ({
   name,
   imageUrl,
   introduction,
+  groupId,
   onNext,
 }: Props) => {
-  const { handleChangeInfo } = useContext(messageFormDispatchContext);
+  const { handleChangeInfo, handleChangeGroupId } = useContext(
+    messageFormDispatchContext
+  );
 
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleClick = () => {
     handleChangeInfo({ id, name, imageUrl });
+    handleChangeGroupId(groupId);
 
     onNext?.();
   };
