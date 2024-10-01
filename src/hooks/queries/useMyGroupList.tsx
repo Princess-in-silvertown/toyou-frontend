@@ -10,7 +10,6 @@ export const useMyGroupList = () => {
     queryKey: [QUERY_KEY.myGroupList, 'GET'],
     queryFn: requestGetMyGroupList,
     select: (json) => json?.data?.groups,
-    staleTime: Infinity,
   });
 
   return query;
