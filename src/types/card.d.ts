@@ -28,4 +28,5 @@ export type CardTheme = {
   color: Readonly<CardColor>;
   subColor: Readonly<CardColor>;
   message: string;
+  coverImageUrl: Readonly<{ name: string; url: string }[]>;
 };

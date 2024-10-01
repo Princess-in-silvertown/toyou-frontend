@@ -7,6 +7,7 @@ import { useViewport } from '@hooks/useViewport';
 import letterImage from '@assets/image/love_letter.png';
 import { useImagePreLoad } from '@hooks/useImagePreLoad';
 import letter from '@assets/image/love_letter.png';
+import { useGetCardSticker } from '@hooks/queries/useCardSticker';
 
 interface Props {
   isPendingSubmit: boolean;
@@ -18,6 +19,8 @@ const CardEditStep = ({ onSubmit, isPendingSubmit, isSubmitted }: Props) => {
   const { alias, message } = useContext(messageFormContext);
 
   useImagePreLoad([letter]);
+
+  const { isFetched } = useGetCardSticker();
 
   const [, height] = useViewport();
   const paddingTop = Math.max((height - 800) / 2, 0);
@@ -37,11 +40,13 @@ const CardEditStep = ({ onSubmit, isPendingSubmit, isSubmitted }: Props) => {
               : ' 메시지 카드 전송을 \n 완료했어요'}
           </ResultText>
         </ResultContainer>
-      ) : (
-        <Suspense fallback={<LoadingCardSpinner />}>
+      ) : isFetched ? (
+        <>
           <CardEdit alias={alias} message={message} />
           <NextButton onClick={onSubmit}>제출하기</NextButton>
-        </Suspense>
+        </>
+      ) : (
+        <LoadingCardSpinner />
       )}
     </Container>
   );
@@ -54,7 +59,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: calc(100vh - 55px);
+  height: calc(100vh - 100px);
   box-sizing: border-box;
 `;
 

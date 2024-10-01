@@ -1,5 +1,4 @@
 import SwiperCard from '@components/common/SwiperCard/SwiperCard';
-import { useGetCardCover } from '@hooks/queries/useCardCover';
 import styled from 'styled-components';
 import StickerList from '../StickerList';
 import { useContext } from 'react';
@@ -9,6 +8,7 @@ import { CardColor } from '@/types/card';
 import Swiper from '@components/common/Swiper/Swiper';
 import { useViewport } from '@hooks/useViewport';
 import SwiperSlider from '@components/common/Swiper/SwiperSlider';
+import { useGetCardSticker } from '@hooks/queries/useCardSticker';
 
 interface Props {
   alias: string;
@@ -16,9 +16,8 @@ interface Props {
 }
 
 const CardEdit = ({ alias, message }: Props) => {
-  const { data } = useGetCardCover();
+  const { cardTheme, coverImgUrl } = useContext(messageFormContext);
 
-  const { cardTheme } = useContext(messageFormContext);
   const { color, subColor } = CARD_THEME[cardTheme];
 
   const getColorString = (color: Readonly<CardColor>) => {
@@ -56,8 +55,8 @@ const CardEdit = ({ alias, message }: Props) => {
               $subColor={getSubColorString(subColor)}
             >
               <CardCoverContainer>
-                <CoverImage src={data.imgUrl} alt="커버이미지" />
-                <StickerList side="front" />
+                <CoverImage src={coverImgUrl} alt="커버이미지" />
+                <StickerList side="FRONT" />
               </CardCoverContainer>
             </CardContainer>
           </SwiperSlider>
@@ -73,7 +72,7 @@ const CardEdit = ({ alias, message }: Props) => {
                     <Alias>{alias}</Alias>
                   </AliasContainer>
                   <Message>{message}</Message>
-                  <StickerList side="back" />
+                  <StickerList side="BACK" />
                 </CardMessageContainer>
               </BackContainer>
             </CardContainer>
@@ -88,8 +87,8 @@ const CardEdit = ({ alias, message }: Props) => {
               $subColor={getSubColorString(subColor)}
             >
               <CardCoverContainer>
-                <CoverImage src={data.imgUrl} alt="커버이미지" />
-                <StickerList side="front" />
+                <CoverImage src={coverImgUrl} alt="커버이미지" />
+                <StickerList side="FRONT" />
               </CardCoverContainer>
             </CardContainer>
           }
@@ -105,7 +104,7 @@ const CardEdit = ({ alias, message }: Props) => {
                     <Alias>{alias}</Alias>
                   </AliasContainer>
                   <Message>{message}</Message>
-                  <StickerList side="back" />
+                  <StickerList side="BACK" />
                 </CardMessageContainer>
               </BackContainer>
             </CardContainer>
@@ -167,7 +166,6 @@ const CardContainer = styled.div<{ $color: string; $subColor: string }>`
 `;
 
 const CardCoverContainer = styled.div`
-  position: relative;
   padding: 15px 23px;
   box-sizing: border-box;
 
