@@ -76,3 +76,47 @@ export const getDateTime = (date: Date) => {
 
   return dateTime;
 };
+
+export const parseStringToDateTime = (dateTime: string | undefined) => {
+  if (!dateTime) return;
+
+  const [year, month, day] = dateTime.split('-');
+
+  if (dateTime.length !== 10 || !year || !month || !day) return;
+
+  const date = year + month + day;
+  return date;
+};
+
+export const parseDateTimeToString = (dateString: string | undefined) => {
+  if (!dateString || dateString.length !== 8) return;
+
+  return (
+    dateString.slice(0, 4) +
+    '-' +
+    dateString.slice(4, 6) +
+    '-' +
+    dateString.slice(6, 8)
+  );
+};
+
+export const isValidDate = (birthdate: string) => {
+  if (!/^\d{8}$/.test(birthdate)) {
+    return true;
+  }
+
+  const year = parseInt(birthdate.slice(0, 4), 10);
+  const month = parseInt(birthdate.slice(4, 6), 10);
+  const day = parseInt(birthdate.slice(6, 8), 10);
+
+  if (month < 1 || month > 12 || day < 1 || day > 31) {
+    return false;
+  }
+
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day
+  );
+};
