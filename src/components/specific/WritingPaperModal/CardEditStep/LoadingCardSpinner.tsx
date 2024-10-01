@@ -24,17 +24,21 @@ const LoadingCardSpinner = () => {
   return (
     <Container>
       <Title>
-        메시지 카드가 <br /> 만들어지는 중이에요
+        당신의 마음이 잘 드러나도록 <br /> 메시지 카드를 생성할게요
       </Title>
       <CardContainer>
         <CardFront
           $color={getColorString(color)}
           $subColor={getSubColorString(subColor)}
-        />
+        >
+          <Spinner />
+        </CardFront>
         <CardBack
           $color={getColorString(color)}
           $subColor={getSubColorString(subColor)}
-        />
+        >
+          <Spinner />
+        </CardBack>
       </CardContainer>
     </Container>
   );
@@ -67,7 +71,9 @@ const Title = styled.div`
   margin: 15px auto 40px auto;
 
   text-align: center;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28.64px;
   white-space: pre-wrap;
 `;
 
@@ -96,6 +102,9 @@ const CardContainer = styled.div`
 
 const CardFront = styled.div<{ $color: string; $subColor: string }>`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 8px;
 
@@ -122,6 +131,9 @@ const CardFront = styled.div<{ $color: string; $subColor: string }>`
 
 const CardBack = styled.div<{ $color: string; $subColor: string }>`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 12px;
 
@@ -145,4 +157,24 @@ const CardBack = styled.div<{ $color: string; $subColor: string }>`
     );
     mix-blend-mode: overlay;
   }
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg); 
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Spinner = styled.div`
+  width: 38px;
+  height: 38px;
+  border: 3.5px solid ${({ theme }) => theme.color.red500};
+  border-top: 3.5px solid ${({ theme }) => theme.color.gray300};
+  border-radius: 50%;
+
+  animation: ${spin} 1s linear infinite;
 `;
