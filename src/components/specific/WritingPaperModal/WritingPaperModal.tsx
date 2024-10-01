@@ -19,6 +19,7 @@ import { User } from '@/types/user';
 import { RollingPaperForm } from '@/types/paper';
 import { useWritePaper } from '@hooks/queries/useWritePaper';
 import ThemeSelectStep from './ThemeSelectStep/ThemeSelectStep';
+import CoverSelectStep from './CoverSelectStep/CoverSelectStep';
 
 interface Props {
   closeModal: (key?: string) => void;
@@ -33,6 +34,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
     keywords,
     stickers,
     message,
+    groupId,
     userInfo: info,
   } = useContext(messageFormContext);
 
@@ -62,11 +64,23 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
 
   const handleSubmit = () => {
     const paper: RollingPaperForm = {
+      groupId,
       themeId: cardTheme,
       coverImageUrl: coverImgUrl,
       content: message,
       title: alias,
-      stickers: [...stickers.values()],
+      stickers: [...stickers.values()].map((sticker) => {
+        const { rotate, scale, side, x, y, imageUrl } = sticker;
+
+        return {
+          imageUrl,
+          rotate,
+          scale,
+          x: Math.floor(x),
+          y: Math.floor(y),
+          side,
+        };
+      }),
     };
 
     mutateAsync(paper).then(() => {
@@ -98,12 +112,17 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
           canNext: keywords && keywords.length >= 1,
         },
         {
+          component: <CoverSelectStep />,
+          canNext: true,
+        },
+        {
           component: (
             <CardEditStep
               isPendingSubmit={isPending}
               isSubmitted={isSubmitted}
             />
           ),
+          canNext: height > 670 ? undefined : coverImgUrl.length > 0,
         },
       ];
     }
@@ -126,6 +145,10 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
         canNext: keywords && keywords.length >= 1,
       },
       {
+        component: <CoverSelectStep />,
+        canNext: coverImgUrl.length > 0,
+      },
+      {
         component: (
           <CardEditStep isPendingSubmit={isPending} isSubmitted={isSubmitted} />
         ),
@@ -145,7 +168,7 @@ const WritingPaperModal = ({ closeModal, userInfo }: Props) => {
       <MultiStepForm
         steps={getSteps()}
         progressiveStartIndex={1}
-        progressiveLastIndex={3}
+        progressiveLastIndex={4}
         handleCancel={handleCancel}
         handleSubmit={handleSubmit}
       />

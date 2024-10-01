@@ -69,7 +69,7 @@ const Card = styled.div`
 `;
 
 const Cover = styled.img`
-  width: 100%;
+  width: 80%;
   padding: 0 5px;
 `;
 

@@ -6,7 +6,13 @@ import blueCover from '@assets/image/birthday_small_blue.svg';
 import greenCover from '@assets/image/birthday_small_green.svg';
 import H from '@assets/image/H.jpeg';
 import { Event } from '@/types/event';
-import { RollingPapers } from '@/types/paper';
+import god1 from '@assets/image/sticker/god1.gif';
+import god2 from '@assets/image/sticker/god2.gif';
+import cat1 from '@assets/image/sticker/cat1.gif';
+import cat2 from '@assets/image/sticker/cat2.gif';
+import cat3 from '@assets/image/sticker/cat3.gif';
+import h1 from '@assets/image/sticker/h1.webp';
+import h2 from '@assets/image/sticker/h2.png';
 
 export const API_URL = process.env.API_URL;
 
@@ -71,20 +77,9 @@ export const mockIndexedUserList: Record<number, any> = {
 
 export var mockMyGroupIDList: number[] = [1, 2, 3];
 
-export var mockStickerData = [
-  ...new Array(5).fill({ imgUrl: sticker }),
-  {
-    imgUrl: 'https://media.tenor.com/ar6xI838JiEAAAAi/cat-meme-cat.gif',
-  },
-  {
-    imgUrl:
-      'https://i.namu.wiki/i/016r0DjGVQ3em4bhgYxGZJ7VI2y30qFt6KfItWLYFREHNxPl1KBaGY60tXGr9K5qFsgE-U3BHtw5UVbeaWTWwg.gif',
-  },
-  {
-    imgUrl:
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1nT8l0.img?w=373&h=359&m=6',
-  },
-];
+export var mockStickerData = {
+  stickers: [cat1, cat2, cat3, god1, god2, h1, h2],
+};
 
 export var mockTodayEventList: Event[] = [
   {
@@ -103,178 +98,176 @@ export var mockTodayEventList: Event[] = [
   },
 ];
 
-export const mockMyMessageList: RollingPapers = {
-  letters: [
-    {
-      themeId: 1,
-      title: '효섭',
-      profileImageUrl: H,
-      name: '송효섭',
-      coverImageUrl: redCover,
-      content: '안녕 효섭아',
-      stickers: [
-        {
-          key: 1,
-          x: 0,
-          y: 100,
-          scale: 2,
-          rotate: 1,
-          side: 'front',
-          imgUrl: sticker,
-        },
-        {
-          key: 4,
-          x: 100,
-          y: 100,
-          scale: 2,
-          rotate: 21,
-          side: 'front',
-          imgUrl: sticker,
-        },
-        {
-          key: 2,
-          x: 100,
-          y: 340,
-          scale: 1.54,
-          rotate: -90,
-          side: 'front',
-          imgUrl: sticker,
-        },
-      ],
-    },
+export const mockMyMessageList = [
+  {
+    themeId: 1,
+    title: '효섭',
+    profileImageUrl: H,
+    name: '송효섭',
+    coverImageUrl: redCover,
+    content: '안녕 효섭아',
+    stickers: [
+      {
+        key: 1,
+        x: 0,
+        y: 100,
+        scale: 2,
+        rotate: 1,
+        side: 'FRONT',
+        imageUrl: sticker,
+      },
+      {
+        key: 4,
+        x: 100,
+        y: 100,
+        scale: 2,
+        rotate: 21,
+        side: 'FRONT',
+        imageUrl: sticker,
+      },
+      {
+        key: 2,
+        x: 100,
+        y: 340,
+        scale: 1.54,
+        rotate: -90,
+        side: 'FRONT',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 3,
-      profileImageUrl: H,
-      title: '귀여운효섭',
-      name: '효섭',
-      coverImageUrl: greenCover,
-      content:
-        '매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용',
-      stickers: [
-        {
-          key: 2,
-          x: 250,
-          y: 350,
-          scale: 1.54,
-          rotate: -40,
-          side: 'back',
-          imgUrl: sticker,
-        },
-      ],
-    },
+  {
+    themeId: 3,
+    profileImageUrl: H,
+    title: '귀여운효섭',
+    name: '효섭',
+    coverImageUrl: greenCover,
+    content:
+      '매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용매우긴내용',
+    stickers: [
+      {
+        key: 2,
+        x: 250,
+        y: 350,
+        scale: 1.54,
+        rotate: -40,
+        side: 'BACK',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 2,
-      profileImageUrl: H,
-      title: '시크한 효섭',
-      name: '송효섭',
-      coverImageUrl: blueCover,
-      content: '안녕 송효효섭아',
-      stickers: [
-        {
-          key: 1,
-          x: 20,
-          y: 100,
-          scale: 1.4,
-          rotate: 123,
-          side: 'front',
-          imgUrl: sticker,
-        },
-      ],
-    },
+  {
+    themeId: 2,
+    profileImageUrl: H,
+    title: '시크한 효섭',
+    name: '송효섭',
+    coverImageUrl: blueCover,
+    content: '안녕 송효효섭아',
+    stickers: [
+      {
+        key: 1,
+        x: 20,
+        y: 100,
+        scale: 1.4,
+        rotate: 123,
+        side: 'FRONT',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 0,
-      profileImageUrl: H,
-      title: '새침한 효섭에게',
-      name: '송효섭',
-      coverImageUrl: yellowCover,
-      content: '안녕 효섭아',
-      stickers: [
-        {
-          key: 1,
-          x: 200,
-          y: 200,
-          scale: 0.3,
-          rotate: 304,
-          side: 'back',
-          imgUrl: sticker,
-        },
-      ],
-    },
+  {
+    themeId: 0,
+    profileImageUrl: H,
+    title: '새침한 효섭에게',
+    name: '송효섭',
+    coverImageUrl: yellowCover,
+    content: '안녕 효섭아',
+    stickers: [
+      {
+        key: 1,
+        x: 200,
+        y: 200,
+        scale: 0.3,
+        rotate: 304,
+        side: 'BACK',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 2,
-      profileImageUrl: H,
-      title: '반가운 효섭에게',
-      name: '송효섭',
-      coverImageUrl: blueCover,
-      content: '안녕 효섭아아아',
-      stickers: [
-        {
-          key: 1,
-          x: 120,
-          y: 100,
-          scale: 2,
-          rotate: 41,
-          side: 'back',
-          imgUrl: sticker,
-        },
-      ],
-    },
+  {
+    themeId: 2,
+    profileImageUrl: H,
+    title: '반가운 효섭에게',
+    name: '송효섭',
+    coverImageUrl: blueCover,
+    content: '안녕 효섭아아아',
+    stickers: [
+      {
+        key: 1,
+        x: 120,
+        y: 100,
+        scale: 2,
+        rotate: 41,
+        side: 'BACK',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 2,
-      profileImageUrl: H,
-      title: '남자다운 효섭에게',
-      name: '송효섭',
-      coverImageUrl: blueCover,
-      content: '안녕 효섭아 반가워',
-      stickers: [],
-    },
+  {
+    themeId: 2,
+    profileImageUrl: H,
+    title: '남자다운 효섭에게',
+    name: '송효섭',
+    coverImageUrl: blueCover,
+    content: '안녕 효섭아 반가워',
+    stickers: [],
+  },
 
-    {
-      themeId: 0,
-      profileImageUrl: H,
-      title: '분홍빛 효섭에게',
-      name: '송효섭',
-      coverImageUrl: yellowCover,
-      content: '테스트',
-      stickers: [],
-    },
+  {
+    themeId: 0,
+    profileImageUrl: H,
+    title: '분홍빛 효섭에게',
+    name: '송효섭',
+    coverImageUrl: yellowCover,
+    content: '테스트',
+    stickers: [],
+  },
 
-    {
-      themeId: 3,
-      profileImageUrl: H,
-      title: '시크한 효섭에게',
-      name: '송효섭',
-      coverImageUrl: greenCover,
-      content: '안녕',
-      stickers: [
-        {
-          key: 1,
-          x: 400,
-          y: 300,
-          scale: 1.5,
-          rotate: 1,
-          side: 'back',
-          imgUrl: sticker,
-        },
-      ],
-    },
+  {
+    themeId: 3,
+    profileImageUrl: H,
+    title: '시크한 효섭에게',
+    name: '송효섭',
+    coverImageUrl: greenCover,
+    content: '안녕',
+    stickers: [
+      {
+        key: 1,
+        x: 400,
+        y: 300,
+        scale: 1.5,
+        rotate: 1,
+        side: 'BACK',
+        imageUrl: sticker,
+      },
+    ],
+  },
 
-    {
-      themeId: 0,
-      profileImageUrl: H,
-      title: '시크한 효섭에게',
-      name: '송효섭',
-      coverImageUrl: yellowCover,
-      content: '안녕',
-      stickers: [],
-    },
-  ],
-};
+  {
+    themeId: 0,
+    profileImageUrl: H,
+    title: '시크한 효섭에게',
+    name: '송효섭',
+    coverImageUrl: yellowCover,
+    content: '안녕',
+    stickers: [],
+  },
+];
 
 export const mockJulyEventList = {
   days: [
@@ -440,7 +433,7 @@ export const mockOctoberEventList = {
   ],
 };
 
-export const coverData = { imgUrl: cover };
+export const coverData = { imageUrl: cover };
 
 export const schools = [
   {
@@ -479,6 +472,7 @@ export const myInfo = {
   id: 1,
   name: '효섭',
   imageUrl: H,
+  birthday: '2020-12-13',
   introduction: '효섭입니다효섭입니다효섭입니다효섭입니다효섭입니다효섭입니다',
   groups: [
     { id: 1, name: '경희대학교' },

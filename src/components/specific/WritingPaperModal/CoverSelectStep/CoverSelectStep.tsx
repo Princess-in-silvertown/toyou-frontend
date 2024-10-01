@@ -19,18 +19,14 @@ const CoverSelectStep = ({ onNext }: Props) => {
   const { cardTheme } = useContext(messageFormContext);
   const theme = CARD_THEME[cardTheme];
 
-  const [currentIndex, setCurrentIndex] = useState(cardTheme); // index === cardThemeId
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [coverName, setCoverName] = useState('');
 
   const { handleChangeCoverImgUrl } = useContext(messageFormDispatchContext);
 
   const [width, height] = useViewport();
   const modalWidth = Math.min(width, 500);
-  const marginTop = Math.max((height - 800) / 2, 0) + 50;
-
-  const handleChangeCover = (themeId: number, index: number) => {
-    theme.coverImageUrl[index];
-  };
+  const marginTop = Math.max((height - 800) / 2, 0);
 
   const handleChangeIndex = (index: number) => {
     setCurrentIndex(index);
@@ -55,11 +51,11 @@ const CoverSelectStep = ({ onNext }: Props) => {
   }, [currentIndex]);
 
   return (
-    <Container style={{ height: height - 100 }}>
+    <Container style={{ height: height - 120, marginTop }}>
       <Title>
-        마음에 드는 커버 이미지를 <br /> 선택해주세요
+        커버 이미지를 <br /> 선택해주세요
       </Title>
-      <CardListContainer style={{ marginTop }}>
+      <CardListContainer>
         <Swiper
           startIndex={currentIndex}
           $width={240}
@@ -94,18 +90,17 @@ const Container = styled.div`
   flex-direction: column;
   gap: 14px;
 
-  margin-top: 14px;
-
   transform: translate(0);
 `;
 
 const Title = styled.div`
+  width: 100%;
   margin-top: 14px;
 
   font-weight: 500;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 28.64px;
-  text-align: left;
+  text-align: center;
 
   color: ${({ theme }) => theme.color.gray500};
 `;
@@ -129,8 +124,13 @@ const CardListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
-  margin-top: 90px;
+  padding-top: 60px;
+
+  @media (max-height: 670px) {
+    padding-top: 40px;
+  }
 `;
 
 const CardMessage = styled.div`
