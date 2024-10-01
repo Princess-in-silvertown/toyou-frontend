@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import SearchedGroupList from './SearchedGroupList';
 import cancel from '@assets/icons/cancel_gray.svg';
 import { useSuspenseMyInfo } from '@hooks/queries/useMyInfo';
+import { MAX_GROUP_LENGTH } from '@components/pages/EditMyInfoPage';
 
 interface Props {
   groups: Group[];
@@ -55,6 +56,7 @@ const GroupSearch = ({ groups, handleAddGroup, handleDeleteGroup }: Props) => {
       )}
       <SearchBar
         input={input}
+        isStop={groups.length >= MAX_GROUP_LENGTH}
         isOpen={isOpenSearch || isOpening}
         onChangeInput={handleChangeInput}
         onFocus={openSearchBar}

@@ -7,7 +7,8 @@ import back from '@assets/icons/back.svg';
 import styled from 'styled-components';
 import { Info } from '@/types/user';
 
-const INTRODUCTION_MAX_LENGTH = 20;
+export const INTRODUCTION_MAX_LENGTH = 20;
+export const MAX_GROUP_LENGTH = 5;
 
 const EditMyInfoPage = () => {
   const { data } = useSuspenseMyInfo();

@@ -6,6 +6,7 @@ import { ChangeEventHandler } from 'react';
 interface Props {
   input: string;
   isOpen: boolean;
+  isStop: boolean;
   onChangeInput: (input: string) => void;
   onFocus: () => void;
   onCancel: () => void;
@@ -14,6 +15,7 @@ interface Props {
 const SearchBar = ({
   input,
   isOpen,
+  isStop,
   onChangeInput,
   onFocus,
   onCancel,
@@ -28,15 +30,20 @@ const SearchBar = ({
     <InputContainer>
       <InputSearchButton
         src={isOpen ? back : search}
-        alt="검색"
-        onClick={isOpen ? onCancel : onFocus}
+        alt={isOpen ? '닫기' : '검색'}
+        onClick={isStop || isOpen ? onCancel : onFocus}
       />
-      <Input
-        value={input}
-        placeholder="검색"
-        onChange={handleChangeInput}
-        onFocus={onFocus}
-      />
+
+      {isStop ? (
+        <InputLimit>더 이상 그룹을 등록할 수 없어요</InputLimit>
+      ) : (
+        <Input
+          value={input}
+          placeholder="검색"
+          onChange={handleChangeInput}
+          onFocus={onFocus}
+        />
+      )}
     </InputContainer>
   );
 };
@@ -65,6 +72,14 @@ const InputSearchButton = styled.img`
 
 const Input = styled.input`
   width: calc(100% - 40px);
+
+  background-color: transparent;
+`;
+
+const InputLimit = styled.div`
+  width: calc(100% - 40px);
+
+  color: ${({ theme }) => theme.color.gray300};
 
   background-color: transparent;
 `;
