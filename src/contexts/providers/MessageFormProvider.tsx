@@ -19,6 +19,7 @@ export const MessageFormProvider = ({ themeId, children }: Props) => {
   const [coverImgUrl, setCoverImgUrl] = useState('');
   const [keywords, setKeywords] = useState<string[]>();
   const [cardTheme, setCardTheme] = useState<number>(themeId ?? DEFAULT_THEME);
+  const [groupId, setGroupId] = useState<number>(-1);
 
   const {
     stickers,
@@ -42,6 +43,10 @@ export const MessageFormProvider = ({ themeId, children }: Props) => {
 
   const handleChangeCoverImgUrl = (newUrl: string) => {
     setCoverImgUrl(newUrl);
+  };
+
+  const handleChangeGroupId = (newId: number) => {
+    setGroupId(newId);
   };
 
   const handleLoadKeywords = (newKeywords: string[]) => {
@@ -69,6 +74,7 @@ export const MessageFormProvider = ({ themeId, children }: Props) => {
       handleChangeAlias,
       handleChangeCoverImgUrl,
       handleChangeCardTheme,
+      handleChangeGroupId,
 
       // keyword
       handleLoadKeywords,
@@ -81,11 +87,21 @@ export const MessageFormProvider = ({ themeId, children }: Props) => {
       handleChangeSticker,
       getStickerList,
     }),
-    [userInfo, alias, message, coverImgUrl, keywords, stickers, cardTheme]
+    [
+      userInfo,
+      groupId,
+      alias,
+      message,
+      coverImgUrl,
+      keywords,
+      stickers,
+      cardTheme,
+    ]
   );
 
   const store = useMemo(
     () => ({
+      groupId,
       userInfo,
       alias,
       message,
@@ -94,7 +110,16 @@ export const MessageFormProvider = ({ themeId, children }: Props) => {
       stickers,
       cardTheme,
     }),
-    [userInfo, alias, message, coverImgUrl, keywords, stickers, cardTheme]
+    [
+      userInfo,
+      groupId,
+      alias,
+      message,
+      coverImgUrl,
+      keywords,
+      stickers,
+      cardTheme,
+    ]
   );
 
   return (

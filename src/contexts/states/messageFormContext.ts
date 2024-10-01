@@ -14,6 +14,7 @@ export const DEFAULT_THEME = 0;
 
 export type MessageFormDispatch = {
   handleChangeInfo: (info: Partial<User>) => void;
+  handleChangeGroupId: (groupId: number) => void;
   handleChangeMessage: (message: string) => void;
   handleChangeAlias: (alias: string) => void;
   handleChangeCoverImgUrl: (coverImg: string) => void;
@@ -26,7 +27,7 @@ export type MessageFormDispatch = {
 
   //sticker
   handleChangeSticker: (key: number, sticker: Partial<Sticker>) => void;
-  handleAddSticker: (imgUrl: string, side: 'back' | 'front') => void;
+  handleAddSticker: (imgUrl: string, side: 'BACK' | 'FRONT') => void;
   handleDeleteSticker: (key: number) => void;
   getStickerList: () => Sticker[];
 };
@@ -39,6 +40,7 @@ export type MessageFormContext = {
   stickers: Stickers;
   keywords?: string[];
   cardTheme: number;
+  groupId: number;
 };
 
 export const messageFormContext = createContext<MessageFormContext>({
@@ -48,6 +50,7 @@ export const messageFormContext = createContext<MessageFormContext>({
   coverImgUrl: '',
   stickers: new Map(),
   cardTheme: DEFAULT_THEME,
+  groupId: -1,
 });
 
 //@ts-ignore
