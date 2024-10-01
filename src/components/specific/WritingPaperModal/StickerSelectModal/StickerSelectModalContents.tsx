@@ -3,12 +3,16 @@ import StickerSelectList from './StickerSelectList';
 import { Suspense } from 'react';
 
 interface Props {
-  cardSide: 'front' | 'back';
+  color: string;
+  keywords: string[];
+  cardSide: 'BACK' | 'FRONT';
   closeModal: () => void;
-  onAddSticker: (imgUrl: string, side: 'front' | 'back') => void;
+  onAddSticker: (imgUrl: string, side: 'BACK' | 'FRONT') => void;
 }
 
 const StickerSelectModalContents = ({
+  color,
+  keywords,
   cardSide,
   closeModal,
   onAddSticker,
@@ -26,6 +30,8 @@ const StickerSelectModalContents = ({
       </Header>
       <Suspense>
         <StickerSelectList
+          color={color}
+          keywords={keywords}
           cardSide={cardSide}
           closeModal={closeModal}
           onAddSticker={onAddSticker}

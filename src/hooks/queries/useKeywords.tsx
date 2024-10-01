@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { requestGetKeywords } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
@@ -12,10 +12,14 @@ export const useExtractedKeywords = (
 ) => {
   if (isLoaded) return;
 
-  const query = useSuspenseQuery<ResData<string[]>, ResponseError, string[]>({
-    queryKey: [QUERY_KEY.extractedKeywords, 'GET'],
+  const query = useSuspenseQuery<
+    ResData<{ keywords: string[] }>,
+    ResponseError,
+    string[]
+  >({
+    queryKey: [QUERY_KEY.extractedKeywords, 'GET', message],
     queryFn: () => requestGetKeywords(message),
-    select: (json) => json.data ?? [],
+    select: (json) => json.data.keywords ?? [],
     staleTime: Infinity,
   });
 

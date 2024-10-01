@@ -1,25 +1,28 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { requestGetSticker } from '@apis/requests';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { requestPostSticker } from '@apis/requests';
 import ResponseError from '@apis/responseError';
 import { ResData } from '@/types/api';
 import { QUERY_KEY } from '@constants/query';
+import { mockStickerData } from '@mocks/data';
 
-export const useGetCardSticker = () => {
-  const query = useSuspenseQuery<
-    ResData<{ imgUrl: string }[]>,
+export const useGetCardSticker = (keywords: string[], color: string) => {
+  const prompt = keywords.join(', ');
+
+  const query = useQuery<
+    ResData<{ stickers: string[] }>,
     ResponseError,
-    { imgUrl: string }[]
+    string[]
   >({
-    queryKey: [QUERY_KEY.sticker, 'GET'],
-    queryFn: () => requestGetSticker(),
-    select: (json) => json.data,
-    retry: (failureCount, error) => {
-      if (error && failureCount < 30) return true;
-
-      return false;
-    },
+    queryKey: [QUERY_KEY.sticker, prompt, 'POST'],
+    queryFn: () => requestPostSticker(prompt, color),
+    select: (json) => json.data.stickers,
+    staleTime: Infinity,
     retryDelay: 1000,
   });
 
-  return query;
+  // 테스트용 코드
+  return {
+    ...query,
+    data: [...(query.data ?? []), ...mockStickerData.stickers],
+  };
 };

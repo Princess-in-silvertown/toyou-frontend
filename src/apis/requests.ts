@@ -49,7 +49,10 @@ export const requestGetUserProfile = (userId: number) => {
 export const requestGetKeywords = (message: string) => {
   const body = JSON.stringify({ content: message });
 
-  return request.post<ResData<string[]>>(`generate-keywords`, body);
+  return request.post<ResData<{ keywords: string[] }>>(
+    `generate-keywords`,
+    body
+  );
 };
 
 export const requestGetCover = () => {
@@ -65,14 +68,13 @@ export const requestPostCover = () => {
   return request.post<ResData<any>>(`cover`);
 };
 
-export const requestGetSticker = () => {
-  return request.get<ResData<{ imgUrl: string }[]>>(`stickers`).then((res) => {
-    if (res.code !== 'SUCCESS') {
-      throw new ResponseError({ statusCode: 202, errorCode: res.code });
-    }
+export const requestPostSticker = (prompt: string, color: string) => {
+  const body = JSON.stringify({ prompt, color });
 
-    return res;
-  });
+  return request.post<ResData<{ stickers: string[] }>>(
+    `generate-stickers`,
+    body
+  );
 };
 
 export const requestGetEvents = (year: number, monthIndex: number) => {
@@ -103,7 +105,7 @@ export const requestGetMessageList = (cursorId?: number) => {
   const LIMIT = String(9);
 
   const params = new URLSearchParams({
-    ...(cursorId && { cursorId: String(cursorId) }),
+    ...(cursorId && { cursor: String(cursorId) }),
     limit: LIMIT,
   }).toString();
 
