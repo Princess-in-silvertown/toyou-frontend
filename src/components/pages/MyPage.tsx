@@ -130,7 +130,7 @@ const InputContainer = styled.div`
 const Input = styled.div`
   width: calc(100% - 40px);
 
-  color: ${({ theme }) => theme.color.gray300};
+  color: ${({ theme }) => theme.color.gray400};
   background-color: transparent;
 
   white-space: nowrap;

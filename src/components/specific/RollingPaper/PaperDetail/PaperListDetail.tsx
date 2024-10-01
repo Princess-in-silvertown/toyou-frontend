@@ -27,7 +27,7 @@ const PaperListDetail = ({ index }: Props) => {
       setStates.setY(deltaY);
     },
 
-    onEnd: ({ delta, velocity, setStates }) => {
+    onEnd: ({ delta, setStates }) => {
       const [, deltaY] = delta;
 
       setStates.setY(0);
@@ -68,7 +68,7 @@ const PaperListDetail = ({ index }: Props) => {
     <Container {...bind} style={{ height }}>
       <ListContainer
         style={{
-          transform: `translateY(${-currentIndex * 562 + y + vh / 2 - 250}px)`,
+          transform: `translateY(${-currentIndex * 562 + y + vh / 2 - 240}px)`,
         }}
       >
         {data.map((paper, index) => (

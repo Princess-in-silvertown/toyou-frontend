@@ -68,6 +68,8 @@ const RecipientAliasEdit = ({
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!isEditing) return;
 
+    if (e.target.value.length > 10) return;
+
     const value = e.target.value;
 
     onChangeAlias(value);
@@ -245,7 +247,7 @@ const To = styled.div<{ $isEditing: boolean }>`
 `;
 
 const Input = styled.input<{ $isEditing: boolean }>`
-  margin-bottom: ${({ $isEditing }) => ($isEditing ? '1px' : '0')};
+  margin-bottom: ${({ $isEditing }) => ($isEditing ? '4px' : '2px')};
   max-width: 300px;
 
   font-size: 22px;

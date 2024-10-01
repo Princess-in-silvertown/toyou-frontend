@@ -51,6 +51,8 @@ const Title = styled.div`
   margin: 14px auto 40px auto;
 
   text-align: center;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28.64px;
   white-space: pre-wrap;
 `;
