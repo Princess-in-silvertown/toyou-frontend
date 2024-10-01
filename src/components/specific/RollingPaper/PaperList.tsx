@@ -37,14 +37,18 @@ const PaperList = () => {
       </MessageLengthContainer>
       <ListContainer style={{ height: height - 251 }}>
         <ListGrid>
-          {data?.map((item, index) => (
-            <ItemContainer
-              key={index}
-              ref={index + 1 === data.length ? null : lastItemRef}
-            >
-              <PaperItem index={index} {...item} />
-            </ItemContainer>
-          ))}
+          {data?.map((item, index) => {
+            if (!item) return;
+
+            return (
+              <ItemContainer
+                key={index}
+                ref={index + 1 === data.length ? null : lastItemRef}
+              >
+                <PaperItem index={index} {...item} />
+              </ItemContainer>
+            );
+          })}
         </ListGrid>
         {data && isFetchingNextPage && (
           <LoadingContainer>
