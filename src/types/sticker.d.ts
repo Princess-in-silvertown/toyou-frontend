@@ -1,11 +1,20 @@
 export type Sticker = {
   key: number;
-  imgUrl: string;
+  imageUrl: string;
   x: number;
   y: number;
   rotate: number;
   scale: number;
-  side: 'back' | 'front';
+  side: 'BACK' | 'FRONT';
+};
+
+export type StickerForm = {
+  imageUrl: string;
+  x: number;
+  y: number;
+  rotate: number;
+  scale: number;
+  side: 'BACK' | 'FRONT';
 };
 
 export type Stickers = Map<number, Sticker>;

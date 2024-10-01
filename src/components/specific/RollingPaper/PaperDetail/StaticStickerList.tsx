@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 interface Props {
   stickers: Sticker[];
-  side: 'back' | 'front';
+  side: 'BACK' | 'FRONT';
 }
 
 const StaticStickerList = ({ stickers, side }: Props) => {
   return (
     <Container>
       {stickers.map((sticker, index) => {
-        const { x, y, rotate, scale, imgUrl, side: _side } = sticker;
+        const { x, y, rotate, scale, imageUrl, side: _side } = sticker;
 
         if (side !== _side) return;
 
@@ -23,7 +23,7 @@ const StaticStickerList = ({ stickers, side }: Props) => {
               transform: `scale(${scale}) rotate(${rotate}deg) `,
             }}
           >
-            <Image src={imgUrl} alt="스티커이미지" />
+            <Image src={imageUrl} alt="스티커이미지" />
           </StickerContainer>
         );
       })}

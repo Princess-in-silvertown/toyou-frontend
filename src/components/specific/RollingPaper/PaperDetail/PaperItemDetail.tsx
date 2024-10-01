@@ -59,7 +59,7 @@ const PaperItemDetail = ({
             >
               <CardCoverContainer>
                 <CoverImage src={coverImageUrl} alt="커버이미지" />
-                <StaticStickerList side="front" stickers={stickers} />
+                <StaticStickerList side="FRONT" stickers={stickers} />
               </CardCoverContainer>
             </CardContainer>
           </SwiperSlider>
@@ -75,7 +75,7 @@ const PaperItemDetail = ({
                     <Alias>{title}</Alias>
                   </AliasContainer>
                   <Message>{content}</Message>
-                  <StaticStickerList side="back" stickers={stickers} />
+                  <StaticStickerList side="BACK" stickers={stickers} />
                 </CardMessageContainer>
               </BackContainer>
             </CardContainer>
@@ -92,7 +92,7 @@ const PaperItemDetail = ({
             >
               <CardCoverContainer>
                 <CoverImage src={coverImageUrl} alt="커버이미지" />
-                <StaticStickerList side="front" stickers={stickers} />
+                <StaticStickerList side="FRONT" stickers={stickers} />
               </CardCoverContainer>
             </CardContainer>
           }
@@ -108,7 +108,7 @@ const PaperItemDetail = ({
                     <Alias>{title}</Alias>
                   </AliasContainer>
                   <Message>{content}</Message>
-                  <StaticStickerList side="back" stickers={stickers} />
+                  <StaticStickerList side="BACK" stickers={stickers} />
                 </CardMessageContainer>
               </BackContainer>
             </CardContainer>
@@ -168,7 +168,6 @@ const CardContainer = styled.div<{ $color: string; $subColor: string }>`
 `;
 
 const CardCoverContainer = styled.div`
-  position: relative;
   padding: 15px 23px;
   box-sizing: border-box;
 

@@ -11,13 +11,14 @@ import { KEYS } from '@constants/modal';
 import ModalContainer from './StickerSelectModal/ModalContainer';
 import addIcon from '@assets/icons/add-sticker.svg';
 import stickerIcon from '@assets/icons/sticker.svg';
+import { COLORS } from '@constants/card';
 
 interface Props {
-  side: 'back' | 'front';
+  side: 'BACK' | 'FRONT';
 }
 
 const StickerList = ({ side }: Props) => {
-  const { stickers } = useContext(messageFormContext);
+  const { stickers, cardTheme, keywords } = useContext(messageFormContext);
   const { handleDeleteSticker, handleChangeSticker, handleAddSticker } =
     useContext(messageFormDispatchContext);
 
@@ -37,6 +38,8 @@ const StickerList = ({ side }: Props) => {
     handleOpen(
       KEYS.STICKER_EDIT,
       <StickerSelectModalContents
+        color={COLORS[cardTheme].code}
+        keywords={keywords ?? []}
         cardSide={side}
         closeModal={handleClose}
         onAddSticker={handleAddSticker}
@@ -48,14 +51,14 @@ const StickerList = ({ side }: Props) => {
   return (
     <Container>
       {[...stickers.values()].map((sticker) => {
-        const { key, x, y, imgUrl, rotate, scale } = sticker;
+        const { key, x, y, imageUrl, rotate, scale } = sticker;
 
         if (!side || side == sticker.side) {
           return (
             <Sticker
               key={key}
               id={key}
-              imgUrl={imgUrl}
+              imgUrl={imageUrl}
               defaultX={x}
               defaultY={y}
               defaultRotate={rotate}
