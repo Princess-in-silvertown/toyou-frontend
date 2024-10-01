@@ -473,7 +473,7 @@ export const myInfo = {
   name: '효섭',
   imageUrl: H,
   birthday: '2020-12-13',
-  introduction: '효섭입니다효섭입니다효섭입니다효섭입니다효섭입니다효섭입니다',
+  introduction: null,
   groups: [
     { id: 1, name: '경희대학교' },
     { id: 2, name: '경희고등학교' },

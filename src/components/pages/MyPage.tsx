@@ -1,11 +1,7 @@
 import { useCustomNavigate } from '@/routers/useCustomNavigate';
-import { Group } from '@/types/group';
-import GroupSearch from '@components/specific/GroupSearch/GroupSearch';
-import { usePutMyInfo, useSuspenseMyInfo } from '@hooks/queries/useMyInfo';
-import { ChangeEventHandler, useState } from 'react';
+import { useSuspenseMyInfo } from '@hooks/queries/useMyInfo';
 import back from '@assets/icons/back.svg';
 import styled from 'styled-components';
-import { Info } from '@/types/user';
 
 const MyPage = () => {
   const { data } = useSuspenseMyInfo();
@@ -16,6 +12,8 @@ const MyPage = () => {
     goToBack();
   };
 
+  const [year, month, day] = (data.birthday ?? '--').split('-');
+
   return (
     <Container>
       <ContainerHeader>
@@ -25,8 +23,17 @@ const MyPage = () => {
       </ContainerHeader>
       <FormItemContainer>
         <ProfileImage src={data?.imageUrl} />
+        <Name>{data.name}</Name>
+        <BirthdayContainer>
+          <BirthdayTitle>생일</BirthdayTitle>
+          <Birthday>{`${year}년 ${month}월 ${day}일`}</Birthday>
+        </BirthdayContainer>
         <InputContainer>
-          <Input>{data.introduction ?? '소개글이 없어요'}</Input>
+          <Input>
+            {data.introduction?.length > 0
+              ? data.introduction
+              : '소개를 작성하지 않았어요'}
+          </Input>
         </InputContainer>
         <GroupList>
           {data?.groups?.map((group) => (
@@ -72,7 +79,7 @@ const ContainerHeader = styled.div`
 `;
 
 const Empty = styled.div`
-  width: 30px;
+  width: 10px;
 `;
 
 const FormItemContainer = styled.div`
@@ -80,6 +87,8 @@ const FormItemContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+
+  gap: 12px;
 `;
 
 const NextButton = styled.div<{ $canNext: boolean }>`
@@ -108,8 +117,33 @@ const NextButton = styled.div<{ $canNext: boolean }>`
 const ProfileImage = styled.img`
   width: 97px;
   height: 97px;
-  margin: 28px 0;
   border-radius: 50%;
+`;
+
+const Name = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.09px;
+  letter-spacing: -0.03em;
+`;
+
+const BirthdayContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const BirthdayTitle = styled.div`
+  font-size: 14px;
+  line-height: 16.71px;
+  letter-spacing: -0.03em;
+`;
+
+const Birthday = styled.div`
+  font-size: 14px;
+  line-height: 16.71px;
+  letter-spacing: -0.03em;
+  color: ${({ theme }) => theme.color.red500};
 `;
 
 const InputContainer = styled.div`
