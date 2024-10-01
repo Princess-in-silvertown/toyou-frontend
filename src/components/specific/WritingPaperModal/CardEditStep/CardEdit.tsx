@@ -127,8 +127,8 @@ const Container = styled.div`
 
   margin: 24px auto 0 auto;
 
-  @media (max-height: 670px) {
-    margin: 0px auto 0 auto;
+  @media (max-height: 690px) {
+    margin: 8px auto 0 auto;
   }
 `;
 
@@ -166,6 +166,9 @@ const CardContainer = styled.div<{ $color: string; $subColor: string }>`
 `;
 
 const CardCoverContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
   padding: 15px 23px;
   box-sizing: border-box;
 
@@ -203,7 +206,7 @@ const Alias = styled.div`
 `;
 
 const CoverImage = styled.img`
-  width: 100%;
+  width: 256px;
 
   user-select: none;
   pointer-events: none;

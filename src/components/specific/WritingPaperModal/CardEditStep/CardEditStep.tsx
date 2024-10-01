@@ -8,6 +8,7 @@ import letterImage from '@assets/image/love_letter.png';
 import { useImagePreLoad } from '@hooks/useImagePreLoad';
 import letter from '@assets/image/love_letter.png';
 import { useGetCardSticker } from '@hooks/queries/useCardSticker';
+import { COLORS } from '@constants/card';
 
 interface Props {
   isPendingSubmit: boolean;
@@ -16,17 +17,21 @@ interface Props {
 }
 
 const CardEditStep = ({ onSubmit, isPendingSubmit, isSubmitted }: Props) => {
-  const { alias, message } = useContext(messageFormContext);
+  const { alias, message, keywords, cardTheme } =
+    useContext(messageFormContext);
 
   useImagePreLoad([letter]);
 
-  const { isFetched } = useGetCardSticker();
+  const { isFetched } = useGetCardSticker(
+    keywords ?? [],
+    COLORS[cardTheme].code
+  );
 
   const [, height] = useViewport();
   const paddingTop = Math.max((height - 800) / 2, 0);
 
   return (
-    <Container style={{ paddingTop }}>
+    <Container style={{ paddingTop, height: `${height - 100}px` }}>
       {isSubmitted || isPendingSubmit ? (
         <ResultContainer>
           {isPendingSubmit ? (
@@ -43,7 +48,7 @@ const CardEditStep = ({ onSubmit, isPendingSubmit, isSubmitted }: Props) => {
       ) : isFetched ? (
         <>
           <CardEdit alias={alias} message={message} />
-          <NextButton onClick={onSubmit}>제출하기</NextButton>
+          {height > 670 && <NextButton onClick={onSubmit}>제출하기</NextButton>}
         </>
       ) : (
         <LoadingCardSpinner />
@@ -59,7 +64,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  height: calc(100vh - 100px);
   box-sizing: border-box;
 `;
 
@@ -90,7 +94,7 @@ const ResultContainer = styled.div`
 `;
 
 const ResultText = styled.div`
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 28.64px;
   text-align: center;
@@ -117,7 +121,6 @@ const NextButton = styled.div`
 
   width: calc(100%);
   height: 50px;
-  margin-bottom: 30px;
   border-radius: 25px;
 
   font-size: 16px;
