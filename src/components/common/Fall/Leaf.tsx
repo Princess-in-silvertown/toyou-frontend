@@ -6,16 +6,17 @@ import leaf3 from '@assets/icons/fall-leaf3.svg';
 interface Props {
   size: number;
   startX: number;
+  startY: number;
   duration: number;
   delay: number;
   index: number;
 }
 
-const Leaf = ({ size, startX, duration, delay, index }: Props) => {
+const Leaf = ({ size, startX, startY, duration, delay, index }: Props) => {
   const leaf = [leaf1, leaf2][index];
 
   return (
-    <Container $startX={startX}>
+    <Container $startX={startX} $startY={startY}>
       <Translate $delay={delay} $duration={duration}>
         <Rotate $delay={delay} $duration={duration}>
           <FallImage src={leaf} $size={size} />
@@ -55,10 +56,12 @@ const translate = keyframes`
     }
   `;
 
-const Container = styled.div<{ $startX: number }>`
+const Container = styled.div<{ $startX: number; $startY: number }>`
   position: absolute;
 
-  transform: translateX(${({ $startX }) => `${$startX}px`});
+  transform: translate(
+    ${({ $startX, $startY }) => `${$startX}px, ${$startY}px`}
+  );
 `;
 
 const Translate = styled.div<{ $delay: number; $duration: number }>`
