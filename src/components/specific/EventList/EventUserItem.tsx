@@ -11,7 +11,13 @@ import { User } from '@/types/user';
 
 interface Props extends Event {}
 
-const EventUserItem = ({ id, name, description, profileImageUrl }: Props) => {
+const EventUserItem = ({
+  id,
+  name,
+  description,
+  profileImageUrl,
+  eventType,
+}: Props) => {
   const { handleOpen, handleClose } = useContext(modalDispatchContext);
   const [isClickPrevented, setIsClickPrevented] = useState(false);
 
@@ -40,6 +46,8 @@ const EventUserItem = ({ id, name, description, profileImageUrl }: Props) => {
   const handleClick = () => {
     if (isClickPrevented) return;
 
+    if (eventType === 'HOLIDAY') return;
+
     handleOpen(
       KEYS.WRITE_MESSAGE,
       <MessageFormProvider>
@@ -62,11 +70,11 @@ const EventUserItem = ({ id, name, description, profileImageUrl }: Props) => {
         </LeftFirstContents>
         <LeftSecondContents>
           <Name>{name}</Name>
-          <Introduce>{description}</Introduce>
+          {eventType !== 'HOLIDAY' && <Introduce>{description}</Introduce>}
         </LeftSecondContents>
       </LeftContents>
       <RightContents>
-        <SendButton>메시지 카드 보내기</SendButton>
+        {eventType !== 'HOLIDAY' && <SendButton>메시지 카드 보내기</SendButton>}
       </RightContents>
     </Container>
   );
