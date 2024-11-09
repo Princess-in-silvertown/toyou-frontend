@@ -125,7 +125,7 @@ class CardList {
   public getCurrentCardRGBA() {
     const first = [...this.cards].shift();
 
-    return [...(first?.getRgb() ?? []), first?.getAlpha()] ?? [0, 0, 0, 0];
+    return [...(first?.getRgb() ?? []), first?.getAlpha()];
   }
 
   public getCurrentCardTheme() {
@@ -170,8 +170,8 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
 
     if (isTouchPrevented || !canDrag) return;
 
-    let moveX = clientX - startX ?? 0;
-    let moveY = clientY - startY ?? 0;
+    let moveX = clientX - startX;
+    let moveY = clientY - startY;
 
     if (isHorizontal === null) {
       if (Math.abs(moveX) > Math.abs(moveY) * 0.8) {
@@ -235,14 +235,28 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
   const handleMouseUp: MouseEventHandler = () => handleEnd();
   const handleMouseLeave: MouseEventHandler = () => handleEnd();
 
-  const easeOutCubic = (t: number) => {
-    if (t > 1) return 1;
-
-    if (t < 0) return 0;
-
-    return 1 - Math.pow(1 - t, 3);
+  const cubicBezier = (
+    t: number,
+    p0: number,
+    p1: number,
+    p2: number,
+    p3: number
+  ): number => {
+    const u = 1 - t;
+    return (
+      u ** 3 * p0 + 3 * u ** 2 * t * p1 + 3 * u * t ** 2 * p2 + t ** 3 * p3
+    );
   };
 
+  // 커스텀 베지어 커브 함수
+  const customEaseOut = (t: number): number => {
+    if (t > 1) return 1;
+    if (t < 0) return 0;
+
+    return cubicBezier(t, 0, 0.67, 1.25, 1);
+  };
+
+  // 변환 함수
   const transformEaseOut = (
     value: number,
     x_min: number,
@@ -251,7 +265,7 @@ const CardSelect = ({ isSelected, onSelected, canDrag }: Props) => {
     y_max: number
   ) => {
     const t = (value - x_min) / (x_max - x_min);
-    const easedT = easeOutCubic(t);
+    const easedT = customEaseOut(t);
     return y_min + (y_max - y_min) * easedT;
   };
 

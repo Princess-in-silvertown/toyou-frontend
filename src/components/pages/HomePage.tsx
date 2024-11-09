@@ -1,6 +1,7 @@
 import { MessageFormProvider } from '@/contexts/providers/MessageFormProvider';
 import { modalDispatchContext } from '@/contexts/states/modalContext';
 import { useCustomNavigate } from '@/routers/useCustomNavigate';
+import Falls from '@components/common/Fall/Falls';
 import FullContainer from '@components/common/Modal/FullContainer';
 import CardSelect from '@components/specific/CardSelect/CardSelect';
 import WritingPaperModal from '@components/specific/WritingPaperModal/WritingPaperModal';
@@ -69,6 +70,7 @@ const HomePage = () => {
         onSelected={handleSelectCard}
         canDrag={isDraggable}
       />
+      <Falls />
     </Container>
   );
 };
