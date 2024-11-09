@@ -6,13 +6,11 @@ import blueCover from '@assets/image/birthday_small_blue.svg';
 import greenCover from '@assets/image/birthday_small_green.svg';
 import H from '@assets/image/H.jpeg';
 import { Event } from '@/types/event';
-import god1 from '@assets/image/sticker/god1.gif';
-import god2 from '@assets/image/sticker/god2.gif';
-import cat1 from '@assets/image/sticker/cat1.gif';
-import cat2 from '@assets/image/sticker/cat2.gif';
-import cat3 from '@assets/image/sticker/cat3.gif';
-import h1 from '@assets/image/sticker/h1.webp';
-import h2 from '@assets/image/sticker/h2.png';
+import test1 from '@assets/image/sticker/test1.svg';
+import test2 from '@assets/image/sticker/test2.svg';
+import test3 from '@assets/image/sticker/test3.svg';
+import test4 from '@assets/image/sticker/test4.svg';
+import test5 from '@assets/image/sticker/test5.svg';
 
 export const API_URL = process.env.API_URL;
 
@@ -78,7 +76,7 @@ export const mockIndexedUserList: Record<number, any> = {
 export var mockMyGroupIDList: number[] = [1, 2, 3];
 
 export var mockStickerData = {
-  stickers: [cat1, cat2, cat3, god1, god2, h1, h2],
+  stickers: [test1, test2, test3, test4, test5],
 };
 
 export var mockTodayEventList: Event[] = [
@@ -92,7 +90,7 @@ export var mockTodayEventList: Event[] = [
   {
     id: 3,
     name: '송효섭',
-    eventType: '',
+    eventType: 'HOLIDAY',
     description: '오늘 생일입니다.',
     profileImageUrl: sticker,
   },
