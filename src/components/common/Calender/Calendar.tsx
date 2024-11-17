@@ -4,7 +4,6 @@ import { Events } from '@/types/event';
 import { useDrag } from '@hooks/useDrag';
 import { getDateTime } from '@utils/date';
 import { useViewport } from '@hooks/useViewport';
-import { useEvent } from '@hooks/queries/useEvent';
 import CalenderHeader from './CalenderHeader';
 import DaysOfWeek from './DaysOfWeek';
 import MonthDaysGrid from './MonthDaysGrid';
@@ -72,11 +71,6 @@ const Calendar = ({ onChangeEventList }: Props) => {
   });
 
   const renderDates = () => {
-    const { data } = useEvent(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1
-    );
-
     const handleClickMonthViewDay = (day: Date) => {
       if (isMoving) return;
 
@@ -106,12 +100,6 @@ const Calendar = ({ onChangeEventList }: Props) => {
         changeCurrentDate(day, () => {});
       }
     };
-
-    useEffect(() => {
-      const key = getDateTime(currentDate);
-
-      onChangeEventList?.(data?.[key]?.events);
-    }, [currentDate, data]);
 
     return (
       <DatesContainer

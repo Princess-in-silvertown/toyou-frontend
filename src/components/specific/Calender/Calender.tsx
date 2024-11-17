@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import CalenderHeader from './CalenderHeader';
 import MonthDaysGrid from './MonthDaysGrid';
 import WeekDaysGrid from './WeekDaysGrid';
-import { useCalender } from '@hooks/useCalender';
 import DaysOfWeek from './DaysOfWeek';
 import { Events } from '@/types/event';
 import { useDrag } from '@hooks/useDrag';
 import { getDateTime } from '@utils/date';
 import { useViewport } from '@hooks/useViewport';
 import { calenderContext } from '@/contexts/states/calenderContext';
-import { useEvent } from '@hooks/queries/useEvent';
+import { useEvents } from '@hooks/queries/useEvent';
 
 interface Props {
   onChangeEventList?: (events?: Events) => void;
@@ -103,10 +102,11 @@ const Calendar = ({ onChangeEventList }: Props) => {
   });
 
   const renderDates = () => {
-    const { data } = useEvent(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + 1
-    );
+    const dateParams = [
+      { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1 },
+    ];
+
+    const [currentMonthQuery] = useEvents(dateParams);
 
     const handleClickWeekViewDay = (day: Date) => {
       if (isMoving) return;
@@ -148,8 +148,8 @@ const Calendar = ({ onChangeEventList }: Props) => {
     useEffect(() => {
       const key = getDateTime(currentDate);
 
-      onChangeEventList?.(data?.[key]?.events);
-    }, [currentDate, data]);
+      onChangeEventList?.(currentMonthQuery.data?.[key]?.events);
+    }, [currentDate, currentMonthQuery.data]);
 
     return (
       <>

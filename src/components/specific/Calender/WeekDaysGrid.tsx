@@ -1,6 +1,5 @@
 import { calenderContext } from '@/contexts/states/calenderContext';
-import { ParsedEvent } from '@/types/event';
-import { useEvent } from '@hooks/queries/useEvent';
+
 import { compareDate, getDateTime } from '@utils/date';
 import { useContext } from 'react';
 import styled from 'styled-components';

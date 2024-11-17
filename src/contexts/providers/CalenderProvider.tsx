@@ -1,8 +1,8 @@
 import { useCalender } from '@hooks/useCalender';
 import { calenderContext } from '../states/calenderContext';
-import { Day, ParsedEvent } from '@/types/event';
+import { ParsedEvent } from '@/types/event';
 import { useState } from 'react';
-import { useEvent } from '@hooks/queries/useEvent';
+import { useEvents } from '@hooks/queries/useEvent';
 
 interface Props extends React.PropsWithChildren {}
 
@@ -17,25 +17,29 @@ export const CalenderProvider = ({ children }: Props) => {
     });
   };
 
-  // preload
-  const nextMonthData = new Date(value.renderingYear, value.renderingMonth + 1);
-  nextMonthData.setMonth(nextMonthData.getMonth());
-  useEvent(
-    nextMonthData.getFullYear(),
-    nextMonthData.getMonth(),
-    handleChangeEvent
+  const next2MonthDate = new Date(
+    value.renderingYear,
+    value.renderingMonth + 2
   );
-
-  // preload
+  const prev2MonthDate = new Date(
+    value.renderingYear,
+    value.renderingMonth - 2
+  );
+  const nextMonthDate = new Date(value.renderingYear, value.renderingMonth + 1);
   const prevMonthDate = new Date(value.renderingYear, value.renderingMonth - 1);
-  prevMonthDate.setMonth(prevMonthDate.getMonth());
-  useEvent(
-    prevMonthDate.getFullYear(),
-    prevMonthDate.getMonth(),
-    handleChangeEvent
-  );
 
-  useEvent(value.renderingYear, value.renderingMonth, handleChangeEvent);
+  const dateParams = [
+    { year: value.renderingYear, month: value.renderingMonth },
+    { year: prevMonthDate.getFullYear(), month: prevMonthDate.getMonth() },
+    { year: nextMonthDate.getFullYear(), month: nextMonthDate.getMonth() },
+  ];
+
+  const preFetchDateParams = [
+    { year: prev2MonthDate.getFullYear(), month: prev2MonthDate.getMonth() },
+    { year: next2MonthDate.getFullYear(), month: next2MonthDate.getMonth() },
+  ];
+
+  useEvents(dateParams, handleChangeEvent, preFetchDateParams);
 
   return (
     <calenderContext.Provider value={{ ...value, eventMap, handleChangeEvent }}>
