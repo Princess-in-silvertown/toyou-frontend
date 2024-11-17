@@ -14,10 +14,11 @@
 </p>
 
 ## Deploy
+[URL](https://to-you.kr/)
 
 [TEST URL](https://princess-in-silvertown.github.io/toyou-frontend/)
 
-현재 백엔드 서버 개발이 완료되지 않아 msw를 프로덕션 환경 (깃허브 페이지)에 사용한 상태입니다.
+배포된 상태이나 AI 서버의 불안정으로 인해 애플리케이션 확인 시 TEST_URL을 이용하길 권장드립니다.
 
 ## 기술 스택
 
