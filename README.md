@@ -13,12 +13,14 @@
  <img src="https://github.com/user-attachments/assets/0f034679-c51e-47d7-ac6e-64053b751ed7" width="180px">
 </p>
 
-## Deploy
-[URL](https://to-you.kr/)
+## 시연
 
-[TEST URL](https://princess-in-silvertown.github.io/toyou-frontend/)
+- [Client-only Version 보기 (MSW 기반)](https://princess-in-silvertown.github.io/toyou-frontend/)
 
-배포된 상태이나 AI 서버의 불안정으로 인해 애플리케이션 확인 시 TEST_URL을 이용하길 권장드립니다.
+- [시연영상](https://princess-in-silvertown.github.io/toyou-frontend/)
+
+> ⚠️ 현재 비용 문제로 배포 URL은 비활성화되었습니다.  
+> 위 클라이언트 버전은 Mock Service Worker(MSW)를 기반으로 작동하며, 주요 기능 흐름을 확인할 수 있습니다.
 
 ## 기술 스택
 
