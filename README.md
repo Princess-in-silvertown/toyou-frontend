@@ -17,7 +17,7 @@
 
 - [Client-only Version 보기 (MSW 기반)](https://princess-in-silvertown.github.io/toyou-frontend/)
 
-- [시연영상](https://princess-in-silvertown.github.io/toyou-frontend/)
+- [시연영상](https://drive.google.com/file/d/1n0C4zNIPpFBfHP-vrx6ZaqgnK74DNTHr/view?usp=sharing)
 
 > ⚠️ 현재 비용 문제로 배포 URL은 비활성화되었습니다.  
 > 위 클라이언트 버전은 Mock Service Worker(MSW)를 기반으로 작동하며, 주요 기능 흐름을 확인할 수 있습니다.
