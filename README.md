@@ -61,6 +61,54 @@ Tools | React, Typescript, Styled-Components, Webpack, Tanstack-Query, MSW
 <img width="180px" alt="card" src="https://github.com/user-attachments/assets/06d358c2-2b9d-4b68-a8c0-f59b1a433252"  width="180px">
 </p>
 
+# 추가설명
+
+### useDrag
+[코드](https://github.com/Princess-in-silvertown/toyou-frontend/blob/main/src/hooks/useDrag.ts)
+
+- useDrag는 toyou-frontend 프로젝트에서 사용자 인터랙션을 향상시키기 위해 개발한 커스텀 React 훅으로 이 훅을 통해서 
+드래그의 거리, 방향, 속도 관련 로직을 쉽게 넣을 수 있도록 설계했습니다.
+- onStart, onMove, onEnd 콜백을 통해 드래그의 시작, 이동, 종료 시점을 감지하고 대응할 수 있습니다.
+
+### 사용 예시
+
+```javascript
+  const { collected, bind } = useDrag({
+    onStart: () => {
+      transitionDuration.current = 0.3;
+    },
+
+    onEnd: ({ delta, velocity }) => {
+      const [deltaX] = delta;
+  
+      transitionDuration.current = clamp(3.5 / (velocity ?? 3), 0.15, 0.75); // 최대값, 최소값 제한
+
+      // 속도가 일정 이상일때는 드래그 거리가 적어도 특정 함수를 실행하도록
+      if (deltaX > 100 || (velocity > 7 && deltaX > 30)) { 
+        if (currentIndex > 0) {
+          setCurrentIndex((prev) => prev - 1);
+        }
+      } else if (deltaX < -100 || (velocity > 7 && deltaX < -30)) {
+        if (currentIndex < maxIndex) {
+          setCurrentIndex((prev) => prev + 1);
+        }
+      }
+    },
+  });
+
+
+
+```
+<p align="center">
+<video width="180px" alt="useDrag" src="https://github.com/user-attachments/assets/a5f893cd-7200-490e-9e77-32d8d295fa70">
+</p>
+
+다음 영상과 같이 드래그 속도를 애니메이션 속도에 반영할 수 있습니다.
+
+
+
+
+
 # Contact
 
     github: https://github.com/tkdrb12
