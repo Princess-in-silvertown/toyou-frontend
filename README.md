@@ -46,7 +46,7 @@ Tools | React, Typescript, Styled-Components, Webpack, Tanstack-Query, MSW
 
 ### 메시지 작성
 
-3. 카드 메시지 내용을 적고 해당 메시지를 기반으로 스티커를 생성 할 수 있습니다. (스티커 생성은 현재 개발 중인 기능입니다.)
+3. 카드 메시지 내용을 적고 해당 메시지를 기반으로 스티커를 생성 할 수 있습니다.
 
 <p align="center">
 <img width="180px" alt="message" src="https://github.com/user-attachments/assets/44206fa5-a723-4791-9963-02862a43215d">
@@ -73,29 +73,48 @@ Tools | React, Typescript, Styled-Components, Webpack, Tanstack-Query, MSW
 ### 사용 예시
 
 ```javascript
-  const { collected, bind } = useDrag({
-    onStart: () => {
-      transitionDuration.current = 0.3;
-    },
 
-    onEnd: ({ delta, velocity }) => {
-      const [deltaX] = delta;
+// useDrag 사용예시
+
+import { useDrag } from '@hooks/useDrag';
+import { useRef, useState } from 'react';
+
+const Component = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const transitionDuration = useRef(0.3);
+
+    ...
+
+    const { collected, bind } = useDrag({
+      onStart: () => {
+        transitionDuration.current = 0.3;
+      },
   
-      transitionDuration.current = clamp(3.5 / (velocity ?? 3), 0.15, 0.75); // 최대값, 최소값 제한
-
-      // 속도가 일정 이상일때는 드래그 거리가 적어도 특정 함수를 실행하도록
-      if (deltaX > 100 || (velocity > 7 && deltaX > 30)) { 
-        if (currentIndex > 0) {
-          setCurrentIndex((prev) => prev - 1);
+      onEnd: ({ delta, velocity }) => {
+        const [deltaX] = delta;
+    
+        transitionDuration.current = clamp(3.5 / (velocity || 3), 0.15, 0.75); // 최대값, 최소값 제한
+  
+        // 속도가 일정 이상일때는 드래그 거리가 적어도 특정 함수를 실행하도록
+        if (deltaX > 100 || (velocity > 7 && deltaX > 30)) { 
+          if (currentIndex > 0) {
+            setCurrentIndex((prev) => prev - 1);
+          }
+        } else if (deltaX < -100 || (velocity > 7 && deltaX < -30)) {
+          if (currentIndex < maxIndex) {
+            setCurrentIndex((prev) => prev + 1);
+          }
         }
-      } else if (deltaX < -100 || (velocity > 7 && deltaX < -30)) {
-        if (currentIndex < maxIndex) {
-          setCurrentIndex((prev) => prev + 1);
-        }
-      }
-    },
-  });
+      },
+    });
 
+    return (
+      <Draggable {...bind}>
+        <Items sytle={{ transform : `${-currentIndex * 100}% + {collected.deltaX}px`}}>
+        ...
+      <Dragable>
+    );
+};
 
 
 ```
